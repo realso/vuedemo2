@@ -2,7 +2,7 @@
   <div id="login" selected="true">
     <div class="rs-login">
       <div class="rs-login-logo">
-        <img src="../../assets/logo.jpg" alt="" />
+        <img src="@/assets/logo.jpg" alt="" />
       </div>
       <form id='login-form' class="mui-input-group">
         <div class="mui-input-row">

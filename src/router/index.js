@@ -8,7 +8,6 @@ let routes = [];
 routes = routes.concat(LoginRouter);
 routes.push(MainRouter);
 const router = new Router({
-    mode: 'history',
     routes: routes
 });
 router.beforeEach((to, from, next) => {
