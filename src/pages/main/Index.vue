@@ -1,24 +1,20 @@
 <template>
-  <div class="hello rs-layout-2">
+  <div style="height:100%;">
     <keep-alive>
       <router-view ref="view" />
     </keep-alive>
     <rs-tabbar v-model="selected">
-      <rs-tab-item id="main1">
-        <span slot="icon" class="mui-icon rs-font rs-gongzuotai"></span>
-        工作台
+      <rs-tab-item id="main1" icon="mui-icon rr-font rr-gongzuotai">
+        <span slot="label">工作台</span>
       </rs-tab-item>
-      <rs-tab-item id="main2">
-        <span slot="icon" class="mui-icon rs-font rs-licai"></span>
-        知识库
+      <rs-tab-item id="main2" icon="mui-icon rr-font rr-zhishiku">
+        <span slot="label">知识库</span>
       </rs-tab-item>
-      <rs-tab-item id="main3">
-        <span slot="icon" class="mui-icon rs-font rs-xiaoxi"></span>
-        消息
+      <rs-tab-item id="main3" icon="mui-icon rr-font rr-xiaoxi">
+        <span slot="label">消息</span>
       </rs-tab-item>
-      <rs-tab-item id="main4">
-        <span slot="icon" class="mui-icon rs-font rs-wode"></span>
-        我的
+      <rs-tab-item id="main4" icon="mui-icon rr-font rr-wode">
+        <span slot="label">我的</span>
       </rs-tab-item>
     </rs-tabbar>
   </div>

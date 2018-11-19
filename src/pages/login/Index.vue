@@ -2,7 +2,7 @@
   <div id="login" selected="true">
     <div class="rs-login">
       <div class="rs-login-logo">
-        <img src="@/assets/img/logo.png" alt="" />
+        <img src="@/assets/logo.png" alt="" />
       </div>
       <form id='login-form' class="mui-input-group">
         <div class="mui-input-row">
@@ -13,7 +13,7 @@
         </div>
       </form>
       <div class="mui-content-padded">
-        <rs-button size="large" @click="doLogin">登录</rs-button>
+        <rs-button size="normal" @click="doLogin">登录</rs-button>
       </div>
     </div>
   </div>
@@ -71,12 +71,15 @@ export default {
 </script>
 <style>
   #login{
-    background-image:url("../../assets/img/bk-login.jpg");background-size: 100% 100%;height: 100%;position: relative;
+    background:#fff;height: 100%;position: relative;
   }
   .rs-login{ width: 100%; position: absolute; top: 50%; margin-top: -190px}
-  .rs-login-logo{width: 40%; padding: 15px; margin: 0 auto;}
+  .rs-login-logo{width: 50%; padding: 15px 0; margin: 0 auto;}
   .rs-login-logo img{display: block;width: 100%}
-  .mui-input-group{background: none; margin: 30px 0}
-  .mui-input-group:before,.mui-input-group:after{display: none}
-  .mui-input{ color: #fff; text-align: center}
+  .mui-input-group{background: none; margin: 30px auto; width: 80%;}
+  .mui-input-group:before,.mui-input-group:after,.mui-input-group .mui-input-row:before,.mui-input-group .mui-input-row:after{display: none}
+  .mui-input-group .mui-input{ color: #2b8daa; text-align: center; border: 1px solid #2b8daa; background: #fff; border-radius: 20px;}
+  .mui-input-group .mui-input-row{ margin-bottom: 10px}
+  .mui-content-padded{ margin: 10px auto; width: 80%}
+  .rs-login .rs-btn-primary{background: #46464b; width: 100%; height:40px;border-radius: 20px;border: 1px solid #2b8daa;}
 </style>

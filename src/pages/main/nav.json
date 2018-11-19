@@ -1,0 +1,34 @@
+[
+  {
+    "path": "/jiesuan",
+    "name": "结算记录",
+    "icon": "rr-font rr-jiesuan c-icon-blue",
+    "pcode": "jiesuan",
+    "isshow": true,
+    "isfixed": true
+  },
+  {
+    "path": "/dinghuo",
+    "name": "订货记录",
+    "icon": "rr-font rr-dinghuo c-icon-green",
+    "pcode": "dinghuo",
+    "isshow": true,
+    "isfixed": true
+  },
+  {
+    "path": "/wenti",
+    "name": "问题记录",
+    "icon": "rr-font rr-wenti c-icon-red",
+    "pcode": "wenti",
+    "isshow": true,
+    "isfixed": true
+  },
+  {
+    "path": "/jiaokuan",
+    "name": "缴款记录",
+    "icon": "rr-font rr-jiaokuan c-icon-red",
+    "pcode": "jiaokuan",
+    "isshow": true,
+    "isfixed": true
+  }
+]

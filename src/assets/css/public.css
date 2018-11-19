@@ -1,0 +1,62 @@
+/*flex*/
+.rs-flex-col{display:flex;display:-webkit-flex;margin:0 auto; flex-direction:column; width: 100%;height: 100%}
+.rs-flex-row{display:flex;display:-webkit-flex;margin:0 auto; flex-direction:row; width: 100%;}
+.rs-flex-item{flex:1;}
+/*颜色*/
+.c-icon-orange{ color: #ffb359}
+.c-icon-blue{ color: #29b1e8}
+.c-icon-red{ color: #f96268}
+.c-icon-green{ color: #36bc99}
+.c-icon-gray{ color: #ccc}
+.c-active{color: #58cffa;}
+.c-fff{ color: #fff;}
+/*字体*/
+.f10{ font-size: 10px;}
+.f11{ font-size: 11px;}
+.f12{ font-size: 12px;}
+.f13{ font-size: 13px;}
+.f14{ font-size: 14px;}
+.f16{ font-size: 16px;}
+.f17{ font-size: 17px;}
+.f20{ font-size: 20px;}
+.f24{ font-size: 24px;}
+.f34{ font-size: 34px;}
+.f40{ font-size: 40px;}
+/*内边距*/
+.rs-padding-10{padding: 10px}
+/* 宽度 */
+.rr-width-4em{ width: 4em;}
+.rr-width-5em{ width: 5em;}
+.rr-justify{
+	height: 33px; line-height: 33px;
+	display: inline-block;
+	margin-right: 10px;
+	float: left;
+	text-align:justify;
+	text-align-last:justify;
+	letter-spacing:-.15em;white-space:normal !important 
+	}
+.rr-justify:after{
+     display:inline-block;
+     overflow:hidden;
+     width:100%;
+     height:0;
+     content:' ';
+     vertical-align:top;
+}
+/*文本垂直居中*/
+.rs-display-table{ display: table; width: 100%;}
+.rs-table-cell{ display: table-cell;vertical-align: middle;}
+
+/* 单据顶部固定信息显示 */
+.rr-left{float: left;}
+.rr-right{float: right;}
+.rr-bill-top{ background: #fff; padding: 5px 15px; font-size: 15px;line-height: 33px;}
+.rr-bill-top .rs-flex-item{ position: relative; overflow: hidden;}
+.rr-bill-small{ line-height: 24px}
+.rr-bill-small .rr-justify{ line-height: 24px; height: 24px;}
+/* 列表输入框 */
+.rr-list-input{ border: none; border-bottom: 1px solid #c8c7ff}
+
+
+

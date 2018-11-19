@@ -3,10 +3,13 @@ import Router from 'vue-router'
 import Store from "../store"
 import LoginRouter from "@/pages/login/router"
 import MainRouter from "@/pages/main/router"
+import JieSuanRouter from "@/pages/jiesuan/router"
+
 Vue.use(Router);
 let routes = [];
 routes = routes.concat(LoginRouter);
 routes.push(MainRouter);
+routes.push(JieSuanRouter);
 const router = new Router({
     routes: routes
 });
