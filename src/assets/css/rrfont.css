@@ -23,6 +23,7 @@
 .rr-zhishiku:before { content: "\e60a"; }
 
 .rr-wodegongzi:before { content: "\e612"; }
+.rr-shezhi:before { content: "\e66e"; }
 .rr-gerenxinxi:before { content: "\e691"; }
 .rr-xiaoxi:before { content: "\e6ba"; }
 .rr-wenti:before { content: "\e6c6"; }
