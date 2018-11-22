@@ -19,7 +19,20 @@
       </div>
     </div>
     <div class="mui-content">
-      <rs-grid>
+      <div class="rr-swiper">
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide" v-for="(str,index) in listImg" :key="index">
+                  <div class="rr-swiper-text" data-swiper-parallax="-100">
+                    {{str.title}}
+                  </div>
+                  <div class="rr-swiper-img" :style="{backgroundImage:'url('+str.url+')'}"></div>
+                </div>
+            </div>
+            <div class="swiper-pagination" v-show="listImg.length>1"></div>
+        </div>
+      </div>
+      <rs-grid border>
         <rs-grid-item v-for="item in navs" :key="item.id" @click.native="NavClick(item.path)">
             <span slot="icon" class="f24" :class="item.icon"></span>
             <span class="f12">{{item.name}}</span>
@@ -29,6 +42,8 @@
    </div>
 </template>
 <script>
+import Swiper from 'swiper'
+import 'swiper/dist/css/swiper.min.css'
 import navs from '../nav.json'
 
 const url = require("@/assets/img/bk-1.jpg");
@@ -61,8 +76,26 @@ export default {
   },
   methods: {
     NavClick: function(path){
-      this.$router.push({path:path,query:{ACTION:"ADD"}});
+      this.$router.push({path:path});
     }
+  },
+  mounted() {
+    var option;
+    if (this.listImg.length > 1) {
+        option = {
+            pagination: '.swiper-pagination',
+            slidesPerView: 'auto',
+            spaceBetween: 20,
+            onTouchEnd: function() {
+              swiper.startAutoplay()
+            }
+        }
+    } else {
+        option = {
+        pagination: '.swiper-pagination'
+        }   
+    }
+    var swiper = new Swiper('.swiper-container', option);  
   }
 }
 </script>
@@ -73,7 +106,7 @@ export default {
         background-repeat: no-repeat;
         background-size: 100% 100%;
         padding: 100px 0 0 0;        
-        margin-bottom: 37px;
+        margin-bottom: 17px;
       @descendent body {
         position: relative;
         margin-right: 15px;
@@ -104,9 +137,48 @@ export default {
         }
       }
     }
+    @component swiper {
+       margin: 15px;
+       @descendent text {
+        line-height: 24px;
+        height: 24px;
+        overflow: hidden;
+        font-size: 14px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        color: #fff;
+        background: rgba(0,0,0,0.3);
+        border-radius:0 0 10px 10px;
+       }
+       @descendent img {
+        display: block;
+        height: 110px;
+        width: 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 100% auto;
+        border-radius: 10px;
+      }
+    }
    }
    
 </style>
 <style>
+.swiper-container {width: 100%;height: 100%;}
 .rs-grid{ background: none !important;}
+.swiper-slide {
+      text-align: center;
+      display: flex;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+      width: 60%;
+    }
 </style>

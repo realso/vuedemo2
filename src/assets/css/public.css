@@ -22,6 +22,8 @@
 .f24{ font-size: 24px;}
 .f34{ font-size: 34px;}
 .f40{ font-size: 40px;}
+/* 距离 */
+.mt10{margin-top: 10px !important;}
 /*内边距*/
 .rs-padding-10{padding: 10px}
 /* 宽度 */
