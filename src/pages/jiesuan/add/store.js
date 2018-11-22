@@ -1,20 +1,22 @@
 import Store from "@/store"
+import db from "@/api/db";
 import { mapState } from 'vuex'
 import { DataTable } from "@/store/dbx/DataTable";
 import { getAddData, saveData, openData } from "../service";
 
 const Constants = {
-    "STORE_NAME": "feedback-add",
+    "STORE_NAME": "jiesuan-add",
     "F_INITDATA": "initData",
     "P_MAIN": "main",
     "P_DTS": "dts",
+    "P_STLFMITEMS": "stlfmitems",
 }
 const state = {
     params: { ACTION: "", SNODEID: "", FDBKTYPEID: "" },
     dt: {
-        [Constants.P_MAIN]: new DataTable(Constants.P_MAIN, "TMH_FDBK_M"),
-        "dts": new DataTable("dts", "TMH_FDBKDTS_M"),
-        "imgdts": new DataTable("imgdts", "TBS_VISITIMG")
+        [Constants.P_MAIN]: new DataTable(Constants.P_MAIN, "TBV_SNSTL_M"),
+        "dts": new DataTable("dts", "TBV_SNSTLDTS_M"),
+        "stlfmitems": new DataTable("stlfmitems", "TBV_STLFMITEM")
     }
 }
 const mutations = {
@@ -49,31 +51,30 @@ const actions = {
     add: function({
         state
     }, param) {
+        debugger;
         state.dt["main"].initData([]);
         state.dt["dts"].initData([]);
-        state.dt["imgdts"].initData([]);
-        if (param.SNODEID) {
-            return getAddData(param).then(function(data) {
-                const {
-                    data: {
-                        ADTS: {
-                            items: items1
-                        },
-                        AMAIN: {
-                            items: items2
-                        }
-                    }
-                } = data;
-                items2.map(function(item) {
-                    state.dt["main"].add(item)
-                });
-                items1.map(function(item) {
-                    state.dt["dts"].add(item)
-                });
-            })
-        } else {
-            state.dt["main"].add();
-        }
+        state.dt["stlfmitems"].initData([]);
+        state.dt["main"].add();
+        return getAddData(param).then(function(data){
+            const {
+                data:{
+                    items:items
+                }
+            } = data;
+            items.map(function(item) {
+                state.dt["stlfmitems"].add(item)
+                state.dt["dts"].add();
+                state.dt["dts"].setValue("ITEMS","");
+                state.dt["dts"].setValue("AMT","");
+                state.dt["dts"].setValue("DeALTYPE","");
+                state.dt["dts"].setValue("ISDELBYU","");
+                state.dt["dts"].setValue("ISSHOW","");
+                state.dt["dts"].setValue("STLITEMID","");
+
+            });
+        })
+        
     },
     delete: function() {},
     save: function({

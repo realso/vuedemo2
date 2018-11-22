@@ -18,7 +18,7 @@ const getUrl = function(type) {
             url = getURL("url") + "/upload/file.aspx?appId=2";
             break;
         case "url":
-            url = "http://218.22.251.156/gj-app-4/data2.aspx?appId=2";
+            url = "http://218.22.251.156/gj-app-2/data2.aspx?appId=2";
             if (store.state.user.userInfo.sessionID) {
                 url += "&sessionID=" + store.state.user.userInfo.sessionID;
             }

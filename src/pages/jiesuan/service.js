@@ -5,7 +5,14 @@ const doCall = function(param) {
 }
 const getAddData = function(param) {
     param["TYPE"] = "addData";
-    return doCall(param);
+    return db.open({
+        modalName: "TBV_STLFMITEM",
+        where:
+        "[STLFMID] = (SELECT STLFMID FROM VBV_STLFM_REF WHERE STATE = '当前' AND STLTYPENAME ='门店日结算')" ,
+        orderBy: "[ENTRYNUM]",
+        pageSize: 50,
+        pageIndex: 1
+    })
 }
 
 const saveData = function(param) {

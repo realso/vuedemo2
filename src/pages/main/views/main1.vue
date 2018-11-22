@@ -67,7 +67,7 @@ export default {
   },
   methods: {
     NavClick: function(path){
-      this.$router.push({path:path});
+      this.$router.push({path:path,query:{ACTION:"ADD"}});
     }
   },
   mounted() {
