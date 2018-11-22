@@ -18,7 +18,7 @@ const getUrl = function(type) {
             url = getURL("url") + "/upload/file.aspx?appId=2";
             break;
         case "url":
-            url = "http://218.22.251.156/gj-app-4/data2.aspx?appId=2";
+            url = "http://218.22.251.156/gj-app-2/data2.aspx?appId=2";
             if (store.state.user.userInfo.sessionID) {
                 url += "&sessionID=" + store.state.user.userInfo.sessionID;
             }
@@ -37,7 +37,11 @@ const postData = function(param) {
         function(resolve, reject) {
             axios.post(getUrl("url"), param).then(function(res) {
                 if ("-201" == res.data.resulttype) {
-                    realsoApp.$router.replace("/loginout");
+                    $app.$router.replace("/loginout");
+                }
+                if ("-100" == res.data.resulttype) {
+                    console.error(res)
+                    reject((res.data));
                 } else {
                     resolve(res.data);
                 }
@@ -60,6 +64,32 @@ const open = function(params) {
     return postData(param);
 }
 
+const _getQueryInfo = function(para) {
+    var queryInfo = { where: "", orderBy: "", pageSize: 20, pageIndex: 1, groupBy: "", egg: "", having: "" };
+    queryInfo = Object.assign(queryInfo, para)
+    return queryInfo;
+}
+
+const openTables = function(paths) {
+    let param = {};
+    let postPaths = {};
+    paths.forEach(p => {
+        let path = p["path"];
+        let para = p["para"];
+        para = _getQueryInfo(para);
+        p["para"] = para;
+        postPaths[path] = p;
+    });
+    param["tp"] = "query4";
+    param["json"] = encodeURIComponent(JSON.stringify(postPaths));
+    return postData(param);
+}
+
+const getNewID = function(scmName, inc) {
+    var param = { tp: "getid", modalName: scmName, col: inc };
+    return postData(param)
+}
+
 const call = function(para) {
     let param = {
         tp: "call",
@@ -73,5 +103,7 @@ export default {
     getUrl,
     postData,
     open,
+    openTables,
+    getNewID,
     call
 }
