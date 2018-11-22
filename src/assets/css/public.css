@@ -1,6 +1,6 @@
 /*flex*/
-.rs-flex-col{display:flex;display:-webkit-flex;margin:0 auto; flex-direction:column; width: 100%;height: 100%}
-.rs-flex-row{display:flex;display:-webkit-flex;margin:0 auto; flex-direction:row; width: 100%;}
+.rs-flex-col{display:flex;display:-webkit-flex;margin:0 auto; flex-direction:column; width: 100%;height: 100%; overflow: hidden;}
+.rs-flex-row{display:flex;display:-webkit-flex;margin:0 auto; flex-direction:row; width: 100%; overflow: hidden;}
 .rs-flex-item{flex:1;}
 /*颜色*/
 .c-icon-orange{ color: #ffb359}
@@ -24,11 +24,13 @@
 .f40{ font-size: 40px;}
 /* 距离 */
 .mt10{margin-top: 10px !important;}
+.ml5{margin-left: 5px !important;}
 /*内边距*/
 .rs-padding-10{padding: 10px}
 /* 宽度 */
 .rr-width-4em{ width: 4em;}
 .rr-width-5em{ width: 5em;}
+.rr-width-100{ width: 100%}
 .rr-justify{
 	height: 33px; line-height: 33px;
 	display: inline-block;
@@ -57,8 +59,11 @@
 .rr-bill-top .rs-flex-item{ position: relative; overflow: hidden;}
 .rr-bill-small{ line-height: 24px}
 .rr-bill-small .rr-justify{ line-height: 24px; height: 24px;}
+/* 底部线条 */
+.rr-line-b{position: relative}
+.rr-line-b:after{position: absolute; content: " ";height: 1px;width:100%; left:0; bottom: 0;transform: scaleY(.5);background-color: #c8c7cc;}
 /* 列表输入框 */
-.rr-list-input{ border: none; border-bottom: 1px solid #c8c7ff}
+.rr-list-input{ border: none; border-bottom: 1px solid #eee}
 
 
 
