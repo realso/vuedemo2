@@ -5,9 +5,9 @@ import { Store01, Constants as SConstants } from "rs-vcore/store/Store01";
 
 const Constants = Object.assign(SConstants, {
     STORE_NAME: "jiesuan",
-    F_INITDTS: "initDts",
-    F_SETEMP: "setEmp",
-    F_SETSNODE: "setSnode"
+    M_INITDTS: "initDts",
+    M_SETEMP: "setEmp",
+    M_SETSNODE: "setSnode"
 });
 
 const storeHelper = new Store01({
@@ -25,26 +25,21 @@ const state = {
 
 const mutations = {
     ...storeHelper.mixMutations(),
-    [Constants.F_INITDTS]: function(state) {},
-    [Constants.F_SETEMP]: function(state, { path, item }) {
+    [Constants.M_INITDTS]: function(state) {},
+    [Constants.M_SETEMP]: function(state, { path, item }) {
         const dt = storeHelper.getTable(path);
         dt.setValue("xxx", item["xxx"]);
     },
-    [Constants.F_SETSNODE]: function(state, { path, item }) {
+    [Constants.M_SETSNODE]: function(state, { path, item }) {
         const dt = storeHelper.getTable(path);
     }
 }
 
 const actions = {
-    ...storeHelper.mixMutations(),
-    add: async function({ commit }) {
-        let ret = await service.doInitData();
-        const data = (ret.data || {});
-        //赋值
-        commit(Constants.F_BATCHINITDATA, { data });
-        //实例化数据
-        commit(Constants.F_INITDTS, { data });
-        debugger;
+    ...storeHelper.mixActions(),
+    myAdd: async function({ dispatch, commit }) {
+        await dispatch("add");
+        commit(Constants.M_INITDTS);
     }
 }
 
