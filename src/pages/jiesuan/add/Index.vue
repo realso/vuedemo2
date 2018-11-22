@@ -25,11 +25,12 @@ export default {
   activated: function() {
     console.log(this.$route.path, "color:red");
     this.$store.commit("feedback-add/setParams", this.$route.query);
+    debugger;
     if ("ADD" == this.$route.query.ACTION) {
-      this.$store.dispatch("feedback-add/add", this.$route.query);
+      this.$store.dispatch("jiesuan-add/add", this.$route.query);
     }
     if ("VIEW" == this.$route.query.ACTION) {
-      this.$store.dispatch("feedback-add/open", this.$route.query);
+      this.$store.dispatch("jiesuan-add/open", this.$route.query);
     }
   }
 };
