@@ -5,7 +5,7 @@ setDB(db);
 const _getSTLFMITEMPara = function(STLTYPEID) {
     return {
         modalName: "TBV_STLFMITEM",
-        where: `[STLFMID] = (SELECT STLFMID FROM VBV_STLFM_REF WHERE STATE = '当前' AND STLTYPENAME ='${STLTYPEID}')`,
+        where: `[STLFMID] = (SELECT STLFMID FROM VBV_STLFM_REF WHERE STATE = '当前' AND STLTYPEID ='${STLTYPEID}')`,
         orderBy: "[ENTRYNUM]",
         pageSize: 1,
         pageIndex: 1
