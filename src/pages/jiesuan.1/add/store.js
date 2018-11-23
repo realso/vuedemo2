@@ -16,7 +16,6 @@ const Constants = Object.assign(SConstants, {
     M_SETSNODE: "setSnode"
 });
 
-
 const storeHelper = new Store01({
     service: service,
     paths: { "MAIN": "TBV_SNSTL_M", "DTS": "TBV_SNSTLDTS_M", "STLFMITEM": "TBV_STLFMITEM", "COPYDTS": "TBV_SNSTLDTS_M" },
@@ -26,7 +25,7 @@ const storeHelper = new Store01({
 });
 
 const state = {
-    params: { ACTION: "", STLTYPEID: "", BILLTYPEID },
+    params: { ACTION: "", STLTYPEID: "", BILLTYPEID: "" },
     ...storeHelper.mixState()
 }
 
