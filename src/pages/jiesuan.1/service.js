@@ -1,7 +1,51 @@
 import db from "@/api/db";
 import { setDB, doOpen, doSave, doCheck, doReCheck } from "rs-vcore/service/Service01";
 setDB(db);
-const doAdd = async function() {
-    return db.openTables([{ path: "STLFMITEM", para: { scmName: "TBS_DEPT", where: "1aa" } }])
+
+const _getSTLFMITEMPara = function(STLTYPENAME) {
+    return {
+        modalName: "TBV_STLFMITEM",
+        where: `[STLFMID] = (SELECT STLFMID FROM VBV_STLFM_REF WHERE STATE = '当前' AND STLTYPENAME ='${STLTYPENAME}')`,
+        orderBy: "[ENTRYNUM]",
+        pageSize: 1,
+        pageIndex: 1
+    }
 }
-export default { doOpen, doSave, doAdd, doCheck, doReCheck }
+
+const _getCOPYDTSPara = function(DSNODEID, STLFMID) {
+    return {
+        modalName: "TBV_SNSTLDTS_M",
+        where: `[BILLID] IN (SELECT * FROM (SELECT BILLID FROM TBV_SNSTL WHERE AID = @AID AND SNODEID = '${DSNODEID}' AND STLFMID = '${STLFMID}' AND NVL(ISDEL,0) = 0  ORDER BY  BILLDATE,FHOUR,FMINUTE DESC) WHERE  ROWNUM <2  )`,
+        orderBy: "",
+        pageSize: 10,
+        pageIndex: 1
+    }
+}
+
+const doAdd = async function({ STLTYPENAME, DSNODEID, STLFMID }) {
+    return db.openTables([{
+            path: "STLFMITEM",
+            para: _getSTLFMITEMPara(STLTYPENAME)
+        },
+        {
+            path: "COPYDTS",
+            para: _getCOPYDTSPara(DSNODEID, STLFMID)
+        }
+    ])
+}
+
+const doLoadCOPYDTS = async function({ DSNODEID, STLFMID }) {
+    return db.openTables([{
+        path: "COPYDTS",
+        para: _getCOPYDTSPara(DSNODEID, STLFMID)
+    }])
+}
+
+const doLoadSTLFMITE = async function({ STLTYPENAME }) {
+    return db.openTables([{
+        path: "COPYDTS",
+        para: _getSTLFMITEMPara(STLTYPENAME)
+    }])
+}
+
+export default { doAdd, doLoadCOPYDTS, doLoadSTLFMITE, doOpen, doSave, doCheck, doReCheck }

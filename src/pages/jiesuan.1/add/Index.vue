@@ -16,6 +16,7 @@
 </template>
 <script>
 import store from "./store";
+import { debug } from 'util';
 export default {
   data() {
     return {
@@ -27,6 +28,7 @@ export default {
     this.$store.commit("jiesuan/setParams", this.$route.query);
     if ("ADD" == this.$route.query.ACTION) {
       this.$store.dispatch("jiesuan/myAdd", this.$route.query).catch(function() {
+        debugger;
         alert("测试错误");
       });
     }
