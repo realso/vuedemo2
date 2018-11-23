@@ -1,5 +1,5 @@
 import db from "@/api/db";
-import { setDB, doOpen, doSave, doCheck, doReCheck } from "rs-vcore/service/Service01";
+import { setDB, doOpen, doDelete, doSave, doCheck, doReCheck } from "rs-vcore/service/Service01";
 setDB(db);
 
 const _getSTLFMITEMPara = function(STLTYPEID) {
@@ -30,4 +30,4 @@ const doLoadSTLFMITE = async function({ STLTYPEID }) {
     return db.open(_getSTLFMITEMPara(STLTYPEID))
 }
 
-export default { doLoadCOPYDTS, doLoadSTLFMITE, doOpen, doSave, doCheck, doReCheck }
+export default { doLoadCOPYDTS, doLoadSTLFMITE, doOpen, doSave, doDelete, doCheck, doReCheck }
