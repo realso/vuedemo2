@@ -13,13 +13,16 @@
 							<div class="mui-switch-handle"></div>
 						</div>
           </rs-list-item>
-        </rs-list>    
+        </rs-list>
         <div class="mui-content">
           <rs-list size="14" noborder>
-            <rs-list-item noborder class="mui-checkbox mui-left">
+            <rs-list-item noborder class="mui-checkbox mui-left" @click.native="item.checkXm=!item.checkXm">
               <input name="checkbox" type="checkbox" v-model="checkXm"><span :class="ml5">堂食</span>
             </rs-list-item>
-            <rs-list-item noborder class="mui-checkbox mui-left" v-for="(item,index) in xms" :key="index" @click.native="NavClick(item.path)">
+            <rs-list-item noborder class="mui-checkbox mui-left" @click.native="checkbox">
+              <input name="checkbox" type="checkbox" v-model="checkXm"><span :class="ml5">堂食1</span>
+            </rs-list-item>
+            <rs-list-item noborder class="mui-checkbox mui-left" v-for="(item, index) in xms" :key="index" @click.native="item.checkXm=!item.checkXm">
               <input name="checkbox" type="checkbox" v-model="checkXm"><span :class="ml5">{{item.name}}</span>
             </rs-list-item>
           </rs-list> 
@@ -28,6 +31,7 @@
 </template>
 <script>
 import {mapGetters} from "../store"
+
 export default {
   props:{
      TITLE:""
@@ -40,14 +44,11 @@ export default {
     }
   },
   computed: {
-      ...mapGetters("main",['BILLCODE','MKEMPID.EMPNAME',"SNODEID.SNODENAME","CONTENT"]),
-      ...mapGetters("dts",[]),
+      ...mapGetters("MAIN",['BILLCODE','MKEMPID.EMPNAME',"SNODEID.SNODENAME","CONTENT"]),
+      ...mapGetters("DTS",[]),
       ISSHOWWD:function(){
           return this["EMPID"]!="";
       }
-  },
-  created() {
-	  this.xms = xms
   },
   methods: {
     linkUrl: function(url) {
@@ -69,8 +70,9 @@ export default {
   }
 };
 </script>
-<style scoped>
+<style>
 .rs-list .mui-switch{position: absolute; right: 10px;top: 50%; margin-top: -15px;}
-.mui-checkbox.mui-left a{padding-left: 58px;}
+.rs-list .mui-left a:not(.mui-btn){padding-left: 58px;}
+.mui-checkbox input[type=checkbox]{top: 8px;left: 20px;}
 </style>
 
