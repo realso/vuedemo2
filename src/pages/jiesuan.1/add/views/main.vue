@@ -174,21 +174,14 @@ export default {
   },
   methods: {
     linkUrl: function(url) {
-      this.$router.push({path:"/feedback.2/add/"+url,query:{EMPIDX:this.dts.map(function(v){return v["EMPID"]})}});
-    },
-    delEmp:function(index){
-      this.$store.commit("feedback-add/delEmp",{index});
+      this.$router.push({path:"/jiesuan/add/"+url});
     },
     save:function(){
-       this.$store.dispatch("feedback-add/save");
+       this.$store.dispatch("jiesuan/save");
     }
   },
   activated: function() {
       console.log("%c"+this.$route.path,"color:red");
-  },
-  beforeRouteLeave(to, from, next) {
-    to.meta.keepAlive = false; // 让 A 不缓存，即刷新
-    next();
   }
 };
 </script>

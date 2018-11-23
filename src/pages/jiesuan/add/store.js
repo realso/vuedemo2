@@ -78,8 +78,6 @@ const actions = {
                     state.dt["dts"].setValue("DeALTYPE",item.DEALTYPE);
                 }
                 
-                
-                
                 //第二步  继承 用户移除(否)
                 if(item.ITEMPROPERTY == "select"){
                     db.open({
@@ -109,7 +107,10 @@ const actions = {
                     })
                 }
                 
-                //第三步 判断 项目显示(否)
+                //第三步 3.1 判断 项目显示(否)
+                if(item.ITEMPROPERTY!="judge"){
+                    state.dt["dts"].setValue("ISSHOW","");
+                }
                 state.dt["dts"].setValue("ISSHOW","");
                 
             });

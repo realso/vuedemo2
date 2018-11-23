@@ -20,7 +20,7 @@
     </div>
     <div class="mui-content">
       <rs-grid>
-        <rs-grid-item v-for="item in navs" :key="item.id" @click.native="NavClick(item.path)">
+        <rs-grid-item v-for="item in navs" :key="item.id" @click.native="NavClick(item)">
             <span slot="icon" class="f24" :class="item.icon"></span>
             <span class="f12">{{item.name}}</span>
         </rs-grid-item>
@@ -60,9 +60,8 @@ export default {
 	this.navs = navs
   },
   methods: {
-    NavClick: function(path){
-      debugger;
-      this.$router.push({path:path,query:{ACTION:"ADD",BILLTYPEID:"109303"}});
+    NavClick: function(item){
+      this.$router.push({path:item.path,query:item.query});
     }
   }
 }
