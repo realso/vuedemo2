@@ -78,6 +78,7 @@ const openTables = function(paths) {
         let para = p["para"];
         para = _getQueryInfo(para);
         p["para"] = para;
+        para["scmName"] = para["scmName"] || para["modalName"];
         postPaths[path] = p;
     });
     param["tp"] = "query4";
