@@ -26,25 +26,28 @@ const storeHelper = new Store01({
 });
 
 const state = {
-    params: { ACTION: "", STLTYPEID: "" },
+    params: { ACTION: "", STLTYPEID: "", BILLTYPEID },
     ...storeHelper.mixState()
 }
 
 const mutations = {
     ...storeHelper.mixMutations(),
-    [Constants.M_ADDDEFAULT]: function() {
+    [Constants.M_ADDDEFAULT]: function(state) {
         //新增默认值
         let MAIN = storeHelper.getTable("MAIN");
         let STLFMITEM = storeHelper.getTable("STLFMITEM");
         let item = {};
         MAIN.add(item);
+        //当前账套，单据类型=日结算，经营门店=用户.经营门店 ，日期=当前日，店长=当前员工，……
+        MAIN.setValue("BILLTYPEID", state.BILLTYPEID);
         MAIN.setValue("DSNODEID", this.state.user.userInfo.DSNODEID);
         MAIN.setValue("DSNODEID.SNODECODE", this.state.user.userInfo.DSNODECODE);
         MAIN.setValue("DSNODEID.SNODENAME", this.state.user.userInfo.DSNODENAME);
+        //员工....
+        //...
         MAIN.setValue("BILLDATE", dateToString(new Date()));
         MAIN.setValue("STLFMID", STLFMITEM.getValue("STLFMID"));
         MAIN.setValue("STLFMCODE", STLFMITEM.getValue("STLFMCODE"));
-
     },
     [Constants.M_SETDTS01]: function(state) {
         //加载 结算模板.所有 结算项目 判断 处理方式
@@ -102,7 +105,7 @@ const actions = {
         let ret2 = await service.doLoadCOPYDTS({ DSNODEID, STLFMID });
         commit(Constants.M_INITDATA, { path: "COPYDTS", data: (ret2 || {}).items });
 
-        //五部运算
+        //五步运算
         commit(Constants.M_SETDTS01);
         commit(Constants.M_SETDTS02);
         commit(Constants.M_SETDTS03);
