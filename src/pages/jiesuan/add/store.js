@@ -9,6 +9,7 @@ const Constants = {
     "F_INITDATA": "initData",
     "P_MAIN": "main",
     "P_DTS": "dts",
+    "P_DTS_COPY": "dtsCopy",
     "P_STLFMITEMS": "stlfmitems",
 }
 const state = {
@@ -16,6 +17,7 @@ const state = {
     dt: {
         [Constants.P_MAIN]: new DataTable(Constants.P_MAIN, "TBV_SNSTL_M"),
         "dts": new DataTable("dts", "TBV_SNSTLDTS_M"),
+        "dtsCopy": new DataTable("dts", "TBV_SNSTLDTS_M"),
         "stlfmitems": new DataTable("stlfmitems", "TBV_STLFMITEM")
     }
 }
@@ -58,21 +60,92 @@ const actions = {
         state.dt["main"].add();
         return getAddData(param).then(function(data){
             const {
-                data:{
-                    items:items
-                }
+                data:{ 
+                    STLFMITEMS:{
+                        items:items1
+                        }
+                    },
+                    DTSCOPY:{
+                        items:items2
+                    }
             } = data;
-            items.map(function(item) {
+            //找到上一次的单据子表
+            items2.map(function(item) {
+                state.dt["dtsCopy"].add(item)
+            })
+            items1.map(function(item) {
                 state.dt["stlfmitems"].add(item)
+                //实例化门店结算
                 state.dt["dts"].add();
-                state.dt["dts"].setValue("ITEMS","");
-                state.dt["dts"].setValue("AMT","");
-                state.dt["dts"].setValue("DeALTYPE","");
-                state.dt["dts"].setValue("ISDELBYU","");
-                state.dt["dts"].setValue("ISSHOW","");
-                state.dt["dts"].setValue("STLITEMID","");
 
+                //第一步 加载 结算模板.所有 结算项目  +  判断 处理方式
+                state.dt["dts"].setValue("STLITEMID",item.STLITEMID);
+                state.dt["dts"].setValue("ENTRYNUM",item.ENTRYNUM);
+                state.dt["dts"].setValue("ITEMID",item.ITEMID);
+                state.dt["dts"].setValue("AMT",item.DEFAULTVALUE);
+                if(item.DEALTYPE=="EDI"&&Store.state.user.userInfo.DSNODEID=="1"){
+                    state.dt["dts"].setValue("DeALTYPE","EDI");
+                }else{
+                    state.dt["dts"].setValue("DeALTYPE",item.DEALTYPE);
+                }
+                
+                //第二步  继承 用户移除(否)
+                let copyitem = state.dt["dtsCopy"].filter(v => v.ITEMID==item.ITEMID);
+                if(copyitem.length>0){
+                    state.dt["dts"].setValue("ISDELBYU",copyitem[0].ISDELBYU);
+                }
+
+                //第三步 3.1 判断 项目属性≠判断项.项目显示(否)
+                if(item.ITEMPROPERTY=="fixed"){
+                    state.dt["dts"].setValue("ISSHOW",1);
+                }else if(item.ITEMPROPERTY=="select"){
+                    if(state.dt["dts"].getValue("ISDELBYU")=="1"){
+                        state.dt["dts"].setValue("ISSHOW",0);
+                    }else{
+                        state.dt["dts"].setValue("ISSHOW",1);
+                    }
+                }else if(item.ITEMPROPERTY=="hide"){
+                    state.dt["dts"].setValue("ISSHOW",0);
+                }else if(item.ITEMPROPERTY=="judge"&&item.GRPID==item.ITEMID){
+
+                }
             });
+
+            //第三步 3.2 判断 项目属性= 判断项.项目显示(否)
+            state.dt["dts"].map(function(item){
+                if(item.ITEMPROPERTY=="judge"&&item.GRPID==item.ITEMID){
+                    let subitems =state.dt["dts"].filter(v => v.ITEMID!=v.ITEMID.GRPID&&v.ITEMID.GRPID==item.ITEMID.GRPID&&v.ISSHOW=="1");
+                    if(subitems.size>0){
+                        state.dt["dts"].setValue("ISSHOW",1,item);
+                    }else{
+                        state.dt["dts"].setValue("ISSHOW",0,item);
+                    }
+                }
+            })
+            //第四步 计算 分录号：项目显示=1.分录，据 结算项目.分录号(顺序)、整理 分录号
+            state.dt["dts"].map(function(item){
+                if(item.ISSHOW=="0"){
+                    state.dt["dts"].setValue("ENTRYNUM","",item);
+                }
+            })
+            let sortitems = state.dt["dts"].filter(v=>v.ENTRYNUM!="").sort(function(a,b){
+                return parseInt(a.ENTRYNUM) - parseInt(b.ENTRYNUM);
+            })
+
+            for (var i = 0; i < sortitems.length; i++) {
+                state.dt["dts"].setValue( "ENTRYNUM", parseInt(i) + 1, items[i]);
+            }
+            //第五步 处理 金额
+            //5.1 用户移除=0：置 金额=默认值;用户移除=1：置 金额=空
+            state.dt["dts"].map(function(item){
+                if(item.ISDELBYU == "1"){
+                    state.dt["dts"].setValue("AMT","");
+                }
+            })
+            //5.2 处理方式= EDI读取：读取金额	读取代码 暂缓！ 处理方式≠EDI读取：不读取，有值也不读取	 
+            //5.3 据 计算顺序、计算公式，计算“金额”	 
+			
+
         })
         
     },

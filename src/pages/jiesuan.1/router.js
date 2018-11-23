@@ -1,13 +1,37 @@
 export default {
-    path: '/jiesuan',
-    name: 'jiesuan',
+    path: '/jiesuan1',
+    name: 'jiesuan1',
     component: r => require.ensure([], () => r(require('@/pages/jiesuan.1/add/index')), "jiesuan" /*按需加载，名称一样打包在一个文件*/ ),
-    redirect: '/jiesuan/add/index',
+    redirect: '/jiesuan1/add/main',
     children: [{
-        path: '/jiesuan/add/index',
-        name: "/jiesuan/add/index",
+        path: '/jiesuan1/add/main',
+        name: "/jiesuan1/add/main",
         component: r => require.ensure([], () => r(require('@/pages/jiesuan.1/add/views/main')), "jiesuan"),
-        props: { TITLE: '结算' },
+        props: { TITLE: '日结算' },
+        meta: {
+            keepAlive: true
+        }
+    }, {
+        path: '/jiesuan1/add/set',
+        name: "/jiesuan1/add/set",
+        component: r => require.ensure([], () => r(require('@/pages/jiesuan.1/add/views/set')), "jiesuan"),
+        props: { TITLE: '设置项目' },
+        meta: {
+            keepAlive: true
+        }
+    }, {
+        path: '/jiesuan1/add/empsel',
+        name: "/jiesuan1/add/empsel",
+        component: r => require.ensure([], () => r(require('@/pages/com/views/emp_sel')), "jiesuan"),
+        props: { TITLE: '选择店长', refStore: { mutation: "jiesuan/setEmp", path: "MAIN" } },
+        meta: {
+            keepAlive: true
+        }
+    }, {
+        path: '/jiesuan1/add/snodesel',
+        name: "/jiesuan1/add/snodesel",
+        component: r => require.ensure([], () => r(require('@/pages/com/views/snode_sel')), "jiesuan"),
+        props: { TITLE: '选择经营门店', refStore: { mutation: "jiesuan/setSnode", path: "MAIN" } },
         meta: {
             keepAlive: true
         }

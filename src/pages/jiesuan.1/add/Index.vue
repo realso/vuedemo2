@@ -16,6 +16,7 @@
 </template>
 <script>
 import store from "./store";
+import { debug } from 'util';
 export default {
   data() {
     return {
@@ -24,12 +25,15 @@ export default {
   },
   activated: function() {
     console.log(this.$route.path, "color:red");
-    this.$store.commit("feedback-add/setParams", this.$route.query);
+    this.$store.commit("jiesuan/setParams", this.$route.query);
     if ("ADD" == this.$route.query.ACTION) {
-      this.$store.dispatch("feedback-add/add", this.$route.query);
+      this.$store.dispatch("jiesuan/add", this.$route.query).catch(function() {
+        debugger;
+        alert("测试错误");
+      });
     }
     if ("VIEW" == this.$route.query.ACTION) {
-      this.$store.dispatch("feedback-add/open", this.$route.query);
+      this.$store.dispatch("jiesuan/open", this.$route.query);
     }
   }
 };
