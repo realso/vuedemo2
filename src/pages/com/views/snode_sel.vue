@@ -63,7 +63,12 @@ export default {
       let para = {};
       para["path"] = this.refStore.path;
       para["item"] = item;
-      this.$store.commit(this.refStore.mutation, para);
+      if(this.refStore.mutation){
+          this.$store.commit(this.refStore.mutation, para);
+      }
+      if(this.refStore.action){
+         this.$store.dispatch(this.refStore.action, para);
+      }  
       this.$router.goBack();
     }
   },

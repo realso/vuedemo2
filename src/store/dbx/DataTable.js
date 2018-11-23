@@ -59,29 +59,48 @@ class DataTable {
         this._changeInfo._rawData = this._changeInfo._rawData.concat(data);
     }
 
-    getValue(field, idx) {
+    getData(where, order) {
+        where = where || "";
+        order = order || "";
+        return this.data;
+    }
+
+    getValue(field, idxOrItem) {
+        console.log("getValue:" + field);
+        console.log(idxOrItem);
         let ret = "";
-        idx = idx || 0;
-        if (idx > this.data.length) {
-            throw new Error("DataTable.getValue idx太长了");
+        let idx = idxOrItem || 0;
+        let item = idxOrItem || {};
+        if (typeof(idxOrItem) != "object") {
+            if (idx > this.data.length) {
+                throw new Error("DataTable.getValue idx太长了");
+            }
+            if (this.data.length > 0) {
+                item = this.data[idx];
+            }
         }
-        if (this.data.length > 0) {
-            ret = this.data[idx][field];
-        }
+        ret = item[field];
         return ret;
     }
 
-    setValue(field, value, idx) {
-        let item = {};
-        idx = idx || 0;
-        if (this.data.length == 0) {
-            this.add(item);
+    setValue(field, value, idxOrItem) {
+        console.log("setValue:" + field + "=" + value);
+        console.log(idxOrItem);
+        let idx = idxOrItem || 0;
+        let item = idxOrItem || {};
+        if (typeof(idxOrItem) != "object") {
+            if (this.data.length == 0) {
+                item = {};
+                this.add(item);
+            }
+            if (idx > this.data.length) {
+                throw new Error("DataTable.getValue太长了");
+            } else {
+                item = this.data[idx];
+            }
         }
-        if (idx > this.data.length) {
-            throw new Error("DataTable.getValue太长了");
-        } else {
-            item = this.data[idx];
-        }
+
+
         item[field] = value;
 
         //放入修改记录
@@ -124,10 +143,8 @@ class DataTable {
         return this.data.length;
     }
 
-    bindField(aFields, where, order) {
+    bindField(aFields) {
         aFields = aFields || [];
-        let ret = {};
-        let _this = this;
         for (let i = 0, field; i < aFields.length; i++) {
             field = aFields[i];
             let v = this.dataObj[field];
@@ -136,20 +153,7 @@ class DataTable {
                 robj[field] = "";
                 this.dataObj = Object.assign({}, this.dataObj, robj)
             }
-
-            ret[field] = {
-                get() {
-                    return _this.getValue(field);
-                },
-                set(value) {
-                    _this.setValue(field, value)
-                }
-            }
         }
-        ret[this.path] = function() {
-            return _this.data;
-        };
-        return ret;
     }
 
     /**
@@ -165,9 +169,9 @@ class DataTable {
         if (!isAdd) {
             this.initData();
         }
-        Array.forEach(data, item => {
+        data.forEach(item => {
             let titem = {};
-            Array.forEach(fieldAll, field => {
+            fieldAll.forEach(field => {
                 if (exFields.indexOf(field) == -1) {
                     titem[field] = item[field];
                 }
@@ -176,25 +180,16 @@ class DataTable {
         });
     }
 
-
-
-
     getFields() {
         let fieldAll = [];
-        Array.forEach(this.data, function(item) {
+        this.data.forEach(function(item) {
             fieldAll = fieldAll.concat(Object.keys(item));
         })
-        Array.forEach(this._changeInfo._rawData, function(item) {
+        this._changeInfo._rawData.forEach(function(item) {
             fieldAll = fieldAll.concat(Object.keys(item));
         })
         fieldAll = Array.from(new Set(fieldAll));
         return fieldAll;
-    }
-
-    getData(where, order) {
-        where = where || "";
-        order = order || "";
-        return this.data;
     }
 
     getXML() {
@@ -205,32 +200,32 @@ class DataTable {
         let delitems = "";
         let rootitem = "<" + this.scm + ' l="u" c="' + fieldAll + '" t="">';
 
-        Array.forEach(Object.keys(this._changeInfo._addIdxRows), (idx) => {
+        Object.keys(this._changeInfo._addIdxRows).forEach((idx) => {
             let item = this._changeInfo._addIdxRows[idx];
             let newitem = "";
-            Array.forEach(fieldAll, (field, i) => {
+            fieldAll.forEach((field, i) => {
                 newitem = newitem + " c" + i + '="' + encodeURIComponent(item[field]) + '"';
             });
             newitems = newitems + "<r" + newitem + "/>";
         });
         newitems = "<a>" + newitems + "</a>";
 
-        Array.forEach(Object.keys(this._changeInfo._modifyIdxRows), (idx) => {
+        Object.keys(this._changeInfo._modifyIdxRows).forEach((idx) => {
             let item = this._changeInfo._modifyIdxRows[idx];
             let modifyitem = "";
             let titem = this._changeInfo._rawIdxData[idx];
-            Array.forEach(fieldAll, (field, i) => {
+            fieldAll.forEach((field, i) => {
                 modifyitem = modifyitem + " c" + i + '="' + encodeURIComponent(item[field]) + '"' + " oc" + i + '="' + encodeURIComponent(titem[field]) + '"';
             });
             modifyitems = modifyitems + "<r" + modifyitem + "/>";
         });
 
-        Array.forEach(Object.keys(this._changeInfo._rawIdxData), (idx) => {
+        Object.keys(this._changeInfo._rawIdxData).forEach((idx) => {
             let item = this._changeInfo._rawIdxData[idx];
             let modifyitem = "";
             let titem = this._changeInfo._rawIdxData[idx];
             if (!this._changeInfo._modifyIdxRows[idx] && !this._changeInfo._deleteIdxRows[idx]) {
-                Array.forEach(fieldAll, (field, i) => {
+                fieldAll.forEach((field, i) => {
                     modifyitem = modifyitem + " c" + i + '="' + encodeURIComponent(item[field]) + '"' + " oc" + i + '="' + encodeURIComponent(titem[field]) + '"';
                 });
                 modifyitems = modifyitems + "<r" + modifyitem + "/>";
@@ -239,11 +234,11 @@ class DataTable {
 
         modifyitems = "<m>" + modifyitems + "</m>";
 
-        Array.forEach(Object.keys(this._changeInfo._deleteIdxRows), (idx) => {
+        Object.keys(this._changeInfo._deleteIdxRows).forEach((idx) => {
             let item = this._changeInfo._deleteIdxRows[idx];
             let delitem = "";
             let titem = this._changeInfo._rawIdxData[idx];
-            Array.forEach(fieldAll, field => {
+            fieldAll.forEach(field => {
                 delitem = delitem + " oc" + i + '="' + encodeURIComponent(titem[field]) + '"';
             });
             delitems = delitems + "<r" + delitem + "/>";
@@ -259,7 +254,7 @@ class DataTable {
     }
 
     isModify() {
-        return (Object.keys(this._changeInfo._modifyIdxRows) + Object.keys(this._changeInfo._addIdxRows) + Object.keys(this._changeInfo._deleteIdxRows)) > 0;
+        return (Object.keys(this._changeInfo._modifyIdxRows).length + Object.keys(this._changeInfo._addIdxRows).length + Object.keys(this._changeInfo._deleteIdxRows).length) > 0;
     }
 }
 export {
