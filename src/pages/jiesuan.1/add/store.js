@@ -92,7 +92,7 @@ const actions = {
             paths: ["MAIN", "DTS"]
         });
         //获取模板
-        let ret1 = await service.doLoadSTLFMITE({ STLTYPEID: state.params.STLTYPEID });
+        let ret1 = await service.doLoadSTLFMITE({ STLTYPEID: state.params.STLTYPEID, BILLDATE: dateToString(new Date()) });
         commit(Constants.M_INITDATA, { path: "STLFMITEM", data: (ret1 || {}).items });
         //新增主表数据源
         commit(Constants.M_ADDDEFAULT);
@@ -129,10 +129,7 @@ const actions = {
         commit(Constants.M_BATCHSETDATA, ret.data);
         if (STLFMID != STLFMITEM.getValue("STLFMID")) {
             commit(Constants.M_SETDTS01);
-            commit(Constants.M_SETDTS02);
-            commit(Constants.M_SETDTS03);
-            commit(Constants.M_SETDTS04);
-            commit(Constants.M_SETDTS05);
+            dispatch("loadCOPYDTS");
         }
     },
     setSnode: async function({ dispatch, commit }, { path, item }) {

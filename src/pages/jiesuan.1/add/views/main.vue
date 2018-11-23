@@ -99,7 +99,7 @@
             </rs-list-item>
           </rs-list> 
           <div class="rr-title">
-            <span class="rr-right">{{parseFloat(meituan).toFixed(2)}}</span>
+            <span class="rr-right">{{meituan|xxx}}</span>
             <span class="rr-font rr-list-style f12 c-active"></span> 美团
           </div>
           <rs-list size="14" noborder>
