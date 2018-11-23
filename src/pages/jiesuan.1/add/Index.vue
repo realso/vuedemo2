@@ -27,7 +27,7 @@ export default {
     console.log(this.$route.path, "color:red");
     this.$store.commit("jiesuan/setParams", this.$route.query);
     if ("ADD" == this.$route.query.ACTION) {
-      this.$store.dispatch("jiesuan/myAdd", this.$route.query).catch(function() {
+      this.$store.dispatch("jiesuan/add", this.$route.query).catch(function() {
         debugger;
         alert("测试错误");
       });

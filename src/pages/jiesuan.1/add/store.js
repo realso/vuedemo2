@@ -16,6 +16,7 @@ const Constants = Object.assign(SConstants, {
     M_SETSNODE: "setSnode"
 });
 
+
 const storeHelper = new Store01({
     service: service,
     paths: { "MAIN": "TBV_SNSTL_M", "DTS": "TBV_SNSTLDTS_M", "STLFMITEM": "TBV_STLFMITEM", "COPYDTS": "TBV_SNSTLDTS_M" },
@@ -25,7 +26,7 @@ const storeHelper = new Store01({
 });
 
 const state = {
-    params: { ACTION: "", STLTYPENAME: "" },
+    params: { ACTION: "", STLTYPEID: "" },
     ...storeHelper.mixState()
 }
 
@@ -34,12 +35,16 @@ const mutations = {
     [Constants.M_ADDDEFAULT]: function() {
         //新增默认值
         let MAIN = storeHelper.getTable("MAIN");
+        let STLFMITEM = storeHelper.getTable("STLFMITEM");
         let item = {};
         MAIN.add(item);
-        MAIN.setValue("DSNODEID", );
+        MAIN.setValue("DSNODEID", this.state.user.userInfo.DSNODEID);
         MAIN.setValue("DSNODEID.SNODECODE", this.state.user.userInfo.DSNODECODE);
         MAIN.setValue("DSNODEID.SNODENAME", this.state.user.userInfo.DSNODENAME);
         MAIN.setValue("BILLDATE", dateToString(new Date()));
+        MAIN.setValue("STLFMID", STLFMITEM.getValue("STLFMID"));
+        MAIN.setValue("STLFMCODE", STLFMITEM.getValue("STLFMCODE"));
+
     },
     [Constants.M_SETDTS01]: function(state) {
         //加载 结算模板.所有 结算项目 判断 处理方式
@@ -79,9 +84,25 @@ const mutations = {
 
 const actions = {
     ...storeHelper.mixActions(),
-    myAdd: async function({ dispatch, commit }) {
-        await dispatch("add", { STLTYPENAME: "", DSNODEID: this.state.user.userInfo.DSNODEID, STLFMID: "" });
+    add: async function({ dispatch, commit, state }) {
+        //初始化所有数据源
+        commit(Constants.M_INITBYPATH, {
+            paths: ["MAIN", "DTS"]
+        });
+        //获取模板
+        let ret1 = await service.doLoadSTLFMITE({ STLTYPEID: state.params.STLTYPEID });
+        commit(Constants.M_INITDATA, { path: "STLFMITEM", data: (ret1 || {}).items });
+        //新增主表数据源
         commit(Constants.M_ADDDEFAULT);
+
+        //获取继承数据
+        let MAIN = storeHelper.getTable("MAIN");
+        let DSNODEID = MAIN.getValue("DSNODEID");
+        let STLFMID = MAIN.getValue("STLFMID");
+        let ret2 = await service.doLoadCOPYDTS({ DSNODEID, STLFMID });
+        commit(Constants.M_INITDATA, { path: "COPYDTS", data: (ret2 || {}).items });
+
+        //五部运算
         commit(Constants.M_SETDTS01);
         commit(Constants.M_SETDTS02);
         commit(Constants.M_SETDTS03);
@@ -89,17 +110,20 @@ const actions = {
         commit(Constants.M_SETDTS05);
     },
     loadCOPYDTS: async function({ dispatch, commit }) {
-        let ret = await service.doLoadCOPYDTS({ DSNODEID: "", STLFMID: "" });
+        let MAIN = storeHelper.getTable("MAIN");
+        let DSNODEID = MAIN.getValue("DSNODEID");
+        let STLFMID = MAIN.getValue("STLFMID");
+        let ret = await service.doLoadCOPYDTS({ DSNODEID, STLFMID });
         commit(Constants.M_BATCHSETDATA, ret.data);
         commit(Constants.M_SETDTS02);
         commit(Constants.M_SETDTS03);
         commit(Constants.M_SETDTS04);
         commit(Constants.M_SETDTS05);
     },
-    loadSTLFMITE: async function({ dispatch, commit }) {
+    loadSTLFMITE: async function({ dispatch, commit, state }) {
         let STLFMITEM = storeHelper.getTable("STLFMITEM");
         let STLFMID = STLFMITEM.getValue("STLFMID");
-        let ret = await service.doLoadCOPYDTS({ DSNODEID: "", STLFMID: "" });
+        let ret = await service.doLoadSTLFMITE({ STLTYPEID: state.params.STLTYPEID });
         commit(Constants.M_BATCHSETDATA, ret.data);
         if (STLFMID != STLFMITEM.getValue("STLFMID")) {
             commit(Constants.M_SETDTS01);
@@ -108,6 +132,10 @@ const actions = {
             commit(Constants.M_SETDTS04);
             commit(Constants.M_SETDTS05);
         }
+    },
+    setSnode: async function({ dispatch, commit }, { path, item }) {
+        commit(Constants.M_SETSNODE, { path, item });
+        dispatch("loadCOPYDTS");
     }
 }
 

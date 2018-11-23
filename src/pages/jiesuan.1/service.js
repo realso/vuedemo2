@@ -2,10 +2,10 @@ import db from "@/api/db";
 import { setDB, doOpen, doSave, doCheck, doReCheck } from "rs-vcore/service/Service01";
 setDB(db);
 
-const _getSTLFMITEMPara = function(STLTYPENAME) {
+const _getSTLFMITEMPara = function(STLTYPEID) {
     return {
         modalName: "TBV_STLFMITEM",
-        where: `[STLFMID] = (SELECT STLFMID FROM VBV_STLFM_REF WHERE STATE = '当前' AND STLTYPENAME ='${STLTYPENAME}')`,
+        where: `[STLFMID] = (SELECT STLFMID FROM VBV_STLFM_REF WHERE STATE = '当前' AND STLTYPENAME ='${STLTYPEID}')`,
         orderBy: "[ENTRYNUM]",
         pageSize: 1,
         pageIndex: 1
@@ -22,30 +22,12 @@ const _getCOPYDTSPara = function(DSNODEID, STLFMID) {
     }
 }
 
-const doAdd = async function({ STLTYPENAME, DSNODEID, STLFMID }) {
-    return db.openTables([{
-            path: "STLFMITEM",
-            para: _getSTLFMITEMPara(STLTYPENAME)
-        },
-        {
-            path: "COPYDTS",
-            para: _getCOPYDTSPara(DSNODEID, STLFMID)
-        }
-    ])
-}
-
 const doLoadCOPYDTS = async function({ DSNODEID, STLFMID }) {
-    return db.openTables([{
-        path: "COPYDTS",
-        para: _getCOPYDTSPara(DSNODEID, STLFMID)
-    }])
+    return db.open(_getCOPYDTSPara(DSNODEID, STLFMID))
 }
 
-const doLoadSTLFMITE = async function({ STLTYPENAME }) {
-    return db.openTables([{
-        path: "COPYDTS",
-        para: _getSTLFMITEMPara(STLTYPENAME)
-    }])
+const doLoadSTLFMITE = async function({ STLTYPEID }) {
+    return db.open(_getSTLFMITEMPara(STLTYPEID))
 }
 
-export default { doAdd, doLoadCOPYDTS, doLoadSTLFMITE, doOpen, doSave, doCheck, doReCheck }
+export default { doLoadCOPYDTS, doLoadSTLFMITE, doOpen, doSave, doCheck, doReCheck }
