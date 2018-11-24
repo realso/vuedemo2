@@ -17,7 +17,7 @@ const _getCOPYDTSPara = function(DSNODEID, STLFMID) {
         modalName: "TBV_SNSTLDTS_M",
         where: `[BILLID] IN (SELECT * FROM (SELECT BILLID FROM TBV_SNSTL WHERE AID = @AID AND SNODEID = '${DSNODEID}' AND STLFMID = '${STLFMID}' AND NVL(ISDEL,0) = 0  ORDER BY  BILLDATE,FHOUR,FMINUTE DESC) WHERE  ROWNUM <2  )`,
         orderBy: "",
-        pageSize: 10,
+        pageSize: 1,
         pageIndex: 1
     }
 }
@@ -30,4 +30,14 @@ const doLoadSTLFMITE = async function({ STLTYPEID }) {
     return db.open(_getSTLFMITEMPara(STLTYPEID))
 }
 
-export default { doLoadCOPYDTS, doLoadSTLFMITE, doOpen, doSave, doDelete, doCheck, doReCheck }
+const doLoadSnode = async function({ SNODEID }) {
+    return db.open({
+        modalName: "TBV_CHAINSND_SEL",
+        where: `[SNODEID] ='${SNODEID}'`,
+        orderBy: "",
+        pageSize: 1,
+        pageIndex: 1
+    })
+}
+
+export default { doLoadCOPYDTS, doLoadSTLFMITE, doLoadSnode, doOpen, doSave, doDelete, doCheck, doReCheck }

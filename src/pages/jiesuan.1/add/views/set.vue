@@ -1,9 +1,9 @@
 <template>
     <div class="mui-layout mui-layout-top">
         <rs-header :title="TITLE" color="primary">
-        <router-link to="/" slot="left" class="mui-icon mui-icon-left-nav mui-pull-left"></router-link>
+        <a slot="left" @click="$router.goBack()" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
         <div slot="right">
-          <rs-button link @click="save">保存</rs-button>
+          <rs-button link @click="set">设置</rs-button>
         </div>
         </rs-header>
         <rs-list size="14" noborder>
@@ -16,14 +16,8 @@
         </rs-list>
         <div class="mui-content">
           <rs-list size="14" noborder>
-            <rs-list-item noborder class="mui-checkbox mui-left" @click.native="item.checkXm=!item.checkXm">
-              <input name="checkbox" type="checkbox" v-model="checkXm"><span :class="ml5">堂食</span>
-            </rs-list-item>
-            <rs-list-item noborder class="mui-checkbox mui-left" @click.native="checkbox">
-              <input name="checkbox" type="checkbox" v-model="checkXm"><span :class="ml5">堂食1</span>
-            </rs-list-item>
-            <rs-list-item noborder class="mui-checkbox mui-left" v-for="(item, index) in xms" :key="index" @click.native="item.checkXm=!item.checkXm">
-              <input name="checkbox" type="checkbox" v-model="checkXm"><span :class="ml5">{{item.name}}</span>
+            <rs-list-item noborder v-if="!ISXZ||!item.DISABLE" v-for="(item) in SETDTS" :key="item.ITEMID" class="mui-checkbox mui-left" @click.native="item.ISSELECT=(item.DISABLE||!item.ISSELECT)">
+              <input name="checkbox" type="checkbox" :disabled="item.DISABLE" v-model="item.ISSELECT"><span>{{item["ITEMID.PARANAME"]}}</span>
             </rs-list-item>
           </rs-list> 
         </div> 
@@ -36,37 +30,24 @@ export default {
   props:{
      TITLE:""
   },
-  name: "szxm",
+  name: "set",
   data() {
     return {
-      ISXZ: false,
-      xms: []
+      ISXZ: true
     }
   },
   computed: {
-      ...mapGetters("MAIN",['BILLCODE','MKEMPID.EMPNAME',"SNODEID.SNODENAME","CONTENT"]),
-      ...mapGetters("DTS",[]),
-      ISSHOWWD:function(){
-          return this["EMPID"]!="";
-      }
+      ...mapGetters("SETDTS",['ITEMID_PARANAME','ISDELBYU']),
   },
   methods: {
-    linkUrl: function(url) {
-      this.$router.push({path:"/jiesuan/add/"+url,query:{EMPIDX:this.dts.map(function(v){return v["EMPID"]})}});
-    },
-    delEmp:function(index){
-      this.$store.commit("feedback-add/delEmp",{index});
-    },
-    save:function(){
-       this.$store.dispatch("feedback-add/save");
+    set:function(){
+       this.$store.dispatch("jiesuan/setSetDTS");
+       this.$router.goBack()
     }
   },
   activated: function() {
       console.log("%c"+this.$route.path,"color:red");
-  },
-  beforeRouteLeave(to, from, next) {
-    to.meta.keepAlive = false; // 让 A 不缓存，即刷新
-    next();
+      this.$store.commit("jiesuan/setSetDTS");
   }
 };
 </script>
