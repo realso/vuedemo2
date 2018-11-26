@@ -47,6 +47,7 @@ export default {
     },
     doQuery: function() {
       this.topStatus = "loading";
+      //TODO:增加权限
       db.open({
         modalName: "TBV_CHAINSND_SEL",
         where:`([SNODECODE] LIKE '%${this.searchInput}%' OR [SNODENAME] LIKE '%${this.searchInput}%') AND [MNGSTATEID] IN(104067)  AND  [OBJTYPEID]=101028  AND [AID]='@AID'`,
