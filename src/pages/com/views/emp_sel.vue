@@ -47,6 +47,7 @@ export default {
     },
     doQuery: function() {
       this.topStatus = "loading";
+      //TODO:增加权限 使用否
       db.open({
         modalName: "VHR_COMPEMP_EXTSEL3",
         where:`([EMPNAME] LIKE '%${this.searchInput}%' OR [EMPCODE] LIKE '%${this.searchInput}%') AND p_ldh_viewparam.SET_INT(${this.$store.state.user.userInfo.COMPID}) = ${this.$store.state.user.userInfo.COMPID}`,
