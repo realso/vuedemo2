@@ -8,7 +8,6 @@ import { execFormula } from "rs-vcore/utils/String";
 const Constants = Object.assign(SConstants, {
     STORE_NAME: "jiesuan",
     M_ADDDEFAULT: "addDefault",
-    M_SETDEALTYPE: "setDEALTYPE",
     M_SETDTS01: "setDts01",
     M_SETDTS02: "setDts02",
     M_SETDTS03: "setDts03",
@@ -57,8 +56,10 @@ const mutations = {
     },
     [Constants.M_SETDTS01]: function(state) {
         //加载 结算模板.所有 结算项目 判断 处理方式
+        let MAIN = storeHelper.getTable("MAIN");
         let STLFMITEM = storeHelper.getTable("STLFMITEM");
         let DTS = storeHelper.getTable("DTS");
+        DTS.initData();
         STLFMITEM.data.forEach(item => {
             let titem = {};
             titem["ITEMID"] = item["ITEMID"];
@@ -70,11 +71,7 @@ const mutations = {
             titem["DEALTYPE"] = item["DEALTYPE"];
             DTS.add(titem);
         });
-    },
-    [Constants.M_SETDEALTYPE]: function(state) {
-        let MAIN = storeHelper.getTable("MAIN");
         let ISREADSTL = MAIN.getValue("SNODEID.ISREADSTL");
-        let DTS = storeHelper.getTable("DTS");
         if (ISREADSTL != "1") {
             DTS.data.map(item => {
                 if (item["DEALTYPE"] == "EDI") {
@@ -208,11 +205,14 @@ const mutations = {
     },
     [Constants.M_SETEMP]: function(state, { path, item }) {
         const dt = storeHelper.getTable(path);
-        dt.setValue("xxx", item["xxx"]);
+        dt.setValue("MANAGERID", item["EMPID"]);
+        dt.setValue("MANAGER", item["EMPNAME"]);
     },
     [Constants.M_SETSNODE]: function(state, { path, item }) {
         const dt = storeHelper.getTable(path);
-        dt.setValue("xxx", item["xxx"]);
+        dt.setValue("DSNODEID", item["SNODEID"]);
+        dt.setValue("DSNODEID.SNODECODE", item["SNODECODE"]);
+        dt.setValue("DSNODEID.SNODENAME", item["SNODENAME"]);
     },
     [Constants.M_SETSETDTS]: function(state) {
         let DTS = storeHelper.getTable("DTS");
@@ -281,7 +281,8 @@ const actions = {
         let DSNODEID = MAIN.getValue("DSNODEID");
         let STLFMID = MAIN.getValue("STLFMID");
         let ret = await service.doLoadCOPYDTS({ DSNODEID, STLFMID });
-        commit(Constants.M_BATCHSETDATA, ret.data);
+        commit(Constants.M_INITDATA, { path: "COPYDTS", data: (ret.data || {}).items });
+        commit(Constants.M_SETDTS01);
         commit(Constants.M_SETDTS02);
         commit(Constants.M_SETDTS03);
         commit(Constants.M_SETDTS04);
@@ -294,7 +295,6 @@ const actions = {
         let ret = await service.doLoadSTLFMITE({ STLTYPEID: state.params.STLTYPEID });
         commit(Constants.M_BATCHSETDATA, ret.data);
         if (STLFMID != STLFMITEM.getValue("STLFMID")) {
-            commit(Constants.M_SETDTS01);
             dispatch("loadCOPYDTS");
         }
     },

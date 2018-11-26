@@ -10,11 +10,19 @@
           <rs-list class="rr-line-24" size="15" noborder>
             <rs-list-item noborder isright  @click.native="linkUrl('snodesel')">
               <div class="rs-flex-row">
-                <span class="rr-justify rr-width-4em">门 店</span>
+                <span class="rr-justify rr-width-4em">经营门店</span>
                 <span>：</span>
                 <div class="rs-flex-item rr-line-b">
-                    <span class="rr-right mr15">张三</span>
-                    0001 小木签店
+                    {{this["DSNODEID.SNODECODE"]}} {{this["DSNODEID.SNODENAME"]}}
+                </div>
+              </div>
+            </rs-list-item>
+            <rs-list-item noborder isright  @click.native="linkUrl('empsel')">
+              <div class="rs-flex-row">
+                <span class="rr-justify rr-width-4em">店长</span>
+                <span>：</span>
+                <div class="rs-flex-item rr-line-b">
+                    {{MANAGER}} 
                 </div>
               </div>
             </rs-list-item>
@@ -79,7 +87,7 @@ export default {
   }
   ,
   computed: {
-      ...mapGetters("MAIN",['BILLCODE','MKEMPID.EMPNAME',"SNODEID.SNODENAME","CONTENT"]),
+      ...mapGetters("MAIN",['BILLCODE','DSNODEID.SNODECODE',"DSNODEID.SNODENAME","MANAGER"]),
       ...mapGetters("DTS",[]),
       ISSHOWWD:function(){
           return this["EMPID"]!="";
@@ -88,9 +96,6 @@ export default {
   methods: {
     linkUrl: function(url) {
       this.$router.push({path:"/jiesuan1/add/"+url});
-    },
-    delEmp:function(index){
-      this.$store.commit("feedback-add/delEmp",{index});
     },
     save:function(){
        this.$store.dispatch("jiesuan/save");
