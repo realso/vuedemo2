@@ -63,10 +63,10 @@ const actions = {
                 data:{ 
                     STLFMITEMS:{
                         items:items1
-                        }
-                    },
+                        },
                     DTSCOPY:{
-                        items:items2
+                            items:items2
+                        }
                     }
             } = data;
             //找到上一次的单据子表
@@ -77,11 +77,16 @@ const actions = {
                 state.dt["stlfmitems"].add(item)
                 //实例化门店结算
                 state.dt["dts"].add();
-
+                let subvalues =["ENTRYNUM","GRPID","ITEMPROPERTY","ISLBSHOW","ISLBB","LBCOLOR","LBUNDERLINE","DEFAULTVALUE",
+                 "CALSEQ","CFORMULA","ISPN","PNCOLOR","ISZERO","ZEROCOLOR","ISNULLF","ISNN","NNCOLOR","REMARK"];
+                 subvalues.forEach(function(){
+                     
+                 })
                 //第一步 加载 结算模板.所有 结算项目  +  判断 处理方式
                 state.dt["dts"].setValue("STLITEMID",item.STLITEMID);
                 state.dt["dts"].setValue("ENTRYNUM",item.ENTRYNUM);
                 state.dt["dts"].setValue("ITEMID",item.ITEMID);
+                
                 state.dt["dts"].setValue("AMT",item.DEFAULTVALUE);
                 if(item.DEALTYPE=="EDI"&&Store.state.user.userInfo.DSNODEID=="1"){
                     state.dt["dts"].setValue("DeALTYPE","EDI");
@@ -90,7 +95,7 @@ const actions = {
                 }
                 
                 //第二步  继承 用户移除(否)
-                let copyitem = state.dt["dtsCopy"].filter(v => v.ITEMID==item.ITEMID);
+                let copyitem = state.dt["dtsCopy"].data.filter(v => v.ITEMID==item.ITEMID);
                 if(copyitem.length>0){
                     state.dt["dts"].setValue("ISDELBYU",copyitem[0].ISDELBYU);
                 }
@@ -114,7 +119,7 @@ const actions = {
             //第三步 3.2 判断 项目属性= 判断项.项目显示(否)
             state.dt["dts"].map(function(item){
                 if(item.ITEMPROPERTY=="judge"&&item.GRPID==item.ITEMID){
-                    let subitems =state.dt["dts"].filter(v => v.ITEMID!=v.ITEMID.GRPID&&v.ITEMID.GRPID==item.ITEMID.GRPID&&v.ISSHOW=="1");
+                    let subitems =state.dt["dts"].data.filter(v => v.ITEMID!=v.ITEMID.GRPID&&v.ITEMID.GRPID==item.ITEMID.GRPID&&v.ISSHOW=="1");
                     if(subitems.size>0){
                         state.dt["dts"].setValue("ISSHOW",1,item);
                     }else{
@@ -128,7 +133,7 @@ const actions = {
                     state.dt["dts"].setValue("ENTRYNUM","",item);
                 }
             })
-            let sortitems = state.dt["dts"].filter(v=>v.ENTRYNUM!="").sort(function(a,b){
+            let sortitems = state.dt["dts"].data.filter(v=>v.ENTRYNUM!="").sort(function(a,b){
                 return parseInt(a.ENTRYNUM) - parseInt(b.ENTRYNUM);
             })
 
