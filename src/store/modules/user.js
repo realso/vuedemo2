@@ -1,27 +1,31 @@
 import {
     login
 } from "@/api/user"
-
 const state = {
     userInfo: {}
 }
 const mutations = {
     "INIT_DATA": function(state) {
-        let userInfo = localStorage.getItem("_user_userInfo_");
-        try {
-            let ouserInfo = JSON.parse(userInfo);
-            state.userInfo = ouserInfo || {};
-        } catch (e) {
-            localStorage.removeItem("_user_userInfo_");
-        }
+        state.userInfo = {};
     },
     "SET_DATA": function(state, userInfo) {
         state.userInfo = userInfo || {};
-        if (userInfo) {
-            localStorage.setItem("_user_userInfo_", JSON.stringify(userInfo));
+    },
+    "SET_LOGINSTATUS": function(state) {
+        let userInfo = state.userInfo;
+        let ERRMESSAGE = "";
+        if (userInfo.status == "2") {
+            state.ISLOGIN = true;
         } else {
-            localStorage.removeItem("_user_userInfo_");
+            if ("0" == userInfo["ISUSE"]) {
+                ERRMESSAGE = "用户已停用！";
+            } else if (userInfo["status"] == 3) {
+                ERRMESSAGE = "用户名不存在！";
+            } else {
+                ERRMESSAGE = "用户名密码不匹配！";
+            }
         }
+        state.ERRMESSAGE = ERRMESSAGE;
     }
 }
 const getters = {
@@ -30,16 +34,10 @@ const getters = {
     }
 }
 const actions = {
-    login({
-        commit
-    }, userInfo) {
-        return login(userInfo).then(function(res) {
-            commit("SET_DATA", res.data);
-            return res.data;
-        }).then(function(data) {
-            console.log("user/login");
-            console.log(data);
-        });
+    async login({ commit }, userInfo) {
+        let res = await login(userInfo);
+        commit("SET_DATA", res.data);
+        commit("SET_LOGINSTATUS");
     },
     loginOut({ commit }) {
         commit("SET_DATA", null);

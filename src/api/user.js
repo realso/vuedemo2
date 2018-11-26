@@ -1,12 +1,12 @@
 import db from "./db";
 
-export function login(userInfo){
+export async function login(userInfo) {
     userInfo["tp"] = "login";
     return db.postData(userInfo);
 }
 
-export function loadMenu(){
+export async function loadMenu() {
     let para = {};
-    para["tp"] = "loadMenu";
+    para["tp"] = "loadmenu";
     return db.postData(para);
 }

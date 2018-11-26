@@ -24,7 +24,7 @@
     </div>
 </template>
 <script>
-import {mapGetters} from "../store"
+import {mapDateTable} from "../store"
 
 export default {
   props:{
@@ -37,7 +37,7 @@ export default {
     }
   },
   computed: {
-      ...mapGetters("SETDTS",['ITEMID_PARANAME','ISDELBYU']),
+      ...mapDateTable("SETDTS",['ITEMID_PARANAME','ISDELBYU']),
   },
   methods: {
     set:function(){

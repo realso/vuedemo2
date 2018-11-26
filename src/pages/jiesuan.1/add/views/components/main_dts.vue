@@ -11,7 +11,7 @@
     </rs-list-item>
 </template>
 <script>
-import { mapGetters } from "../../store";
+import { mapDateTable } from "../../store";
 export default {
   props: {
     item: Object
@@ -22,7 +22,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("DTS", [
+    ...mapDateTable("DTS", [
         "ITEMID",
         "STLITEMID_GRPID",
         "AMT",

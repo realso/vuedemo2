@@ -1,5 +1,5 @@
 import Store from "@/store"
-import { mapState } from 'vuex'
+import { createNamespacedHelpers } from 'vuex'
 import service from "../service";
 import { Store01, Constants as SConstants } from "rs-vcore/store/Store01";
 import { dateToString } from "rs-vcore/utils/Date";
@@ -19,13 +19,15 @@ const Constants = Object.assign(SConstants, {
     M_SETSETDTS: "setSetDTS",
     M_SETDTSISDELBYU: "setDTSISDELBYU"
 });
-
+const { mapState, mapGetters } = createNamespacedHelpers(Constants.STORE_NAME);
 const storeHelper = new Store01({
     service: service,
     paths: { "MAIN": "TBV_SNSTL_M", "DTS": "TBV_SNSTLDTS_M", "SETDTS": "TBV_SNSTLDTS_M", "STLFMITEM": "TBV_STLFMITEM", "COPYDTS": "TBV_SNSTLDTS_M", "SNODE": "TBV_CHAINSND_SEL" },
     MAINPATH: "MAIN",
     SUBPATH: ["DTS"],
-    XULID: ""
+    XULID: "",
+    EMPFILED: "",
+    MAKEFILED: ""
 });
 
 const state = {
@@ -33,6 +35,20 @@ const state = {
     ...storeHelper.mixState()
 }
 
+const getters = {
+    ISSHOWSAVE(state, getters, rootState, rootGetters) {
+        return (state.STATE == "Add" || state.STATE == "ToVerify") && rootGetters.pcode["my-score"];
+    },
+    ISSHOWDELETE(state, getters, rootState, rootGetters) {
+        return (state.STATE == "ToVerify") && rootGetters.pcode["my-score"];
+    },
+    ISSHOWCHECK(state, getters, rootState, rootGetters) {
+        return (state.STATE == "ToVerify") && rootGetters.pcode["my-score"];
+    },
+    ISSHOWRECHECK(state, getters, rootState, rootGetters) {
+        return (state.STATE == "Verified") && rootGetters.pcode["my-score"];
+    }
+}
 const mutations = {
     ...storeHelper.mixMutations(),
     [Constants.M_ADDDEFAULT]: function(state) {
@@ -42,14 +58,14 @@ const mutations = {
         let item = {};
         MAIN.add(item);
         //当前账套，单据类型=日结算，经营门店=用户.经营门店 ，日期=当前日，店长=当前员工，……
-        MAIN.setValue("AID", this.state.user.userInfo.AID);
+        MAIN.setValue("AID", this.getters.userInfo.AID);
         MAIN.setValue("BILLTYPEID", state.BILLTYPEID);
-        MAIN.setValue("DSNODEID", this.state.user.userInfo.DSNODEID);
-        MAIN.setValue("DSNODEID.SNODECODE", this.state.user.userInfo.DSNODECODE);
-        MAIN.setValue("DSNODEID.SNODENAME", this.state.user.userInfo.DSNODENAME);
+        MAIN.setValue("DSNODEID", this.getters.userInfo.DSNODEID);
+        MAIN.setValue("DSNODEID.SNODECODE", this.getters.userInfo.DSNODECODE);
+        MAIN.setValue("DSNODEID.SNODENAME", this.getters.userInfo.DSNODENAME);
         //员工....
-        MAIN.setValue("MANAGERID", this.state.user.userInfo.EMPID);
-        MAIN.setValue("MANAGER", this.state.user.userInfo.EMPNAME);
+        MAIN.setValue("MANAGERID", this.getters.userInfo.EMPID);
+        MAIN.setValue("MANAGER", this.getters.userInfo.EMPNAME);
         MAIN.setValue("BILLDATE", dateToString(new Date()));
         MAIN.setValue("STLFMID", STLFMITEM.getValue("STLFMID"));
         MAIN.setValue("STLFMCODE", STLFMITEM.getValue("STLFMCODE"));
@@ -275,6 +291,7 @@ const actions = {
         commit(Constants.M_SETDTS04);
         commit(Constants.M_SETDTS05);
         commit(Constants.M_SETAMT);
+        commit(Constants.M_SETSTATE);
     },
     loadCOPYDTS: async function({ dispatch, commit }) {
         let MAIN = storeHelper.getTable("MAIN");
@@ -311,15 +328,17 @@ const actions = {
     }
 }
 
+
 Store.registerModule(Constants.STORE_NAME, {
     namespaced: true,
     state,
+    getters,
     mutations,
     actions
 });
 
-const mapGetters = function(path, aFields, itemProp) {
+const mapDateTable = function(path, aFields, itemProp) {
     return storeHelper.mapGetters(path, aFields, itemProp);
 }
 
-export { mapState, mapGetters, Constants };
+export { mapState, mapGetters, mapDateTable, Constants };

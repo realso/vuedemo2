@@ -33,19 +33,20 @@ export default {
   components: {},
   created() {},
   methods: {
-    doLogin: function() {
+    doLogin: async function() {
       let _this = this;
-      this.$store
-        .dispatch("user/login", {
-          form_email: this.form_email,
-          form_password: this.form_password,
-          guid: this.getGuidGenerator()
-        })
-        .then(res => {
-          if (_this.$store.getters["user/isLogin"]) {
-            _this.$router.push("/");
-          }
-        });
+      await this.$store.dispatch("user/login", {
+        form_email: this.form_email,
+        form_password: this.form_password,
+        guid: this.getGuidGenerator()
+      });
+      
+      if (this.$store.getters["user/isLogin"]) {
+        await this.$store.dispatch("permission/loadData");
+        _this.$router.push("/");
+      } else {
+        alert(this.$store.state.user.ERRMESSAGE);
+      }
     },
     getGuidGenerator: function() {
       var S4 = function() {
@@ -70,16 +71,56 @@ export default {
 };
 </script>
 <style>
-  #login{
-    background:#fff;height: 100%;position: relative;
-  }
-  .rs-login{ width: 100%; position: absolute; top: 50%; margin-top: -190px}
-  .rs-login-logo{width: 50%; padding: 15px 0; margin: 0 auto;}
-  .rs-login-logo img{display: block;width: 100%}
-  .mui-input-group{background: none; margin: 30px auto; width: 80%;}
-  .mui-input-group:before,.mui-input-group:after,.mui-input-group .mui-input-row:before,.mui-input-group .mui-input-row:after{display: none}
-  .mui-input-group .mui-input{ color: #2b8daa; text-align: center; border: 1px solid #2b8daa; background: #fff; border-radius: 20px;}
-  .mui-input-group .mui-input-row{ margin-bottom: 10px}
-  .mui-content-padded{ margin: 10px auto; width: 80%}
-  .rs-login .rs-btn-primary{background: #46464b; width: 100%; height:40px;border-radius: 20px;border: 1px solid #2b8daa;}
+#login {
+  background: #fff;
+  height: 100%;
+  position: relative;
+}
+.rs-login {
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  margin-top: -190px;
+}
+.rs-login-logo {
+  width: 50%;
+  padding: 15px 0;
+  margin: 0 auto;
+}
+.rs-login-logo img {
+  display: block;
+  width: 100%;
+}
+.mui-input-group {
+  background: none;
+  margin: 30px auto;
+  width: 80%;
+}
+.mui-input-group:before,
+.mui-input-group:after,
+.mui-input-group .mui-input-row:before,
+.mui-input-group .mui-input-row:after {
+  display: none;
+}
+.mui-input-group .mui-input {
+  color: #2b8daa;
+  text-align: center;
+  border: 1px solid #2b8daa;
+  background: #fff;
+  border-radius: 20px;
+}
+.mui-input-group .mui-input-row {
+  margin-bottom: 10px;
+}
+.mui-content-padded {
+  margin: 10px auto;
+  width: 80%;
+}
+.rs-login .rs-btn-primary {
+  background: #46464b;
+  width: 100%;
+  height: 40px;
+  border-radius: 20px;
+  border: 1px solid #2b8daa;
+}
 </style>
