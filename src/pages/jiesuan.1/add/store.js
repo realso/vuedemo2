@@ -26,8 +26,7 @@ const storeHelper = new Store01({
     MAINPATH: "MAIN",
     SUBPATH: ["DTS"],
     XULID: "",
-    EMPFILED: "",
-    MAKEFILED: ""
+    EMPFILED: "MANAGERID"
 });
 
 const state = {
@@ -211,7 +210,7 @@ const mutations = {
         });
         let OFFLINEAMT = MAIN.getValue("OFFLINEAMT");
         let ONLINEAMT = MAIN.getValue("ONLINEAMT");
-        let DIFFAMT = MAIN.getValue("ONLINEAMT");
+        let DIFFAMT = MAIN.getValue("DIFFAMT");
         let OFFLINERATE = parseFloat((parseFloat(OFFLINEAMT) / (parseFloat(OFFLINEAMT) + parseFloat(ONLINEAMT)) * 100).toFixed("1"));
         let ONLINERATE = parseFloat((parseFloat(ONLINEAMT) / (parseFloat(OFFLINEAMT) + parseFloat(ONLINEAMT)) * 100).toFixed("1"));
         let DIFFRATE = parseFloat((parseFloat(DIFFAMT) / (parseFloat(OFFLINEAMT) + parseFloat(ONLINEAMT)) * 100).toFixed("1"));

@@ -20,7 +20,7 @@
     </div>
     <div class="mui-content">
       <rs-grid>
-        <rs-grid-item v-for="item in navs" :key="item.id" @click.native="NavClick(item)">
+        <rs-grid-item  v-if="!!$store.getters.pcode[item.pcode]" v-for="item in navs" :key="item.id" @click.native="NavClick(item)">
             <span slot="icon" class="f24" :class="item.icon"></span>
             <span class="f12">{{item.name}}</span>
         </rs-grid-item>
