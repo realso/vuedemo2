@@ -1,30 +1,30 @@
 <template>
   <div style="height:100%">
-    <transition :name="transitionName">
+    <transition :name="transitionName"  @enter="enter">
       <keep-alive>
-        <router-view v-if="$route.meta.keepAlive">
-          <!-- 这里是会被缓存的视图组件，比如 Home！ -->
+        <router-view>
         </router-view>
       </keep-alive>
-    </transition>
-    <transition :name="transitionName">
-      <router-view v-if="!$route.meta.keepAlive">
-        <!-- 这里是不会被缓存的视图组件！ -->
-      </router-view>
     </transition>
   </div>
 </template>
 <script>
 import store from "./store";
-import { debug } from 'util';
+import { setTimeout } from 'timers';
 export default {
   data() {
     return {
-      transitionName: "slide-right"
+      transitionName: "slide-left"
     };
+  },
+  methods:{
+    enter(){
+      console.log("methods", "color:red");
+    }
   },
   activated: function() {
     console.log(this.$route.path, "color:red");
+    setTimeout(()=>{
     this.$store.commit("jiesuan/setParams", this.$route.query);
     if ("ADD" == this.$route.query.ACTION) {
       this.$store.dispatch("jiesuan/add", this.$route.query).catch(function() {
@@ -34,7 +34,10 @@ export default {
     }
     if ("VIEW" == this.$route.query.ACTION) {
       this.$store.dispatch("jiesuan/open", this.$route.query);
-    }
+    }},600);
+  },
+  deactivated () {
+    this.$destroy()
   }
 };
 </script>
@@ -53,7 +56,7 @@ export default {
 }
 .slide-right-leave-active {
   opacity: 0;
-  transform: translate3d(100%, 0, 0);
+  transform: translate3d(-100%, 0, 0);
 }
 .slide-left-enter {
   opacity: 0;

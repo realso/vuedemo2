@@ -2,6 +2,9 @@ export default {
     path: '/jiesuan1',
     name: 'jiesuan1',
     component: r => require.ensure([], () => r(require('@/pages/jiesuan.1/add/index')), "jiesuan" /*按需加载，名称一样打包在一个文件*/ ),
+    meta: {
+        keepAlive: true
+    },
     redirect: '/jiesuan1/add/main',
     children: [{
         path: '/jiesuan1/add/main',
