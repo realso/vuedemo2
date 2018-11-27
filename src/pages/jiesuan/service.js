@@ -1,35 +1,6 @@
 import db from "@/api/db";
-import Store from "@/store"
 import { setDB, doOpen, doDelete, doSave, doCheck, doReCheck } from "rs-vcore/service/Service01";
 setDB(db);
-
-const getAddData = function(param) {
-    param["TYPE"] = "addData";
-    return db.openTables([
-        {
-            path:"STLFMITEMS",para:{
-                modalName: "TBV_STLFMITEM",
-                where:
-                "[STLFMID] = (SELECT STLFMID FROM VBV_STLFM_REF WHERE STATE = '当前' AND STLTYPENAME ='门店日结算')" ,
-                orderBy: "[ENTRYNUM]",
-                pageSize: 50,
-                pageIndex: 1
-            }
-        },
-        {
-            path:"DTSCOPY",para:{
-                modalName: "TBV_SNSTLDTS_M",
-                where:
-                "[BILLID] = (SELECT BILLID FROM (SELECT BILLID FROM TBV_SNSTL WHERE AID = '"+ Store.state.user.userInfo.AID 
-                + "' AND SNODEID = '"+ ""
-                + "' AND STLFMID = (SELECT STLFMID FROM VBV_STLFM_REF WHERE STATE = '当前' AND STLTYPENAME ='门店日结算')  AND NVL(ISDEL,0) = 0   ORDER BY  BILLDATE,FHOUR,FMINUTE DESC) WHERE ROWNUM <2)" ,
-                orderBy: "",
-                pageSize: 10,
-                pageIndex: 1
-            }
-        }
-    ])
-}
 
 const _getSTLFMITEMPara = function(STLTYPEID,BILLDATE) {
     return {
@@ -55,8 +26,8 @@ const doLoadCOPYDTS = async function({ DSNODEID, STLFMID }) {
     return db.open(_getCOPYDTSPara(DSNODEID, STLFMID))
 }
 
-const doLoadSTLFMITE = async function({ STLTYPEID }) {
-    return db.open(_getSTLFMITEMPara(STLTYPEID))
+const doLoadSTLFMITE = async function({ STLTYPEID,BILLDATE }) {
+    return db.open(_getSTLFMITEMPara(STLTYPEID,BILLDATE))
 }
 
 const doLoadSnode = async function({ SNODEID }) {
