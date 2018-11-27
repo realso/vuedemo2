@@ -3,7 +3,7 @@
         <rs-header :title="TITLE" color="primary">
           <router-link to="/" slot="left" class="mui-icon mui-icon-left-nav mui-pull-left"></router-link>
           <div slot="right">
-            <rs-button link @click="save">保存</rs-button>
+            <rs-button v-if="ISSHOWSAVE" link @click="save">保存</rs-button>
           </div>
         </rs-header>
         <div class="mui-content">
@@ -70,7 +70,7 @@
     </div>
 </template>
 <script>
-import {mapGetters} from "../store"
+import {mapGetters,mapDateTable} from "../store"
 import main_dts from "./components/main_dts";
 export default {
   props:{
@@ -87,8 +87,9 @@ export default {
   }
   ,
   computed: {
-      ...mapGetters("MAIN",['BILLCODE','DSNODEID.SNODECODE',"DSNODEID.SNODENAME","MANAGER"]),
-      ...mapGetters("DTS",[]),
+      ...mapGetters(["ISSHOWSAVE"]),
+      ...mapDateTable("MAIN",['BILLCODE','DSNODEID.SNODECODE',"DSNODEID.SNODENAME","MANAGER"]),
+      ...mapDateTable("DTS",[]),
       ISSHOWWD:function(){
           return this["EMPID"]!="";
       }
