@@ -44,9 +44,9 @@
                 </div>
               </div>
             </rs-list-item>
-          <rs-button @click.native="linkUrl('set')">设置项目</rs-button>
-             <main_dts v-for="(item) in DTS"   :item="item" :key="item.ENTRYID"/>
-           </rs-list> 
+          </rs-list> 
+          <div class="rr-text-right"><rs-button link @click.native="linkUrl('set')">设置项目</rs-button></div>
+          <main_dts v-for="(item) in DTS"   :item="item" :key="item.ENTRYID"/> 
            <div class="rr-list-textarea">
             <textarea rows="3" placeholder="说明"></textarea>
            </div>
