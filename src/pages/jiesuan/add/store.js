@@ -14,10 +14,12 @@ const Constants = Object.assign(SConstants, {
     M_SETDTS04: "setDts04",
     M_SETDTS05: "setDts05",
     M_SETAMT: "setAMT",
+    M_CHECKRANGE: "checkRange",
     M_SETEMP: "setEmp",
     M_SETSNODE: "setSnode",
     M_SETSETDTS: "setSetDTS",
-    M_SETDTSISDELBYU: "setDTSISDELBYU"
+    M_SETDTSISDELBYU: "setDTSISDELBYU",
+    M_CHECKNULL:"checkNull"
 });
 const { mapState, mapGetters } = createNamespacedHelpers(Constants.STORE_NAME);
 const storeHelper = new Store01({
@@ -218,6 +220,12 @@ const mutations = {
         MAIN.setValue("ONLINERATE", ONLINERATE);
         MAIN.setValue("DIFFRATE", DIFFRATE);
     },
+    [Constants.M_CHECKRANGE]:function(state, { AMT,STLITEMID_ISPN, STLITEMID_ISZERO,STLITEMID_ISNULLF,STLITEMID_ISNN,idx }){
+        let DTS = storeHelper.getTable("DTS");
+        if((STLITEMID_ISPN == 0 && AMT >0 )||(STLITEMID_ISZERO == 0 && AMT == 0)||(STLITEMID_ISNN == 0 && AMT < 0)){
+            DTS.setValue("AMT","",idx);
+        }
+    },
     [Constants.M_SETEMP]: function(state, { path, item }) {
         const dt = storeHelper.getTable(path);
         dt.setValue("MANAGERID", item["EMPID"]);
@@ -261,6 +269,21 @@ const mutations = {
                 DTS.setValue("ISDELBYU", (item1["ISSELECT"] ? 0 : 1), titem);
             }
         })
+    },
+    [Constants.M_CHECKNULL]:function(){
+        //主表：“经营门店,日期,店长,单据号,<差异说明>，不可空！”
+        //明细：值域的合法性    vs 可正数(否)、可0(否)、可空(否)、可负数(否)
+        let MAIN = storeHelper.getTable("MAIN");
+        let DTS = storeHelper.getTable("DTS");
+        let nullFields = [];
+        if(MAIN.getValue("DSNODEID")){
+
+        }
+
+
+    },
+    isnull:function(){
+
     }
 }
 
