@@ -2,7 +2,7 @@
     <rs-list-item noborder v-if="ISSHOW==1">
         <div v-if="STLITEMID_GRPID == ITEMID" class="rr-title">
             <span class="rr-right">{{AMT |toFixed(2)}}</span>
-            <span class="rr-font rr-list-style f12 c-active"></span> {{ITEMID_PARANAME}}
+            <span v-if="STLITEMID_LBCOLOR" class="rr-font rr-list-style f12 c-active"></span> {{ITEMID_PARANAME}}
         </div>
         <div v-else class="rs-flex-row">
             <div class="rr-width-5em">{{ITEMID_PARANAME}}</div>
