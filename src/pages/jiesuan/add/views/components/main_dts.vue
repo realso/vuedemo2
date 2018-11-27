@@ -47,7 +47,6 @@ export default {
         "STLITEMID_ISNN",//可负数(否)
       ],"item")
   },
-<<<<<<< HEAD
   watch:{
       "AMT":function(){
           this.$store.commit("jiesuan/checkRange",
@@ -61,12 +60,6 @@ export default {
                 });
           this.$store.commit("jiesuan/setAMT");
       }
-=======
-  watch: {
-    "AMT":function(){
-      this.$store.commit("jiesuan/setAMT");
-    }
->>>>>>> 0e385c77bcea80f9141c771c07c63564050b72c6
   },
   filters: {
     toFixed(value, cm) {
