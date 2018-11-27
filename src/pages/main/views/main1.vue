@@ -5,7 +5,7 @@
         <div class="rr-mianBan-top">
             <img src="@/assets/logo.jpg">
             <div class="rr-mianBan-title" v-if="!!$store.getters.userInfo.DSNODENAME">{{$store.getters.userInfo.DSNODENAME}}</div>
-            <div class="rr-mianBan-title" v-if="!$store.getters.userInfo.DSNODENAME">未设置</div>
+            <div class="rr-mianBan-title" v-if="!$store.getters.userInfo.DSNODENAME">未设置当前门店</div>
         </div>
         <div class="rr-mianBan-bottom rs-display-table">
           <div class="rs-table-cell">
