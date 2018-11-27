@@ -35,11 +35,17 @@ export default {
         "STLITEMID_LBUNDERLINE",//下划线
         "STLITEMID_PNCOLOR",//正颜色
         "STLITEMID_ZEROCOLOR",//0颜色
-        "STLITEMID_NNCOLOR"//负颜色
+        "STLITEMID_NNCOLOR",//负颜色
+
+        "STLITEMID_ISPN",//可正数(否)
+        "STLITEMID_ISZERO",//可0(否)
+        "STLITEMID_ISNULLF",//可空(否)
+        "STLITEMID_ISNN",//可负数(否)
       ],"item")
   },
   watch:{
       "AMT":function(){
+
            this.$store.commit("jiesuan/setAMT");
       }
   },
