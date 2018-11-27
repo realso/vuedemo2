@@ -96,7 +96,7 @@ export default {
   },
   methods: {
     linkUrl: function(url) {
-      this.$router.push({path:"/jiesuan1/add/"+url});
+      this.$router.push({path:"/jiesuan/add/"+url});
     },
     save:function(){
        this.$store.dispatch("jiesuan/save");

@@ -2,19 +2,19 @@
         "path": "/jiesuan",
         "name": "结算记录",
         "icon": "rr-font rr-jiesuan c-icon-blue",
-        "pcode": "jiesuan",
+        "pcode": "my-score",
         "isshow": true,
         "isfixed": true,
-        "query": { "ACTION": "ADD" ,"BILLTYPEID":"109303"}
+        "query": { "ACTION": "ADD", "BILLTYPEID": "109303", "STLTYPEID": "107066" }
     },
     {
         "path": "/jiesuan1",
         "name": "结算测试",
         "icon": "rr-font rr-jiesuan c-icon-blue",
-        "pcode": "jiesuan",
+        "pcode": "my-score",
         "isshow": true,
         "isfixed": true,
-        "query": { "ACTION": "ADD" }
+        "query": { "ACTION": "ADD", "BILLTYPEID": "109303", "STLTYPEID": "107066" }
     },
     {
         "path": "/dinghuo",

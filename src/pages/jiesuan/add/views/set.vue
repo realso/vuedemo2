@@ -30,7 +30,7 @@
     </div>
 </template>
 <script>
-import {mapGetters} from "../store"
+import {mapGetters,mapDateTable} from "../store"
 
 export default {
   props:{
@@ -44,8 +44,8 @@ export default {
     }
   },
   computed: {
-      ...mapGetters("main",['BILLCODE','MKEMPID.EMPNAME',"SNODEID.SNODENAME","CONTENT"]),
-      ...mapGetters("dts",[]),
+      ...mapDateTable("main",['BILLCODE','MKEMPID.EMPNAME',"SNODEID.SNODENAME","CONTENT"]),
+      ...mapDateTable("dts",[]),
       ISSHOWWD:function(){
           return this["EMPID"]!="";
       }

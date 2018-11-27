@@ -39,14 +39,14 @@
           </rs-list>           
           <rs-button @click.native="linkUrl(szxm)">设置项目</rs-button>
           <div class="rr-title">
-            <span class="rr-right">{{parseFloat(tangshi).toFixed(2)}}</span>
+            <span class="rr-right">{{tangshi | toFixed(2)}}</span>
             <span class="rr-font rr-list-style f12 c-active"></span> 堂食
           </div>
           <rs-list size="14" noborder>
             <rs-list-item noborder>
               <div class="rs-flex-row">
                 <div class="rr-width-5em">现金卡值</div>
-                <rs-numInput class="rs-flex-item rr-line-b" height='24' size='14' :value.sync='xjkz' :text.sync="Rxjkz" v-on:text1="text1"></rs-numInput>
+                <rs-numInput class="rs-flex-item rr-line-b" height='24' size='14' v-model.lazy="xjkz" :text="xjkz | toFixed(2)"></rs-numInput>
               </div>
             </rs-list-item>
             <rs-list-item noborder>
@@ -214,6 +214,11 @@ export default {
       ISSHOWWD:function(){
           return this["EMPID"]!="";
       }
+  },
+  filters: {
+    toFixed(value, cm){
+      return parseFloat(value).toFixed(cm)
+    }
   },
   methods: {
     text1(val) {
