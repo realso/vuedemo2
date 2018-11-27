@@ -28,7 +28,14 @@ export default {
         "AMT",
         "STLITEMID_PARANAME",
         "ITEMID_PARANAME",
-        "ISSHOW"
+        "ISSHOW",
+        "STLITEMID_ISLBSHOW",//标签显示(否)
+        "STLITEMID_ISLBB",//标签加粗(否)
+        "STLITEMID_LBCOLOR",//标签颜色
+        "STLITEMID_LBUNDERLINE",//下划线
+        "STLITEMID_PNCOLOR",//正颜色
+        "STLITEMID_ZEROCOLOR",//0颜色
+        "STLITEMID_NNCOLOR"//负颜色
       ],"item")
   },
   watch:{

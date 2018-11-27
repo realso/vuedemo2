@@ -8,7 +8,7 @@ export default {
             path: '/jiesuan/add/main',
             name: "/jiesuan/add/main",
             component: r => require.ensure([], () => r(require('@/pages/jiesuan/add/views/main')), "jiesuan"),
-            props: { TITLE: '结算' },
+            props: { TITLE: '日结算' },
             meta: {
               keepAlive: true
             }
