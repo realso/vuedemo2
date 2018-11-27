@@ -96,6 +96,7 @@ export default {
   },
   methods: {
     linkUrl: function(url) {
+      debugger;
       this.$router.push({path:"/jiesuan/add/"+url});
     },
     save:function(){
