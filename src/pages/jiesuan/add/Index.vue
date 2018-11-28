@@ -1,22 +1,15 @@
 <template>
   <div style="height:100%">
-    <transition :name="transitionName">
+    <transition :name="transitionName" @enter="enter">
       <keep-alive>
-        <router-view v-if="$route.meta.keepAlive">
-          <!-- 这里是会被缓存的视图组件，比如 Home！ -->
-        </router-view>
+        <router-view></router-view>
       </keep-alive>
-    </transition>
-    <transition :name="transitionName">
-      <router-view v-if="!$route.meta.keepAlive">
-        <!-- 这里是不会被缓存的视图组件！ -->
-      </router-view>
     </transition>
   </div>
 </template>
 <script>
 import store from "./store";
-import { debug } from 'util';
+import { debug } from "util";
 export default {
   data() {
     return {
@@ -25,14 +18,22 @@ export default {
   },
   activated: function() {
     console.log(this.$route.path, "color:red");
-    this.$store.commit("jiesuan/setParams", this.$route.query);
-    if ("ADD" == this.$route.query.ACTION) {
-      this.$store.dispatch("jiesuan/add", this.$route.query).catch(function(err) {
-      });
-    }
-    if ("VIEW" == this.$route.query.ACTION) {
-      this.$store.dispatch("jiesuan/open", this.$route.query);
-    }
+    setTimeout(async () => {
+      this.$store.commit("jiesuan/setParams", this.$route.query);
+      if ("ADD" == this.$route.query.ACTION) {
+        this.$store
+          .dispatch("jiesuan/add", this.$route.query)
+          .then(() => {
+            //alert("执行成功");
+          })
+          .catch(e => {
+            alert(e.message);
+          });
+      }
+      if ("VIEW" == this.$route.query.ACTION) {
+        this.$store.dispatch("jiesuan/open", this.$route.query);
+      }
+    }, 600);
   }
 };
 </script>
