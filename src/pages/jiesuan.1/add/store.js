@@ -28,7 +28,7 @@ const storeHelper = new Store01({
     SUBPATH: ["DTS"],
     XULID: "0000051437",
     OPRTFLOWID: "30307",
-    EMPFILED: "MANAGERID"
+    EMPFIELD: "MANAGERID"
 });
 
 const state = {
@@ -59,6 +59,7 @@ const mutations = {
         let item = {};
         MAIN.add(item);
         //当前账套，单据类型=日结算，经营门店=用户.经营门店 ，日期=当前日，店长=当前员工，……
+        debugger;
         MAIN.setValue("AID", this.getters.userInfo.AID);
         MAIN.setValue("BILLTYPEID", state.params.BILLTYPEID);
         MAIN.setValue("SNODEID", this.getters.userInfo.DSNODEID);

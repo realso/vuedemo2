@@ -101,6 +101,8 @@ export default {
     save:function(){
        this.$store.dispatch("jiesuan/save").catch((e)=>{
          alert(e.message)
+       }).then(()=>{
+         this.$toast("保存成功");
        });
     }
   },
