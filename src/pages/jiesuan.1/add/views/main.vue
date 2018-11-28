@@ -1,115 +1,73 @@
 <template>
-  <div class="mui-layout mui-layout-top">
-    <rs-header
-      :title="TITLE"
-      color="primary"
-    >
-      <router-link
-        to="/"
-        slot="left"
-        class="mui-icon mui-icon-left-nav mui-pull-left"
-      ></router-link>
-      <div slot="right">
-        <rs-button
-          v-if="ISSHOWSAVE"
-          link
-          @click="save"
-        >保存</rs-button>
-      </div>
-    </rs-header>
-    <div class="mui-content">
-      <rs-list
-        class="rr-line-24"
-        size="15"
-        noborder
-      >
-        <rs-list-item
-          noborder
-          isright
-          @click.native="linkUrl('snodesel')"
-        >
-          <div class="rs-flex-row">
-            <span class="rr-justify rr-width-4em">经营门店</span>
-            <span>：</span>
-            <div class="rs-flex-item rr-line-b">
-              {{this["DSNODEID.SNODECODE"]}} {{this["DSNODEID.SNODENAME"]}}
-            </div>
+    <div class="mui-layout mui-layout-top">
+        <rs-header :title="TITLE" color="primary">
+          <router-link to="/" slot="left" class="mui-icon mui-icon-left-nav mui-pull-left"></router-link>
+          <div slot="right">
+            <rs-button v-if="ISSHOWSAVE" link @click="save">保存</rs-button>
           </div>
-        </rs-list-item>
-        <rs-list-item
-          noborder
-          isright
-          @click.native="linkUrl('empsel')"
-        >
-          <div class="rs-flex-row">
-            <span class="rr-justify rr-width-4em">店长</span>
-            <span>：</span>
-            <div class="rs-flex-item rr-line-b">
-              {{MANAGER}}
-            </div>
+        </rs-header>
+        <div class="mui-content">
+          <rs-list class="rr-line-24" size="15" noborder>
+            <rs-list-item noborder isright  @click.native="linkUrl('snodesel')">
+              <div class="rs-flex-row">
+                <span class="rr-justify rr-width-4em">经营门店</span>
+                <span>：</span>
+                <div class="rs-flex-item rr-line-b">
+                    {{this["DSNODEID.SNODECODE"]}} {{this["DSNODEID.SNODENAME"]}}
+                </div>
+              </div>
+            </rs-list-item>
+            <rs-list-item noborder isright  @click.native="linkUrl('empsel')">
+              <div class="rs-flex-row">
+                <span class="rr-justify rr-width-4em">店长</span>
+                <span>：</span>
+                <div class="rs-flex-item rr-line-b">
+                    {{MANAGER}} 
+                </div>
+              </div>
+            </rs-list-item>
+            <rs-list-item noborder isright>
+              <div class="rs-flex-row">
+                <span class="rr-justify rr-width-4em">日 期</span>
+                <span>：</span>
+                <div class="rs-flex-item rr-line-b">
+                    2018-11-19 周一
+                </div>
+              </div>
+            </rs-list-item>
+            <rs-list-item noborder isright>
+              <div class="rs-flex-row">
+                <span class="rr-justify rr-width-4em">时 段</span>
+                <span>：</span>
+                <div class="rs-flex-item rr-line-b">
+                    2018-11-19 周一
+                </div>
+              </div>
+            </rs-list-item>
+          </rs-list> 
+          <div class="rr-text-right"><rs-button link @click.native="linkUrl('set')">设置项目</rs-button></div>
+          <main_dts v-for="(item) in DTS"   :item="item" :key="item.ENTRYID"/> 
+           <div class="rr-list-textarea">
+            <textarea rows="3" placeholder="说明"></textarea>
+           </div>
+           <div class="rr-bill-top">
+              <div class="rs-flex-row" style="height:33px">
+                  <span class="rr-justify rr-width-4em">制 单</span>
+                  <span>：</span>
+                  <div class="rs-flex-item">
+                      0001 小木签店
+                  </div>
+              </div>
+              <div class="rs-flex-row" style="height:33px;">
+                  <span class="rr-justify rr-width-4em">审 核</span>
+                  <span>：</span>
+                  <div class="rs-flex-item">
+                      2018-11-19 周一
+                  </div>
+              </div>
           </div>
-        </rs-list-item>
-        <rs-list-item
-          noborder
-          isright
-        >
-          <div class="rs-flex-row">
-            <span class="rr-justify rr-width-4em">日 期</span>
-            <span>：</span>
-            <div class="rs-flex-item rr-line-b">
-              2018-11-19 周一
-            </div>
-          </div>
-        </rs-list-item>
-        <rs-list-item
-          noborder
-          isright
-        >
-          <div class="rs-flex-row">
-            <span class="rr-justify rr-width-4em">时 段</span>
-            <span>：</span>
-            <div class="rs-flex-item rr-line-b">
-              2018-11-19 周一
-            </div>
-          </div>
-        </rs-list-item>
-        <rs-button @click.native="linkUrl('set')">设置项目</rs-button>
-        <main_dts
-          v-for="(item) in DTS"
-          :item="item"
-          :key="item.ENTRYID"
-        />
-      </rs-list>
-      <div class="rr-list-textarea">
-        <textarea
-          rows="3"
-          placeholder="说明"
-        ></textarea>
-      </div>
-      <div class="rr-bill-top">
-        <div
-          class="rs-flex-row"
-          style="height:33px"
-        >
-          <span class="rr-justify rr-width-4em">制 单</span>
-          <span>：</span>
-          <div class="rs-flex-item">
-            0001 小木签店
-          </div>
-        </div>
-        <div
-          class="rs-flex-row"
-          style="height:33px;"
-        >
-          <span class="rr-justify rr-width-4em">审 核</span>
-          <span>：</span>
-          <div class="rs-flex-item">
-            2018-11-19 周一
-          </div>
-        </div>
-      </div>
+        </div> 
     </div>
-  </div>
 </template>
 <script>
 import {mapGetters,mapDateTable} from "../store"
@@ -145,7 +103,7 @@ export default {
     }
   },
   activated: function() {
-      console.log("%c"+this.$route.path+"main","color:red");
+      console.log("%c"+this.$route.path,"color:red");
   }
 };
 </script>

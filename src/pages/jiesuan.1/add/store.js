@@ -17,7 +17,8 @@ const Constants = Object.assign(SConstants, {
     M_SETEMP: "setEmp",
     M_SETSNODE: "setSnode",
     M_SETSETDTS: "setSetDTS",
-    M_SETDTSISDELBYU: "setDTSISDELBYU"
+    M_SETDTSISDELBYU: "setDTSISDELBYU",
+    M_SETREJECTAMT: "setRejectAMT"
 });
 const { mapState, mapGetters } = createNamespacedHelpers(Constants.STORE_NAME);
 const storeHelper = new Store01({
@@ -261,13 +262,36 @@ const mutations = {
                 DTS.setValue("ISDELBYU", (item1["ISSELECT"] ? 0 : 1), titem);
             }
         })
+    },
+    [Constants.M_SETREJECTAMT]: function(state, { item }) {
+        let DTS = storeHelper.getTable("DTS");
+        let AMT = item["AMT"];
+        let STLITEMID_ISPN = item["STLITEMID.ISPN"];
+        let STLITEMID_ISZERO = item["STLITEMID.ISZERO"];
+        let STLITEMID_ISNN = item["STLITEMID.ISNN"];
+        if ((STLITEMID_ISPN == 0 && AMT > 0) || (STLITEMID_ISZERO == 0 && AMT == 0) || (STLITEMID_ISNN == 0 && AMT < 0)) {
+            DTS.setValue("AMT", "", item);
+        }
     }
+}
+
+const getPromise = async function(func) {
+    return new Promise(
+        function(resolve, reject) {
+            try {
+                resolve(func());
+            } catch (e) {
+                reject(e);
+            }
+        }
+    )
 }
 
 const actions = {
     ...storeHelper.mixActions(),
     add: async function({ dispatch, commit, state }) {
-        //初始化所有数据源
+        await getPromise(function() {})
+            //初始化所有数据源
         commit(Constants.M_INITBYPATH, {
             paths: ["MAIN", "DTS"]
         });

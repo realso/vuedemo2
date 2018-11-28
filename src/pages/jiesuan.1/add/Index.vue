@@ -1,6 +1,9 @@
 <template>
   <div style="height:100%">
-    <transition :name="transitionName"  @enter="enter">
+    <transition
+      :name="transitionName"
+      @enter="enter"
+    >
       <keep-alive>
         <router-view>
         </router-view>
@@ -10,34 +13,39 @@
 </template>
 <script>
 import store from "./store";
-import { setTimeout } from 'timers';
+import { setTimeout } from "timers";
 export default {
   data() {
     return {
       transitionName: "slide-left"
     };
   },
-  methods:{
-    enter(){
+  methods: {
+    enter() {
       console.log("methods", "color:red");
     }
   },
   activated: function() {
     console.log(this.$route.path, "color:red");
-    setTimeout(()=>{
-    this.$store.commit("jiesuan/setParams", this.$route.query);
-    if ("ADD" == this.$route.query.ACTION) {
-      this.$store.dispatch("jiesuan/add", this.$route.query).catch(function() {
-        debugger;
-        alert("测试错误");
-      });
-    }
-    if ("VIEW" == this.$route.query.ACTION) {
-      this.$store.dispatch("jiesuan/open", this.$route.query);
-    }},600);
+    setTimeout(async () => {
+      this.$store.commit("jiesuan/setParams", this.$route.query);
+      if ("ADD" == this.$route.query.ACTION) {
+        this.$store
+          .dispatch("jiesuan/add", this.$route.query)
+          .then(() => {
+            alert("执行成功");
+          })
+          .catch(e => {
+            alert(e.message);
+          });
+      }
+      if ("VIEW" == this.$route.query.ACTION) {
+        this.$store.dispatch("jiesuan/open", this.$route.query);
+      }
+    }, 600);
   },
-  deactivated () {
-    this.$destroy()
+  deactivated() {
+    this.$destroy();
   }
 };
 </script>
