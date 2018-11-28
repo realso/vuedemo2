@@ -117,7 +117,8 @@ export default {
           this.$store.commit(this.refStore.mutation, para);
         }
         if (this.refStore.action) {
-          this.$store.dispatch(this.refStore.action, para);
+          this.$indicator.open();
+          this.$store.dispatch(this.refStore.action, para).then(()=>this.$indicator.close());
         }
       }, 600);
        this.$router.goBack();

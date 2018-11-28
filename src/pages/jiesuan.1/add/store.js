@@ -59,7 +59,6 @@ const mutations = {
         let item = {};
         MAIN.add(item);
         //当前账套，单据类型=日结算，经营门店=用户.经营门店 ，日期=当前日，店长=当前员工，……
-        debugger;
         MAIN.setValue("AID", this.getters.userInfo.AID);
         MAIN.setValue("BILLTYPEID", state.params.BILLTYPEID);
         MAIN.setValue("SNODEID", this.getters.userInfo.DSNODEID);
@@ -77,7 +76,8 @@ const mutations = {
         let MAIN = storeHelper.getTable("MAIN");
         let STLFMITEM = storeHelper.getTable("STLFMITEM");
         let DTS = storeHelper.getTable("DTS");
-        DTS.initData();
+        //删除数据非初始化
+        DTS.clear();
         STLFMITEM.data.forEach(item => {
             let titem = {};
             titem["ITEMID"] = item["ITEMID"];

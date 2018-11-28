@@ -35,18 +35,14 @@ export default {
           .dispatch("jiesuan/add", this.$route.query)
           .then(() => {
               $app.$indicator.close();
-            this.$toast({
-              message: '执行成功 ',
-              position: 'bottom'
-            });
           })
           .catch(e => {
-            debugger;
              this.$indicator.close();
              this.$toast({
-              message: '执行失败',
+              message: '加载失败',
               position: 'bottom'
-            });
+             });
+             this.$router.goBack();
           });
       }
       if ("VIEW" == this.$route.query.ACTION) {

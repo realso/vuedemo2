@@ -1,7 +1,7 @@
 <template>
     <div class="mui-layout mui-layout-top">
         <rs-header :title="TITLE" color="primary">
-          <router-link to="/" slot="left" class="mui-icon mui-icon-left-nav mui-pull-left"></router-link>
+           <a slot="left" @click="$router.goBack()" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
           <div slot="right">
             <rs-button v-if="ISSHOWSAVE" link @click="save">保存</rs-button>
           </div>
@@ -31,11 +31,11 @@
                 <span class="rr-justify rr-width-4em">日 期</span>
                 <span>：</span>
                 <div class="rs-flex-item rr-line-b">
-                    {{BILLDATE}} 周一
+                    {{BILLDATE|getWeek}}
                 </div>
               </div>
             </rs-list-item>
-            <rs-list-item noborder isright>
+            <rs-list-item noborder isright v-if="BILLTYPEID=='分时'">
               <div class="rs-flex-row">
                 <span class="rr-justify rr-width-4em">时 段</span>
                 <span>：</span>
@@ -48,21 +48,21 @@
           <div class="rr-text-right"><rs-button link @click.native="linkUrl('set')">设置项目</rs-button></div>
           <main_dts v-for="(item) in DTS"   :item="item" :key="item.ENTRYID"/> 
            <div class="rr-list-textarea">
-            <textarea rows="3" placeholder="说明"></textarea>
+            <textarea rows="3" placeholder="说明" v-model.lazy="REMARK"></textarea>
            </div>
            <div class="rr-bill-top">
-              <div class="rs-flex-row" style="height:33px">
+              <div class="rs-flex-row" style="height:33px" v-if="MAKER!=''">
                   <span class="rr-justify rr-width-4em">制 单</span>
                   <span>：</span>
                   <div class="rs-flex-item">
-                      0001 小木签店
+                      {{MAKER}} {{MAKEDATE}}
                   </div>
               </div>
-              <div class="rs-flex-row" style="height:33px;">
+              <div class="rs-flex-row" style="height:33px;" v-if="VERIFIER!=''">
                   <span class="rr-justify rr-width-4em">审 核</span>
                   <span>：</span>
                   <div class="rs-flex-item">
-                      2018-11-19 周一
+                       {{VERIFIER}} {{VERIFYDATE}}
                   </div>
               </div>
           </div>
@@ -71,6 +71,7 @@
 </template>
 <script>
 import {mapGetters,mapDateTable} from "../store"
+import { getWeek } from "rs-vcore/utils/Date";
 import main_dts from "./components/main_dts";
 export default {
   props:{
@@ -88,7 +89,7 @@ export default {
   ,
   computed: {
       ...mapGetters(["ISSHOWSAVE"]),
-      ...mapDateTable("MAIN",['BILLDATE','BILLCODE','SNODEID.SNODECODE',"SNODEID.SNODENAME","MANAGER"]),
+      ...mapDateTable("MAIN",['BILLTYPEID','BILLDATE','BILLCODE','SNODEID.SNODECODE',"SNODEID.SNODENAME","MANAGER","REMARK","MAKER","VERIFIER","MAKEDATE","VERIFYDATE"]),
       ...mapDateTable("DTS",[]),
       ISSHOWWD:function(){
           return this["EMPID"]!="";
@@ -99,15 +100,23 @@ export default {
       this.$router.push({path:"/jiesuan1/add/"+url});
     },
     save:function(){
-       this.$store.dispatch("jiesuan/save").catch((e)=>{
-         alert(e.message)
-       }).then(()=>{
+       this.$indicator.open("");
+       this.$store.dispatch("jiesuan/save").then(()=>{
          this.$toast("保存成功");
+       }).catch((e)=>{
+         this.$toast(e.message)
+       }).then(()=>{
+          this.$indicator.close("");
        });
     }
   },
   activated: function() {
       console.log("%c"+this.$route.path,"color:red");
+  },
+  filters:{
+    getWeek(value){
+      return value?(value+" "+getWeek(value)):"";
+    }
   }
 };
 </script>
