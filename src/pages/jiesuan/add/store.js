@@ -4,6 +4,7 @@ import service from "../service";
 import { Store01, Constants as SConstants } from "rs-vcore/store/Store01";
 import { dateToString } from "rs-vcore/utils/Date";
 import { execFormula } from "rs-vcore/utils/String";
+import { throws } from "assert";
 
 const Constants = Object.assign(SConstants, {
     STORE_NAME: "jiesuan",
@@ -19,7 +20,6 @@ const Constants = Object.assign(SConstants, {
     M_SETSNODE: "setSnode",
     M_SETSETDTS: "setSetDTS",
     M_SETDTSISDELBYU: "setDTSISDELBYU",
-    M_CHECKNULL:"checkNull"
 });
 const { mapState, mapGetters } = createNamespacedHelpers(Constants.STORE_NAME);
 const storeHelper = new Store01({
@@ -269,21 +269,6 @@ const mutations = {
                 DTS.setValue("ISDELBYU", (item1["ISSELECT"] ? 0 : 1), titem);
             }
         })
-    },
-    [Constants.M_CHECKNULL]:function(){
-        //主表：“经营门店,日期,店长,单据号,<差异说明>，不可空！”
-        //明细：值域的合法性    vs 可正数(否)、可0(否)、可空(否)、可负数(否)
-        let MAIN = storeHelper.getTable("MAIN");
-        let DTS = storeHelper.getTable("DTS");
-        let nullFields = [];
-        if(MAIN.getValue("DSNODEID")){
-
-        }
-
-
-    },
-    isnull:function(){
-
     }
 }
 
@@ -347,9 +332,43 @@ const actions = {
         commit(Constants.M_SETDTS04);
         commit(Constants.M_SETDTS05);
         commit(Constants.M_SETAMT);
+    },
+    list_save:function({ dispatch, commit }){
+        checkNull();
+        dispatch("save");
     }
 }
+const checkNull = function(){
+        //主表：“经营门店,日期,店长,单据号,<差异说明>，不可空！”
+        //明细：值域的合法性    vs 可正数(否)、可0(否)、可空(否)、可负数(否)
+        let MAIN = storeHelper.getTable("MAIN");
+        let DTS = storeHelper.getTable("DTS");
+        let nullFields = [];
+        if(isNull(MAIN.getValue("DSNODEID"))){
+            nullFields.push("经营门店");
+        }
+        if(isNull(MAIN.getValue("BILLDATE"))){
+            nullFields.push("日期");
+        }
+        if(isNull(MAIN.getValue("MANAGERID"))){
+            nullFields.push("店长");
+        }
+        if(isNull(MAIN.getValue("BILLCODE"))){
+            nullFields.push("店长");
+        }
+        
+        if (nullFields.length > 0) {
+            throw new Error(nullFields.join(',') + " 空,不可操作");
+        }
 
+}
+
+const isNull = function(val){
+    if (val === "" || val === null || val === undefined) {
+        return true;
+    }
+    return false
+}
 
 Store.registerModule(Constants.STORE_NAME, {
     namespaced: true,
