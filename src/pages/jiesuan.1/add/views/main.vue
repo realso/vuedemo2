@@ -99,7 +99,9 @@ export default {
       this.$router.push({path:"/jiesuan1/add/"+url});
     },
     save:function(){
-       this.$store.dispatch("jiesuan/save");
+       this.$store.dispatch("jiesuan/save").catch((e)=>{
+         alert(e.message)
+       });
     }
   },
   activated: function() {

@@ -1,6 +1,9 @@
 <template>
   <div class="mui-layout mui-layout-top">
-    <rs-header :title="TITLE" color="primary">
+    <rs-header
+      :title="TITLE"
+      color="primary"
+    >
       <a
         slot="left"
         @click="$router.goBack()"
@@ -36,7 +39,7 @@
               class="mui-table-view-cell"
               v-for="item in list"
               :key="item.id"
-              @click="selectEmp(item)"
+              @click="selectItem(item)"
             >
               {{item.EMPCODE}}{{item["EMPNAME"]}}
             </li>
@@ -104,16 +107,18 @@ export default {
         }
       });
     },
-    selectEmp: function(item) {
+    selectItem: function(item) {
       let para = {};
       para["path"] = this.refStore.path;
       para["item"] = item;
-      if (this.refStore.mutation) {
-        this.$store.commit(this.refStore.mutation, para);
-      }
-      if (this.refStore.action) {
-        this.$store.dispatch(this.refStore.action, para);
-      }
+      setTimeout(() => {
+        if (this.refStore.mutation) {
+          this.$store.commit(this.refStore.mutation, para);
+        }
+        if (this.refStore.action) {
+          this.$store.dispatch(this.refStore.action, para);
+        }
+      }, 600);
       this.$router.goBack();
     }
   },

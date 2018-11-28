@@ -30,7 +30,7 @@ export default {
     setTimeout(async () => {
       this.$store.commit("jiesuan/setParams", this.$route.query);
       if ("ADD" == this.$route.query.ACTION) {
-        this.$store
+         this.$store
           .dispatch("jiesuan/add", this.$route.query)
           .then(() => {
             alert("执行成功");
