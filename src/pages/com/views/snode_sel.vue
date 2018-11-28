@@ -1,17 +1,8 @@
 <template>
-  <div
-    class="hello"
-    style="padding-top:44px"
-  >
-    <rs-header
-      title="我是标题"
-      color="primary"
-    >
-      <a
-        slot="left"
-        @click="$router.goBack()"
-        class="mui-icon mui-icon-left-nav mui-pull-left"
-      ></a>
+
+  <div class="mui-layout mui-layout-top">
+    <rs-header :title="TITLE" color="primary">
+      <a slot="left" @click="$router.goBack()" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
     </rs-header>
     <div class="mui-input-row mui-search r-search">
       <rs-button
