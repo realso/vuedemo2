@@ -29,17 +29,24 @@ export default {
     console.log(this.$route.path, "color:red");
     setTimeout(async () => {
       this.$store.commit("jiesuan/setParams", this.$route.query);
+      $app.$indicator.open("");
       if ("ADD" == this.$route.query.ACTION) {
          this.$store
           .dispatch("jiesuan/add", this.$route.query)
           .then(() => {
+              $app.$indicator.close();
             this.$toast({
               message: '执行成功 ',
               position: 'bottom'
             });
           })
           .catch(e => {
-            alert(e.message);
+            debugger;
+             this.$indicator.close();
+             this.$toast({
+              message: '执行失败',
+              position: 'bottom'
+            });
           });
       }
       if ("VIEW" == this.$route.query.ACTION) {

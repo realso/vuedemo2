@@ -13,7 +13,7 @@
                 <span class="rr-justify rr-width-4em">经营门店</span>
                 <span>：</span>
                 <div class="rs-flex-item rr-line-b">
-                    {{this["DSNODEID.SNODECODE"]}} {{this["DSNODEID.SNODENAME"]}}
+                    {{this["SNODEID.SNODECODE"]}} {{this["SNODEID.SNODENAME"]}}
                 </div>
               </div>
             </rs-list-item>
@@ -31,7 +31,7 @@
                 <span class="rr-justify rr-width-4em">日 期</span>
                 <span>：</span>
                 <div class="rs-flex-item rr-line-b">
-                    2018-11-19 周一
+                    {{BILLDATE}} 周一
                 </div>
               </div>
             </rs-list-item>
@@ -88,7 +88,7 @@ export default {
   ,
   computed: {
       ...mapGetters(["ISSHOWSAVE"]),
-      ...mapDateTable("MAIN",['BILLCODE','DSNODEID.SNODECODE',"DSNODEID.SNODENAME","MANAGER"]),
+      ...mapDateTable("MAIN",['BILLDATE','BILLCODE','SNODEID.SNODECODE',"SNODEID.SNODENAME","MANAGER"]),
       ...mapDateTable("DTS",[]),
       ISSHOWWD:function(){
           return this["EMPID"]!="";

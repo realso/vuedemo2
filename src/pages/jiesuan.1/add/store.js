@@ -26,7 +26,8 @@ const storeHelper = new Store01({
     paths: { "MAIN": "TBV_SNSTL_M", "DTS": "TBV_SNSTLDTS_M", "SETDTS": "TBV_SNSTLDTS_M", "STLFMITEM": "TBV_STLFMITEM", "COPYDTS": "TBV_SNSTLDTS_M", "SNODE": "TBV_CHAINSND_SEL" },
     MAINPATH: "MAIN",
     SUBPATH: ["DTS"],
-    XULID: "",
+    XULID: "0000051437",
+    OPRTFLOWID: "30307",
     EMPFILED: "MANAGERID"
 });
 
@@ -59,10 +60,10 @@ const mutations = {
         MAIN.add(item);
         //当前账套，单据类型=日结算，经营门店=用户.经营门店 ，日期=当前日，店长=当前员工，……
         MAIN.setValue("AID", this.getters.userInfo.AID);
-        MAIN.setValue("BILLTYPEID", state.BILLTYPEID);
-        MAIN.setValue("DSNODEID", this.getters.userInfo.DSNODEID);
-        MAIN.setValue("DSNODEID.SNODECODE", this.getters.userInfo.DSNODECODE);
-        MAIN.setValue("DSNODEID.SNODENAME", this.getters.userInfo.DSNODENAME);
+        MAIN.setValue("BILLTYPEID", state.params.BILLTYPEID);
+        MAIN.setValue("SNODEID", this.getters.userInfo.DSNODEID);
+        MAIN.setValue("SNODEID.SNODECODE", this.getters.userInfo.DSNODECODE);
+        MAIN.setValue("SNODEID.SNODENAME", this.getters.userInfo.DSNODENAME);
         //员工....
         MAIN.setValue("MANAGERID", this.getters.userInfo.EMPID);
         MAIN.setValue("MANAGER", this.getters.userInfo.EMPNAME);
@@ -152,7 +153,7 @@ const mutations = {
         let ENTRYNUM = 1;
         items.forEach(item => {
             DTS.setValue("ENTRYNUM", "", item);
-            if (1 == item["ISHOW"]) {
+            if (1 == item["ISSHOW"]) {
                 DTS.setValue("ENTRYNUM", ENTRYNUM++, item);
             }
         })
@@ -226,9 +227,9 @@ const mutations = {
     },
     [Constants.M_SETSNODE]: function(state, { path, item }) {
         const dt = storeHelper.getTable(path);
-        dt.setValue("DSNODEID", item["SNODEID"]);
-        dt.setValue("DSNODEID.SNODECODE", item["SNODECODE"]);
-        dt.setValue("DSNODEID.SNODENAME", item["SNODENAME"]);
+        dt.setValue("SNODEID", item["SNODEID"]);
+        dt.setValue("SNODEID.SNODECODE", item["SNODECODE"]);
+        dt.setValue("SNODEID.SNODENAME", item["SNODENAME"]);
     },
     [Constants.M_SETSETDTS]: function(state) {
         let DTS = storeHelper.getTable("DTS");
@@ -303,7 +304,7 @@ const actions = {
 
         //获取继承数据
         let MAIN = storeHelper.getTable("MAIN");
-        let DSNODEID = MAIN.getValue("DSNODEID");
+        let DSNODEID = MAIN.getValue("SNODEID");
         let STLFMID = MAIN.getValue("STLFMID");
         let ret2 = await service.doLoadCOPYDTS({ DSNODEID, STLFMID });
         commit(Constants.M_INITDATA, { path: "COPYDTS", data: (ret2.data || {}).items });
@@ -318,7 +319,7 @@ const actions = {
     },
     loadCOPYDTS: async function({ dispatch, commit }) {
         let MAIN = storeHelper.getTable("MAIN");
-        let DSNODEID = MAIN.getValue("DSNODEID");
+        let DSNODEID = MAIN.getValue("SNODEID");
         let STLFMID = MAIN.getValue("STLFMID");
         let ret = await service.doLoadCOPYDTS({ DSNODEID, STLFMID });
         commit(Constants.M_INITDATA, { path: "COPYDTS", data: (ret.data || {}).items });
