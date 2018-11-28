@@ -33,7 +33,10 @@ export default {
          this.$store
           .dispatch("jiesuan/add", this.$route.query)
           .then(() => {
-            alert("执行成功");
+            this.$toast({
+              message: '执行成功 ',
+              position: 'bottom'
+            });
           })
           .catch(e => {
             alert(e.message);
