@@ -1,9 +1,10 @@
 <template>
-  <div v-if="ISSHOW==1&&STLITEMID_ISLBSHOW==1">
+  <div v-if="ISSHOW==1">
     <rs-list size="14" noborder>
       <rs-list-item noborder :class="{'rr-border':STLITEMID_LBUNDERLINE=='LongBlack'}">
         <div class="rs-flex-row">
-          <div class="rr-width-5em" 
+          <div class="rr-width-5em"
+          v-if="STLITEMID_ISLBSHOW==1" 
           :style="{'color':STLITEMID_LBCOLOR}"
           :class="{'rr-weight':STLITEMID_ISLBB==1}">
             {{ITEMID_PARANAME}}
