@@ -3,15 +3,9 @@
     <div style="height:100%">
       <transition :name="transitionName">
         <keep-alive>
-          <router-view v-if="$route.meta.keepAlive">
-            <!-- 这里是会被缓存的视图组件，比如 Home！ -->
+          <router-view>
           </router-view>
         </keep-alive>
-      </transition>
-      <transition :name="transitionName">
-        <router-view v-if="!$route.meta.keepAlive">
-          <!-- 这里是不会被缓存的视图组件！ -->
-        </router-view>
       </transition>
     </div>
   </div>

@@ -4,12 +4,13 @@
       <div class="rr-mianBan-body">
         <div class="rr-mianBan-top">
             <img src="@/assets/logo.jpg">
-            <div class="rr-mianBan-title">小昭萌点</div>
+            <div class="rr-mianBan-title" v-if="!!$store.getters.userInfo.DSNODENAME">{{$store.getters.userInfo.DSNODENAME}}</div>
+            <div class="rr-mianBan-title" v-if="!$store.getters.userInfo.DSNODENAME">未设置</div>
         </div>
         <div class="rr-mianBan-bottom rs-display-table">
           <div class="rs-table-cell">
-            <div class="f15">345</div>
-            <div class="f12">未完成订货单</div>
+            <div class="f15">345元</div>
+            <div class="f12">已订货(已汇定)</div>
           </div>
           <div class="rs-table-cell">
             <div class="f15">188元</div>

@@ -81,6 +81,14 @@ export default {
 </script>
 <style scoped>
 .r-search input.mui-input-clear{background: #fff;  text-align: left; padding: 0 65px 0 15px; border: 5px solid #f8f8f9; border-radius: 0; height: 35px; margin-bottom: 0;}
-.r-search input.mui-pull-right{ background: #f8f8f9; color: #58cffa; position: absolute; top: 0; height: 37px; right: 0;}
+.r-search .mui-pull-right{ background: #f8f8f9; color: #58cffa; position: absolute; top: 0; height: 37px; right: 0;}
+input[type='submit']:enabled:active, input[type='submit'].is-active:enabled,
+.rs-btn-primary:enabled:active,
+.rs-btn-primary.is-active:enabled, .rs-btn-blue:enabled:active, .rs-btn-blue.is-active:enabled
+{
+    border: none;
+    background-color: #f8f8f9;
+}
 </style>
+
 

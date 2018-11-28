@@ -3,6 +3,9 @@ export default {
     name: 'main',
     component: r => require.ensure([], () => r(require('@/pages/main/index')), "main"),
     redirect: '/main1',
+    meta: {
+        keepAlive: true
+    },
     children: [{
             path: '/main1',
             name: "main1",
