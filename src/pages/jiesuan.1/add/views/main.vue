@@ -120,9 +120,16 @@ export default {
     save:function(){
        this.$indicator.open("");
        this.$store.dispatch(`${Constants.STORE_NAME}/save`).then(()=>{
-         this.$toast("保存成功");
+         this.$toast({
+              message: "保存成功",
+              position: "bottom",
+              duration: 2000
+            });
        }).catch((e)=>{
-         this.$toast(e.message)
+         this.$toast({
+              message: e.message,
+              position: "bottom"
+            })
        }).then(()=>{
           this.$indicator.close("");
        });
