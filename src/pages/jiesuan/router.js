@@ -33,7 +33,7 @@ export default {
             path: '/jiesuan/add/snodesel',
             name: "/jiesuan/add/snodesel",
             component: r => require.ensure([], () => r(require('@/pages/com/views/snode_sel')), "jiesuan"),
-            props: { TITLE: '选择经营门店', refStore: { action: "jiesuan/setSnode", path: "MAIN" } },
+            props: { TITLE: '选择经营门店', refStore: { mutation: "jiesuan/setSnode", path: "MAIN" } },
             meta: {
                 keepAlive: true
             }

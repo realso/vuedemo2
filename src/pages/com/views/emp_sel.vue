@@ -111,6 +111,7 @@ export default {
     },
     selectItem: function(item) {
       let para = {};
+      debugger;
       para["path"] = this.refStore.path;
       para["item"] = item;
       setTimeout(() => {
@@ -118,6 +119,7 @@ export default {
           this.$store.commit(this.refStore.mutation, para);
         }
         if (this.refStore.action) {
+          debugger;
             this.$indicator.open();
           this.$store.dispatch(this.refStore.action, para).then(()=>this.$indicator.close());
         }
