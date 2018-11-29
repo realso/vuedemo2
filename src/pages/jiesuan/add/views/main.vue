@@ -14,7 +14,7 @@
             <span>：</span>
             <div
               class="rs-flex-item rr-line-b"
-            >{{this["DSNODEID.SNODECODE"]}} {{this["DSNODEID.SNODENAME"]}}</div>
+            >{{this["SNODEID.SNODECODE"]}} {{this["SNODEID.SNODENAME"]}}</div>
           </div>
         </rs-list-item>
         <rs-list-item noborder isright @click.native="linkUrl('empsel')">
@@ -81,8 +81,8 @@ export default {
     ...mapGetters(["ISSHOWSAVE"]),
     ...mapDateTable("MAIN", [
       "BILLCODE",
-      "DSNODEID.SNODECODE",
-      "DSNODEID.SNODENAME",
+      "SNODEID.SNODECODE",
+      "SNODEID.SNODENAME",
       "MANAGER"
     ]),
     ...mapDateTable("DTS", []),
