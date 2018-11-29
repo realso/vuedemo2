@@ -1,22 +1,18 @@
 <template>
-  <div v-if="ISSHOW==1">
-    <rs-list size="14" noborder>
-      <rs-list-item noborder :class="{'rr-border':STLITEMID_LBUNDERLINE=='LongBlack'}">
-        <div class="rs-flex-row">
-          <div v-if="STLITEMID_ISLBSHOW==1" class="rr-width-5em" 
-          :style="{'color':STLITEMID_LBCOLOR}"
-          :class="{'rr-weight':STLITEMID_ISLBB==1}">
-            {{ITEMID_PARANAME}}
-          </div>
-          <div class="rs-flex-item rr-text-right" :class="{'rr-line-b':STLITEMID_LBUNDERLINE=='ShortGrey'}" 
-          :style="{'color':parseFloat(AMT)>0?STLITEMID_PNCOLOR:(parseFloat(AMT)<0?STLITEMID_NNCOLOR:STLITEMID_ZEROCOLOR)}">
-            <div v-if="DEALTYPE=='Count'">{{AMT |toFixed(2)}}</div>
-            <rs-numInput v-if="DEALTYPE=='Write'"  class="rs-flex-item" height='24' size='14' v-model.lazy='AMT' :text="AMT|toFixed(2)"></rs-numInput>
-          </div>
-        </div>
-      </rs-list-item>
-    </rs-list>
-  </div>  
+  <rs-list-item v-if="ISSHOW==1" noborder :class="{'rr-border':STLITEMID_LBUNDERLINE=='LongBlack'}">
+    <div class="rs-flex-row">
+      <div v-if="STLITEMID_ISLBSHOW==1" class="rr-width-5em" 
+      :style="{'color':STLITEMID_LBCOLOR}"
+      :class="{'rr-weight':STLITEMID_ISLBB==1}">
+        {{ITEMID_PARANAME}}
+      </div>
+      <div class="rs-flex-item rr-text-right" :class="{'rr-line-b':STLITEMID_LBUNDERLINE=='ShortGrey'}" 
+      :style="{'color':parseFloat(AMT)>0?STLITEMID_PNCOLOR:(parseFloat(AMT)<0?STLITEMID_NNCOLOR:STLITEMID_ZEROCOLOR)}">
+        <div v-if="DEALTYPE=='Count'">{{AMT |toFixed(2)}}</div>
+        <rs-numInput v-if="DEALTYPE=='Write'"  class="rs-flex-item" height='24' size='14' v-model.lazy='AMT' :text="AMT|toFixed(2)"></rs-numInput>
+      </div>
+    </div>
+  </rs-list-item>
 </template>
 <script>
 import { mapDateTable } from "../../store";
@@ -63,8 +59,9 @@ export default {
 };
 </script>
 <style scoped>
-.rs-list{padding-top: 5px;}
-.rs-listItem.rr-border{border-bottom: 1px solid #aaa; }
+.rs-listItem{min-height: 32px;}
+.rs-listItem.rr-border{position: relative}
+.rs-listItem.rr-border:after{position: absolute;content: ""; height: 1px; bottom: 5px;left: 15px; right: 15px; background: #000}
 .rr-weight{font-weight: 600;}
 .rs-listItem{ padding: 8px 15px 7px 15px;}
 .rs-numInput-input{position: absolute; top: 0; width: 100%; border: none; height: 100%; padding: 0; text-align: right; font-size: 14px;margin: 0;}

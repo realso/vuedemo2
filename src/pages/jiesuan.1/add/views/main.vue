@@ -26,27 +26,39 @@
                 </div>
               </div>
             </rs-list-item>
-            <rs-list-item noborder isright>
+            <rs-list-item noborder isright @click.native="open('picker2')">
               <div class="rs-flex-row">
                 <span class="rr-justify rr-width-4em">日 期</span>
                 <span>：</span>
-                <div class="rs-flex-item rr-line-b">
+                <div class="rs-flex-item" :class="BILLTYPEID=='分时'?'rr-line-b':''">
                     {{BILLDATE|getWeek}}
                 </div>
               </div>
             </rs-list-item>
-            <rs-list-item noborder isright v-if="BILLTYPEID=='分时'">
+            <rs-list-item noborder isright v-if="BILLTYPEID=='分时'"  @click.native="open('picker1')">
               <div class="rs-flex-row">
                 <span class="rr-justify rr-width-4em">时 段</span>
                 <span>：</span>
-                <div class="rs-flex-item rr-line-b">
-                    2018-11-19 周一
+                <div class="rs-flex-item">
+                    {{FHOUR}}<span v-if="FMINUTE!=''">:</span>{{FMINUTE}}
                 </div>
               </div>
             </rs-list-item>
           </rs-list> 
+          <rs-datetime
+            ref="picker2"
+            type="date"
+            @confirm="handleChange">
+          </rs-datetime>
+          <rs-datetime
+            ref="picker1"
+            type="time"
+            @confirm="handleChangeT">
+          </rs-datetime>
           <div class="rr-text-right"><rs-button link @click.native="linkUrl('set')">设置项目</rs-button></div>
-          <main_dts v-for="(item) in DTS"   :item="item" :key="item.ENTRYID"/> 
+          <rs-list size="14" noborder>
+            <main_dts v-for="(item) in DTS"   :item="item" :key="item.ENTRYID"/> 
+          </rs-list>
            <div class="rr-list-textarea">
             <textarea rows="3" placeholder="说明" v-model.lazy="REMARK"></textarea>
            </div>
@@ -85,11 +97,10 @@ export default {
   },
   components:{
     main_dts
-  }
-  ,
+  },
   computed: {
       ...mapGetters(["ISSHOWSAVE"]),
-      ...mapDateTable("MAIN",['BILLTYPEID','BILLDATE','BILLCODE','SNODEID.SNODECODE',"SNODEID.SNODENAME","MANAGER","REMARK","MAKER","VERIFIER","MAKEDATE","VERIFYDATE"]),
+      ...mapDateTable("MAIN",['BILLTYPEID','BILLDATE','BILLCODE','SNODEID.SNODECODE',"SNODEID.SNODENAME","MANAGER","REMARK","MAKER","VERIFIER","MAKEDATE","VERIFYDATE","FHOUR","FMINUTE"]),
       ...mapDateTable("DTS",[]),
       ISSHOWWD:function(){
           return this["EMPID"]!="";
@@ -98,6 +109,24 @@ export default {
   methods: {
     linkUrl: function(url) {
       this.$router.push({path:"/jiesuan1/add/"+url});
+    },
+    open(picker) {
+      this.$refs[picker].open();
+    },
+    formatDate: function(date) {
+      const y = date.getFullYear()
+      let m = date.getMonth() + 1
+      m = m < 10 ? '0' + m : m
+      let d = date.getDate()
+      d = d < 10 ? ('0' + d) : d
+      return y + '-' + m + '-' + d
+    },
+    handleChange(date) {
+      this.BILLDATE = this.formatDate(date);
+    },
+    handleChangeT:function(date){
+      this.FHOUR = date.substring(0, 2)
+      this.FMINUTE = date.substring(-1, 2)
     },
     save:function(){
        this.$indicator.open("");
