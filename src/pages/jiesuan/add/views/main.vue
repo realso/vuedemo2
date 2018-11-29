@@ -45,7 +45,9 @@
       <div class="rr-text-right">
         <rs-button link @click.native="linkUrl('set')">设置项目</rs-button>
       </div>
-      <main_dts v-for="(item) in DTS" :item="item" :key="item.ENTRYID"/>
+      <rs-list size="14" noborder>
+        <main_dts v-for="(item) in DTS"   :item="item" :key="item.ENTRYID"/> 
+      </rs-list>
       <div class="rr-list-textarea">
         <textarea rows="3" placeholder="差异说明" v-model.lazy="DIFFREMARK"></textarea>
       </div>
@@ -81,7 +83,7 @@ export default {
     main_dts
   },
   computed: {
-    ...mapGetters(["ISSHOWSAVE"]),
+    ...mapGetters(["ISSHOWSAVE","ISSHOWCHECK","ISSHOWRECHECK","ISSHOWDELETE"]),
     ...mapDateTable("MAIN", [
       "BILLCODE",
       "SNODEID.SNODECODE",
@@ -125,50 +127,15 @@ export default {
 };
 </script>
 <style scoped>
-.rr-title {
-  padding: 5px 15px;
-  font-size: 15px;
-  border-bottom: 1px solid #bbb;
-  background: #fff;
-  margin-top: 5px;
-}
-.rr-list-input {
-  text-align: right;
-}
-.rs-listItem {
-  padding: 8px 15px;
-}
-.rs-list {
-  padding-top: 5px;
-}
-.rr-list-textarea {
-  padding: 5px 15px;
-  background: #fff;
-}
-.rr-list-textarea textarea {
-  font-size: 15px;
-  margin-bottom: 0;
-}
-.rr-line-24,
-.rr-line-24 .rr-justify {
-  line-height: 24px;
-}
-.rr-line-24 .rr-justify {
-  height: 24px;
-}
-.rs-numInput-input {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  border: none;
-  height: 100%;
-  padding: 0;
-  text-align: right;
-  font-size: 14px;
-  margin: 0;
-}
-.rr-opacity {
-  opacity: 0;
-}
+.rr-title{ padding: 5px 15px; font-size: 15px; border-bottom: 1px solid #bbb; background: #fff; margin-top: 5px;}
+.rr-list-input{ text-align: right;}
+.rs-listItem{ padding: 8px 15px;}
+.rs-list{padding-top:5px;}
+.rr-list-textarea{padding: 5px 15px; background: #fff;}
+.rr-list-textarea textarea{font-size: 15px; margin-bottom: 0;}
+.rr-line-24,.rr-line-24 .rr-justify{line-height: 24px;}
+.rr-line-24 .rr-justify{height:24px;}
+.rs-numInput-input{position: absolute; top: 0; width: 100%; border: none; height: 100%; padding: 0; text-align: right; font-size: 14px;margin: 0;}
+.rr-opacity{opacity: 0;}
 </style>
 
