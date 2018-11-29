@@ -44,7 +44,7 @@
       </div>
       <main_dts v-for="(item) in DTS" :item="item" :key="item.ENTRYID"/>
       <div class="rr-list-textarea">
-        <textarea rows="3" placeholder="说明"></textarea>
+        <textarea rows="3" placeholder="差异说明"></textarea>
       </div>
       <div class="rr-bill-top">
         <div class="rs-flex-row" style="height:33px">
@@ -92,15 +92,12 @@ export default {
   },
   methods: {
     linkUrl: function(url) {
-      debugger;
       this.$router.push({ path: "/jiesuan/add/" + url });
     },
     save: function() {
-      try {
-        this.$store.dispatch("jiesuan/list_save").catch(function(err) {});
-      } catch (e) {
-        alert(e.message);
-      }
+        this.$store.dispatch("jiesuan/list_save").catch(function(err) {
+          alert(err);
+        });
     }
   },
   activated: function() {

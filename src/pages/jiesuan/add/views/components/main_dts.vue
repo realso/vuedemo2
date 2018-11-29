@@ -50,15 +50,7 @@ export default {
   },
   watch:{
       "AMT":function(){
-          this.$store.commit("jiesuan/checkRange",
-                {
-                    AMT:this.AMT,
-                    STLITEMID_ISPN:this.STLITEMID_ISPN,
-                    STLITEMID_ISZERO:this.STLITEMID_ISZERO,
-                    STLITEMID_ISNULLF:this.STLITEMID_ISNULLF,
-                    STLITEMID_ISNN:this.STLITEMID_ISNN,
-                    idx:this.item
-                });
+          this.$store.commit("jiesuan/checkRange",{item:this.item});
           this.$store.commit("jiesuan/setAMT");
       }
   },

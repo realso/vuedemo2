@@ -1,8 +1,15 @@
 <template>
 
   <div class="mui-layout mui-layout-top">
-    <rs-header :title="TITLE" color="primary">
-      <a slot="left" @click="$router.goBack()" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <rs-header
+      :title="TITLE"
+      color="primary"
+    >
+      <a
+        slot="left"
+        @click="$router.goBack()"
+        class="mui-icon mui-icon-left-nav mui-pull-left"
+      ></a>
     </rs-header>
     <div class="mui-input-row mui-search r-search">
       <rs-button
@@ -33,7 +40,7 @@
               class="mui-table-view-cell"
               v-for="item in list"
               :key="item.id"
-              @click="selectEmp(item)"
+              @click="selectItem(item)"
             >
               {{item.SNODECODE}}{{item["SNODENAME"]}}
             </li>
@@ -45,6 +52,7 @@
 </template>
 <script>
 import db from "@/api/db";
+import { setTimeout } from "timers";
 export default {
   name: "snode_sel",
   props: {
@@ -100,17 +108,20 @@ export default {
         }
       });
     },
-    selectEmp: function(item) {
+    selectItem: function(item) {
       let para = {};
       para["path"] = this.refStore.path;
       para["item"] = item;
-      if (this.refStore.mutation) {
-        this.$store.commit(this.refStore.mutation, para);
-      }
-      if (this.refStore.action) {
-        this.$store.dispatch(this.refStore.action, para);
-      }
-      this.$router.goBack();
+      setTimeout(() => {
+        if (this.refStore.mutation) {
+          this.$store.commit(this.refStore.mutation, para);
+        }
+        if (this.refStore.action) {
+          this.$indicator.open();
+          this.$store.dispatch(this.refStore.action, para).then(()=>this.$indicator.close());
+        }
+      }, 600);
+       this.$router.goBack();
     }
   },
   activated: function() {

@@ -29,17 +29,20 @@ export default {
     console.log(this.$route.path, "color:red");
     setTimeout(async () => {
       this.$store.commit("jiesuan/setParams", this.$route.query);
+      $app.$indicator.open("");
       if ("ADD" == this.$route.query.ACTION) {
-        this.$store
+         this.$store
           .dispatch("jiesuan/add", this.$route.query)
           .then(() => {
-            this.$toast({
-              message: '执行成功 ',
-              position: 'bottom'
-            });
+              $app.$indicator.close();
           })
           .catch(e => {
-            alert(e.message);
+             this.$indicator.close();
+             this.$toast({
+              message: '加载失败',
+              position: 'bottom'
+             });
+             this.$router.goBack();
           });
       }
       if ("VIEW" == this.$route.query.ACTION) {
