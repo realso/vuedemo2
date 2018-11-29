@@ -9,7 +9,7 @@
   </div>
 </template>
 <script>
-import store from "./store";
+import {mapDateTable,Constants}  from "./store";
 import { setTimeout } from "timers";
 export default {
   data() {
@@ -25,11 +25,11 @@ export default {
   activated: function() {
     console.log(this.$route.path, "color:red");
     setTimeout(async () => {
-      this.$store.commit("jiesuan/setParams", this.$route.query);
+      this.$store.commit(`${Constants.STORE_NAME}/setParams`, this.$route.query);
       $app.$indicator.open("");
       if ("ADD" == this.$route.query.ACTION) {
         this.$store
-          .dispatch("jiesuan/add", this.$route.query)
+          .dispatch(`${Constants.STORE_NAME}/add`, this.$route.query)
           .then(() => {
             $app.$indicator.close();
           })
@@ -43,7 +43,7 @@ export default {
           });
       }
       if ("VIEW" == this.$route.query.ACTION) {
-        this.$store.dispatch("jiesuan/open", this.$route.query);
+        this.$store.dispatch(`${Constants.STORE_NAME}/open`, this.$route.query);
       }
     }, 600);
   },

@@ -6,7 +6,7 @@ import { dateToString } from "rs-vcore/utils/Date";
 import { execFormula } from "rs-vcore/utils/String";
 
 const Constants = Object.assign(SConstants, {
-    STORE_NAME: "jiesuan",
+    STORE_NAME: "jiesuan1",
     M_ADDDEFAULT: "addDefault",
     M_SETDTS01: "setDts01",
     M_SETDTS02: "setDts02",
