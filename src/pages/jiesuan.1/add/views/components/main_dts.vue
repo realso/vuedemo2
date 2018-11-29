@@ -64,7 +64,7 @@ export default {
 </script>
 <style scoped>
 .rs-list{padding-top: 5px;}
-.rs-listItem.rr-border{border-bottom: 1px solid #aaa; }
+.rs-listItem.rr-border{border-bottom: 1px solid #aaa; min-height: 33px; }
 .rr-weight{font-weight: 600;}
 .rs-listItem{ padding: 8px 15px 7px 15px;}
 .rs-numInput-input{position: absolute; top: 0; width: 100%; border: none; height: 100%; padding: 0; text-align: right; font-size: 14px;margin: 0;}
