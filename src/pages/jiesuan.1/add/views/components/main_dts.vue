@@ -15,7 +15,7 @@
   </rs-list-item>
 </template>
 <script>
-import { mapDateTable } from "../../store";
+import { mapDateTable,Constants } from "../../store";
 export default {
   props: {
     item: Object
@@ -45,8 +45,8 @@ export default {
   },
   watch:{
       "AMT":function(){
-          this.$store.commit("jiesuan/setRejectAMT",{item:this.item});
-          this.$store.commit("jiesuan/setAMT");
+          this.$store.commit(`${Constants.STORE_NAME}/setRejectAMT`,{item:this.item});
+          this.$store.commit(`${Constants.STORE_NAME}/setAMT`);
       }
   },
   filters: {

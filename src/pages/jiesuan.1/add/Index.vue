@@ -9,43 +9,32 @@
   </div>
 </template>
 <script>
-import {mapDateTable,Constants}  from "./store";
-import { setTimeout } from "timers";
+import { mapDateTable, Constants } from "./store";
 export default {
   data() {
     return {
       transitionName: "slide-left"
     };
   },
-  methods: {
-    enter() {
-      console.log("methods", "color:red");
-    }
-  },
   activated: function() {
     console.log(this.$route.path, "color:red");
-    setTimeout(async () => {
-      this.$store.commit(`${Constants.STORE_NAME}/setParams`, this.$route.query);
-      $app.$indicator.open("");
-      if ("ADD" == this.$route.query.ACTION) {
-        this.$store
-          .dispatch(`${Constants.STORE_NAME}/add`, this.$route.query)
-          .then(() => {
-            $app.$indicator.close();
-          })
-          .catch(e => {
-            this.$indicator.close();
-            this.$toast({
-              message: "加载失败",
-              position: "bottom"
-            });
-            this.$router.goBack();
-          });
-      }
-      if ("VIEW" == this.$route.query.ACTION) {
-        this.$store.dispatch(`${Constants.STORE_NAME}/open`, this.$route.query);
-      }
-    }, 600);
+    this.$store.commit(`${Constants.STORE_NAME}/setParams`, this.$route.query);
+    if ("ADD" == this.$route.query.ACTION) {
+      this.$callAction({
+        action: `${Constants.STORE_NAME}/add`,
+        param: this.$route.query,
+        isErrorBack: true,
+        timeOut: 600
+      });
+    }
+    if ("VIEW" == this.$route.query.ACTION) {
+      this.$callAction({
+        action: `${Constants.STORE_NAME}/open`,
+        param: this.$route.query.DID,
+        isErrorBack: true,
+        timeOut: 600
+      });
+    }
   },
   deactivated() {
     this.$destroy();
