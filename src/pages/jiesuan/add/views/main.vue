@@ -44,7 +44,7 @@
       </div>
       <main_dts v-for="(item) in DTS" :item="item" :key="item.ENTRYID"/>
       <div class="rr-list-textarea">
-        <textarea rows="3" placeholder="差异说明" v-model.lazy="CONTENT"></textarea>
+        <textarea rows="3" placeholder="差异说明" v-model.lazy="DIFFREMARK"></textarea>
       </div>
       <div class="rr-bill-top">
         <div class="rs-flex-row" style="height:33px">
@@ -84,7 +84,7 @@ export default {
       "SNODEID.SNODECODE",
       "SNODEID.SNODENAME",
       "MANAGER",
-      "CONTENT"
+      "DIFFREMARK"
     ]),
     ...mapDateTable("DTS", []),
     ISSHOWWD: function() {
