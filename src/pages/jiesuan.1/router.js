@@ -26,7 +26,7 @@ export default {
         path: '/jiesuan1/add/empsel',
         name: "/jiesuan1/add/empsel",
         component: r => require.ensure([], () => r(require('@/pages/com/views/emp_sel')), "jiesuan"),
-        props: { TITLE: '选择店长', refStore: { mutation: "jiesuan/setEmp", path: "MAIN" } },
+        props: { TITLE: '选择店长', refStore: { mutation: "jiesuan1/setEmp", path: "MAIN" } },
         meta: {
             keepAlive: true
         }
@@ -34,7 +34,7 @@ export default {
         path: '/jiesuan1/add/snodesel',
         name: "/jiesuan1/add/snodesel",
         component: r => require.ensure([], () => r(require('@/pages/com/views/snode_sel')), "jiesuan"),
-        props: { TITLE: '选择经营门店', refStore: { action: "jiesuan/setSnode", path: "MAIN" } },
+        props: { TITLE: '选择经营门店', refStore: { action: "jiesuan1/setSnode", path: "MAIN" } },
         meta: {
             keepAlive: true
         }

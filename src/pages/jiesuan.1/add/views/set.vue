@@ -24,7 +24,7 @@
     </div>
 </template>
 <script>
-import {mapDateTable} from "../store"
+import {mapDateTable,Constants} from "../store"
 
 export default {
   props:{
@@ -41,13 +41,13 @@ export default {
   },
   methods: {
     set:function(){
-       this.$store.dispatch("jiesuan/setSetDTS");
+       this.$store.dispatch(`${Constants.STORE_NAME}/setSetDTS`);
        this.$router.goBack()
     }
   },
   activated: function() {
       console.log("%c"+this.$route.path,"color:red");
-      this.$store.commit("jiesuan/setSetDTS");
+      this.$store.commit(`${Constants.STORE_NAME}/setSetDTS`);
   }
 };
 </script>
