@@ -3,6 +3,9 @@
     <rs-header :title="TITLE" color="primary">
       <router-link to="/" slot="left" class="mui-icon mui-icon-left-nav mui-pull-left"></router-link>
       <div slot="right">
+        <rs-button v-if="ISSHOWCHECK" link @click="check">审核</rs-button>
+        <rs-button v-if="ISSHOWRECHECK" link @click="reCheck">撤销审核</rs-button>
+        <rs-button v-if="ISSHOWDELETE" link @click="delete1">删除</rs-button>
         <rs-button v-if="ISSHOWSAVE" link @click="save">保存</rs-button>
       </div>
     </rs-header>
@@ -97,6 +100,21 @@ export default {
     },
     save: function() {
         this.$store.dispatch("jiesuan/list_save").catch(function(err) {
+          alert(err);
+        });
+    },
+    check:function(){
+       this.$store.dispatch("jiesuan/check").catch(function(err) {
+          alert(err);
+        });
+    },
+    reCheck:function(){
+       this.$store.dispatch("jiesuan/reCheck").catch(function(err) {
+          alert(err);
+        });
+    },
+    delete1:function(){
+       this.$store.dispatch("jiesuan/delete").catch(function(err) {
           alert(err);
         });
     }
