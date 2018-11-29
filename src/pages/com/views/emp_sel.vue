@@ -40,10 +40,15 @@
               v-for="item in list"
               :key="item.id"
               @click="selectItem(item)"
+              style="font-size:15px;"
             >
-              {{item.EMPCODE}}{{item["EMPNAME"]}}
+              <label style="width: 80px;display: inline-block;">{{item.EMPCODE}}</label>{{item["EMPNAME"]}}
             </li>
+           <div v-if="allLoaded">
+              我也是有底线的.
+            </div>
           </ul>
+           
         </rs-loadmore>
       </div>
     </div>
@@ -51,6 +56,7 @@
 </template>
 <script>
 import db from "@/api/db";
+import { setTimeout } from 'timers';
 export default {
   name: "emp_sel",
   props: {
@@ -79,7 +85,7 @@ export default {
         }) = ${this.$store.state.user.userInfo.COMPID}`,
         orderBy:
           "[ISEXTOBJ],[COMPRULECODE],[DEPTRULECODE],[POSTRULECODE],[JOBRULECODE],[EMPCODE]",
-        pageSize: 10,
+        pageSize: 25,
         pageIndex: 1
       };
     },
@@ -111,7 +117,6 @@ export default {
     },
     selectItem: function(item) {
       let para = {};
-      debugger;
       para["path"] = this.refStore.path;
       para["item"] = item;
       setTimeout(() => {
@@ -119,16 +124,26 @@ export default {
           this.$store.commit(this.refStore.mutation, para);
         }
         if (this.refStore.action) {
-          debugger;
             this.$indicator.open();
-          this.$store.dispatch(this.refStore.action, para).then(()=>this.$indicator.close());
+            this.$store.dispatch(this.refStore.action, para).then(()=>this.$indicator.close());
         }
       }, 600);
       this.$router.goBack();
     }
   },
   activated: function() {
-    this.doQuery();
+    setTimeout(()=>{
+      this.doQuery();
+    },600); 
+  },
+  watch:{
+    topStatus:function(v,ov){
+      if("loading"==v){
+        this.$indicator.open();
+      }else{
+        this.$indicator.close();
+      }
+    }
   }
 };
 </script>

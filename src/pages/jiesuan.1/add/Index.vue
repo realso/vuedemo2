@@ -1,9 +1,6 @@
 <template>
   <div style="height:100%">
-    <transition
-      :name="transitionName"
-      @enter="enter"
-    >
+    <transition :name="transitionName">
       <keep-alive>
         <router-view>
         </router-view>
@@ -31,18 +28,18 @@ export default {
       this.$store.commit("jiesuan/setParams", this.$route.query);
       $app.$indicator.open("");
       if ("ADD" == this.$route.query.ACTION) {
-         this.$store
+        this.$store
           .dispatch("jiesuan/add", this.$route.query)
           .then(() => {
-              $app.$indicator.close();
+            $app.$indicator.close();
           })
           .catch(e => {
-             this.$indicator.close();
-             this.$toast({
-              message: '加载失败',
-              position: 'bottom'
-             });
-             this.$router.goBack();
+            this.$indicator.close();
+            this.$toast({
+              message: "加载失败",
+              position: "bottom"
+            });
+            this.$router.goBack();
           });
       }
       if ("VIEW" == this.$route.query.ACTION) {
@@ -52,6 +49,16 @@ export default {
   },
   deactivated() {
     this.$destroy();
+  },
+  beforeRouteUpdate(to, from, next) {
+    let isBack = this.$router.isBack;
+    if (isBack) {
+      this.transitionName = "slide-right";
+    } else {
+      this.transitionName = "slide-left";
+    }
+    this.$router.isBack = false;
+    next();
   }
 };
 </script>

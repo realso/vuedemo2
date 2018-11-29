@@ -17,18 +17,18 @@ export default {
   name: "App",
   data() {
     return {
-      transitionName: "slide-right"
+      transitionName:"slide-left"
     };
   },
   watch: {
     $route(to, from) {
-      let isBack = this.$router.isBack;
-      if (isBack) {
-        this.transitionName = "slide-right";
-      } else {
-        this.transitionName = "slide-left";
-      }
-      this.$router.isBack = false;
+       let isBack = this.$router.isBack;
+    if (isBack) {
+      this.transitionName = "slide-right";
+    } else {
+      this.transitionName = "slide-left";
+    }
+    this.$router.isBack = false;
     }
   }
 };

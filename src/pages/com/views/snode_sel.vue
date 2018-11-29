@@ -41,9 +41,13 @@
               v-for="item in list"
               :key="item.id"
               @click="selectItem(item)"
+              style="font-size:15px;"
             >
-              {{item.SNODECODE}}{{item["SNODENAME"]}}
+                <label style="width: 80px;display: inline-block;">{{item.SNODECODE}}</label>{{item["SNODENAME"]}}
             </li>
+            <div v-if="allLoaded">
+              我也是有底线的.
+            </div>
           </ul>
         </rs-loadmore>
       </div>
@@ -125,7 +129,18 @@ export default {
     }
   },
   activated: function() {
-    this.doQuery();
+    setTimeout(()=>{
+      this.doQuery();
+    },600); 
+  },
+  watch:{
+    topStatus:function(v,ov){
+      if("loading"==v){
+        this.$indicator.open();
+      }else{
+        this.$indicator.close();
+      }
+    }
   }
 };
 </script>
