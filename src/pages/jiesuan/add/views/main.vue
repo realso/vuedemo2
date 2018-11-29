@@ -44,7 +44,7 @@
       </div>
       <main_dts v-for="(item) in DTS" :item="item" :key="item.ENTRYID"/>
       <div class="rr-list-textarea">
-        <textarea rows="3" placeholder="差异说明"></textarea>
+        <textarea rows="3" placeholder="差异说明" v-model.lazy="CONTENT"></textarea>
       </div>
       <div class="rr-bill-top">
         <div class="rs-flex-row" style="height:33px">
@@ -83,7 +83,8 @@ export default {
       "BILLCODE",
       "SNODEID.SNODECODE",
       "SNODEID.SNODENAME",
-      "MANAGER"
+      "MANAGER",
+      "CONTENT"
     ]),
     ...mapDateTable("DTS", []),
     ISSHOWWD: function() {
