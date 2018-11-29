@@ -342,7 +342,7 @@ const actions = {
     },
     setSnode: async function({ dispatch, commit }, { path, item }) {
         commit(Constants.M_SETSNODE, { path, item });
-        dispatch("loadCOPYDTS");
+        await dispatch("loadCOPYDTS");
     },
     setSetDTS: function({ commit }) {
         commit(Constants.M_SETDTSISDELBYU);

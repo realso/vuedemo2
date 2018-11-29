@@ -19,18 +19,31 @@ let cancelToken = axios.CancelToken;
 let removePending = (config) => {
     for (let p in pending) {
         if (pending[p].u === `${config.url}${config.method}${tran(config.data)}`) { //当当前请求在数组中存在时执行函数体
-            pending[p].f(); //执行取消操作
+            pending[p].f("您的手速太快了"); //执行取消操作
             pending.splice(p, 1); //把这条记录从数组中移除
         }
     }
     console.log(config);
 }
 
+let isReatCalling = (config) => {
+    let ret = false;
+    if (config.data.ISCHECKREPEAT == true) {
+        let t = pending.find(p => {
+            return p.u === `${config.url}${config.method}${tran(config.data)}`
+        });
+        ret = !!t;
+    }
+    return ret;
+}
+
 //添加请求拦截器
 axios.interceptors.request.use(config => {
-    removePending(config); //在一个ajax发送前执行一下取消操作
+    if (isReatCalling(config)) {
+        throw new Error("请求已提交,无须重复提交！")
+    }
+    removePending(config);
     config.cancelToken = new cancelToken((c) => {
-        // 这里的ajax标识我是用请求地址&请求方式拼接的字符串，当然你可以选择其他的一些方式
         pending.push({ u: `${config.url}${config.method}${tran(config.data)}`, f: c });
     });
     return config;
@@ -42,13 +55,9 @@ axios.interceptors.request.use(config => {
 axios.interceptors.response.use(response => {
     removePending(response.config); //在一个ajax响应后再执行一下取消操作，把已经完成的请求从pending中移除
     return response;
-}, error => {
-    return {
-        data: {
-            resulttype: -100,
-            message: "请求太快了"
-        }
-    }
+}, (error, response) => {
+    //return this.config.cancelData
+    return Promise.reject(error);
 });
 
 
@@ -79,14 +88,14 @@ const postData = function(param) {
         function(resolve, reject) {
             axios.post(getUrl("url"), param).then(function(res) {
                 if (!res) {
-                    reject("请求异常");
+                    reject(new Error("请求异常"));
                 }
                 if ("-201" == res.data.resulttype) {
                     $app.$router.replace("/loginout");
                 }
                 if ("-100" == res.data.resulttype) {
                     console.error(res)
-                    reject((res.data.message));
+                    reject(new Error(res.data.message));
                 } else {
                     resolve(res.data);
                 }
@@ -139,6 +148,7 @@ const getNewID = function(scmName, inc) {
 const call = function(para) {
     let param = {
         tp: "call",
+        "ISCHECKREPEAT": para.ISCHECKREPEAT,
         json: encodeURIComponent(JSON.stringify({ para: para }))
     };
     return postData(param);
