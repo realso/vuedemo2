@@ -369,7 +369,7 @@ const checkNull = function () {
     })
     if (item) {
         if (!isNull(item["AMT"]) && item["AMT"] != 0) {
-            if (isNull(MAIN.getValue("CONTENT"))) {
+            if (isNull(MAIN.getValue("DIFFREMARK"))) {
                 nullFields.push("差异说明");
             }
         }
