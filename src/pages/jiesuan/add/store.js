@@ -368,7 +368,9 @@ const checkNull = function () {
     })
     if (item) {
         if (!isNull(item["AMT"]) && item["AMT"] != 0) {
-            nullFields.push("差异说明");
+            if (isNull(MAIN.getValue("CONTENT"))) {
+                nullFields.push("差异说明");
+            }
         }
     }
     let nullDtsFields = [];
