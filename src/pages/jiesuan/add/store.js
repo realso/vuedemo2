@@ -30,6 +30,7 @@ const storeHelper = new Store01({
     MAINPATH: "MAIN",
     SUBPATH: ["DTS"],
     XULID: "0000051437",
+    OPRTFLOWID:"30307",
     EMPFILED: "MANAGERID"
 });
 
@@ -204,20 +205,20 @@ const mutations = {
             DTS.setValue("AMT", AMT, item);
         });
         //设置主表字段
-        const FILEDITEMS = { "OFFLINEAMT": 107070, "ONLINEAMT": 107069, "DIFFAMT": 107064, "CALAMT": 107063 }
+        const FILEDITEMS = { "OFFLINEAMT": 107070, "ONLINEAMT": 107069, "DIFFAMT": 107064, "FACTAMT": 107063,"CALAMT": 107062}
         Object.keys(FILEDITEMS).forEach(field => {
             let titem = DTS.data.find(item => {
                 return item["ITEMID"] == FILEDITEMS[field];
             })
             let AMT = (titem || {})["AMT"] || 0;
-            MAIN.setValue(field, AMT, titem);
+            MAIN.setValue(field, AMT);
         });
         let OFFLINEAMT = MAIN.getValue("OFFLINEAMT");
         let ONLINEAMT = MAIN.getValue("ONLINEAMT");
         let DIFFAMT = MAIN.getValue("DIFFAMT");
         let OFFLINERATE = parseFloat((parseFloat(OFFLINEAMT) / (parseFloat(OFFLINEAMT) + parseFloat(ONLINEAMT)) * 100).toFixed("1"));
         let ONLINERATE = parseFloat((parseFloat(ONLINEAMT) / (parseFloat(OFFLINEAMT) + parseFloat(ONLINEAMT)) * 100).toFixed("1"));
-        let DIFFRATE = parseFloat((parseFloat(DIFFAMT) / (parseFloat(OFFLINEAMT) + parseFloat(ONLINEAMT)) * 100).toFixed("1"));
+        let DIFFRATE = parseFloat((parseFloat(DIFFAMT) / (parseFloat(OFFLINEAMT) + parseFloat(ONLINEAMT)) * 1000).toFixed("1"));
         MAIN.setValue("OFFLINERATE", OFFLINERATE);
         MAIN.setValue("ONLINERATE", ONLINERATE);
         MAIN.setValue("DIFFRATE", DIFFRATE);
