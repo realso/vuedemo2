@@ -202,7 +202,12 @@ const mutations = {
                     return 0;
                 }
             });
-            DTS.setValue("AMT", AMT, item);
+            //0.00 空  的 显示处理
+            if(item[STLITEMID.ISZERO]=="1"&&item[STLITEMID.ISNULLF]=="0"){
+                DTS.setValue("AMT", AMT, item);
+            }else{
+                DTS.setValue("AMT", AMT!=0?AMT:"", item);
+            }
         });
         //设置主表字段
         const FILEDITEMS = { "OFFLINEAMT": 107070, "ONLINEAMT": 107069, "DIFFAMT": 107064, "FACTAMT": 107063,"CALAMT": 107062}
