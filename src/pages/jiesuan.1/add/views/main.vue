@@ -56,7 +56,9 @@
             @confirm="handleChangeT">
           </rs-datetime>
           <div class="rr-text-right"><rs-button link @click.native="linkUrl('set')">设置项目</rs-button></div>
-          <main_dts v-for="(item) in DTS"   :item="item" :key="item.ENTRYID"/> 
+          <rs-list size="14" noborder>
+            <main_dts v-for="(item) in DTS"   :item="item" :key="item.ENTRYID"/> 
+          </rs-list>
            <div class="rr-list-textarea">
             <textarea rows="3" placeholder="说明" v-model.lazy="REMARK"></textarea>
            </div>
