@@ -202,8 +202,9 @@ const mutations = {
                     return 0;
                 }
             });
+            DTS.setValue("AMT", AMT, item);
             //0.00 空  的 显示处理
-            if(item[STLITEMID.ISZERO]=="1"&&item[STLITEMID.ISNULLF]=="0"){
+            if(item["STLITEMID.ISZERO"]=="1"&&item["STLITEMID.ISNULLF"]=="0"){
                 DTS.setValue("AMT", AMT, item);
             }else{
                 DTS.setValue("AMT", AMT!=0?AMT:"", item);

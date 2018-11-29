@@ -83,7 +83,7 @@ export default {
     main_dts
   },
   computed: {
-    ...mapGetters(["ISSHOWSAVE"]),
+    ...mapGetters(["ISSHOWSAVE","ISSHOWCHECK","ISSHOWRECHECK","ISSHOWDELETE"]),
     ...mapDateTable("MAIN", [
       "BILLCODE",
       "SNODEID.SNODECODE",
