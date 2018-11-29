@@ -48,7 +48,7 @@
           <rs-datetime
             ref="picker2"
             type="date"
-            @confirm="handleChange">
+            v-model="BILLDATE">
           </rs-datetime>
           <rs-datetime
             ref="picker1"
@@ -112,17 +112,6 @@ export default {
     },
     open(picker) {
       this.$refs[picker].open();
-    },
-    formatDate: function(date) {
-      const y = date.getFullYear()
-      let m = date.getMonth() + 1
-      m = m < 10 ? '0' + m : m
-      let d = date.getDate()
-      d = d < 10 ? ('0' + d) : d
-      return y + '-' + m + '-' + d
-    },
-    handleChange(date) {
-      this.BILLDATE = this.formatDate(date);
     },
     handleChangeT:function(date){
       this.FHOUR = date.substring(0, 2)

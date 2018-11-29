@@ -44,11 +44,10 @@
             >
               <label style="width: 80px;display: inline-block;">{{item.EMPCODE}}</label>{{item["EMPNAME"]}}
             </li>
-           <div v-if="allLoaded">
-              我也是有底线的.
-            </div>
           </ul>
-           
+          <div v-if="allLoaded" class="rs-list-nodata">
+            <span>我也是有底线的</span>
+          </div>
         </rs-loadmore>
       </div>
     </div>
@@ -175,5 +174,6 @@ input[type="submit"].is-active:enabled,
   border: none;
   background-color: #f8f8f9;
 }
+
 </style>
 
