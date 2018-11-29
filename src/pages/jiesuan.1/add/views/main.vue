@@ -63,7 +63,7 @@
             <main_dts v-for="(item) in DTS"   :item="item" :key="item.ENTRYID"/> 
           </rs-list>
            <div class="rr-list-textarea">
-            <textarea rows="3" placeholder="说明" v-model.lazy="REMARK"></textarea>
+            <textarea rows="3" placeholder="差异说明" v-model.lazy="DIFFREMARK"></textarea>
            </div>
            <div class="rr-bill-top">
               <div class="rs-flex-row" style="height:33px" v-if="MAKER!=''">
@@ -103,7 +103,7 @@ export default {
   },
   computed: {
       ...mapGetters(["ISSHOWSAVE","ISSHOWDELETE"]),
-      ...mapDateTable("MAIN",['BILLTYPEID','BILLDATE','BILLCODE','SNODEID.SNODECODE',"SNODEID.SNODENAME","MANAGER","REMARK","MAKER","VERIFIER","MAKEDATE","VERIFYDATE","FHOUR","FMINUTE"]),
+      ...mapDateTable("MAIN",['BILLTYPEID','BILLDATE','BILLCODE','SNODEID.SNODECODE',"SNODEID.SNODENAME","MANAGER","DIFFREMARK","MAKER","VERIFIER","MAKEDATE","VERIFYDATE","TALLEER","TALLYDATE","FHOUR","FMINUTE"]),
       ...mapDateTable("DTS",[]),
       ISSHOWWD:function(){
           return this["EMPID"]!="";
