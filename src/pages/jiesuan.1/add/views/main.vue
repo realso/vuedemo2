@@ -48,7 +48,8 @@
           <rs-datetime
             ref="picker2"
             type="date"
-            @confirm="handleChange">
+            v-model.lazy="BILLDATE"
+           >
           </rs-datetime>
           <rs-datetime
             ref="picker1"
@@ -82,7 +83,7 @@
     </div>
 </template>
 <script>
-import {mapGetters,mapDateTable} from "../store"
+import {mapGetters,mapDateTable,Constants} from "../store"
 import { getWeek } from "rs-vcore/utils/Date";
 import main_dts from "./components/main_dts";
 export default {
@@ -130,7 +131,7 @@ export default {
     },
     save:function(){
        this.$indicator.open("");
-       this.$store.dispatch("jiesuan/save").then(()=>{
+       this.$store.dispatch(`${Constants.STORE_NAME}/save`).then(()=>{
          this.$toast("保存成功");
        }).catch((e)=>{
          this.$toast(e.message)
