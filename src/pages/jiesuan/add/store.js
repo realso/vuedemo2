@@ -56,6 +56,7 @@ const getters = {
 const mutations = {
     ...storeHelper.mixMutations(),
     [Constants.M_ADDDEFAULT]: function (state) {
+        debugger;
         //新增默认值
         let MAIN = storeHelper.getTable("MAIN");
         let STLFMITEM = storeHelper.getTable("STLFMITEM");
@@ -315,6 +316,7 @@ const actions = {
         commit(Constants.M_SETSTATE);
     },
     loadCOPYDTS: async function ({ dispatch, commit }) {
+        debugger;
         let MAIN = storeHelper.getTable("MAIN");
         let DSNODEID = MAIN.getValue("SNODEID");
         let STLFMID = MAIN.getValue("STLFMID");
@@ -339,6 +341,7 @@ const actions = {
         }
     },
     setSnode: async function ({ dispatch, commit }, { path, item }) {
+        debugger;
         commit(Constants.M_SETSNODE, { path, item });
         dispatch("loadCOPYDTS");
     },

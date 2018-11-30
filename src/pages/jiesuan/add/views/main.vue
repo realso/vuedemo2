@@ -5,7 +5,7 @@
       <div slot="right">
         <rs-button v-if="ISSHOWCHECK" link @click="check">审核</rs-button>
         <rs-button v-if="ISSHOWRECHECK" link @click="reCheck">撤销审核</rs-button>
-        <rs-button v-if="ISSHOWDELETE" link @click="delete1">删除</rs-button>
+        <rs-button v-if="ISSHOWDELETE" link @click="del">删除</rs-button>
         <rs-button v-if="ISSHOWSAVE" link @click="save">保存</rs-button>
       </div>
     </rs-header>
@@ -31,10 +31,10 @@
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">日 期</span>
             <span>：</span>
-            <div class="rs-flex-item" :class="BILLTYPEID=='分时'?'rr-line-b':''">{{BILLDATE|getWeek}}</div>
+            <div class="rs-flex-item" :class="BILLTYPEID=='109304'?'rr-line-b':''">{{BILLDATE|getWeek}}</div>
           </div>
         </rs-list-item>
-        <rs-list-item noborder isright v-if="BILLTYPEID=='分时'" @click.native="open('picker1')">
+        <rs-list-item noborder isright v-if="BILLTYPEID=='109304'" @click.native="open('picker1')">
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">时 段</span>
             <span>：</span>
@@ -132,24 +132,16 @@ export default {
       this.FMINUTE = date.substring(-1, 2);
     },
     save: function() {
-      this.$store.dispatch("jiesuan/list_save").catch(function(err) {
-        alert(err);
-      });
+      this.$callAction({action:`${Constants.STORE_NAME}/list_save`,successText:"保存成功"});
     },
     check: function() {
-      this.$store.dispatch("jiesuan/check").catch(function(err) {
-        alert(err);
-      });
+      this.$callAction({action:`${Constants.STORE_NAME}/check`,successText:"审核成功"});
     },
     reCheck: function() {
-      this.$store.dispatch("jiesuan/reCheck").catch(function(err) {
-        alert(err);
-      });
+      this.$callAction({action:`${Constants.STORE_NAME}/recheck`,successText:"已撤销审核"});
     },
-    delete1: function() {
-      this.$store.dispatch("jiesuan/delete").catch(function(err) {
-        alert(err);
-      });
+    del: function() {
+      this.$callAction({action:`${Constants.STORE_NAME}/delete`,successText:"删除成功",isSuccessBack:true});
     }
   },
   activated: function() {

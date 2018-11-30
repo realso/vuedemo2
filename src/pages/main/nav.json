@@ -17,6 +17,15 @@
         "query": { "ACTION": "ADD", "BILLTYPEID": "109303", "STLTYPEID": "107066" }
     },
     {
+        "path": "/jiesuan1",
+        "name": "分时结算",
+        "icon": "rr-font rr-jiesuan c-icon-blue",
+        "pcode": "my-score",
+        "isshow": true,
+        "isfixed": true,
+        "query": { "ACTION": "ADD", "BILLTYPEID": "109304", "STLTYPEID": "107067" }
+    },
+    {
         "path": "/dinghuo",
         "name": "订货记录",
         "icon": "rr-font rr-dinghuo c-icon-green",
