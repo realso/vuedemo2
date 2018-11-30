@@ -335,6 +335,7 @@ const actions = {
         let STLFMITEM = storeHelper.getTable("STLFMITEM");
         let STLFMID = STLFMITEM.getValue("STLFMID");
         let MAIN = storeHelper.getTable("MAIN");
+        console.log(MAIN);
         let ret = await service.doLoadSTLFMITE({ STLTYPEID: state.params.STLTYPEID, BILLDATE: MAIN.getValue("BILLDATE") });
         commit(Constants.M_INITDATA, { path: "STLFMITEM", data: (ret.data || {}).items });
         if (STLFMID != STLFMITEM.getValue("STLFMID")) {
