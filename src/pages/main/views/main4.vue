@@ -31,6 +31,9 @@
           </rs-list-item>
         </rs-list>
     </div>
+    <div class="mui-content-padded">
+      <rs-button class="mb10 rr-width-100" type="danger" @click.native="loginOut">退出登录</rs-button>
+    </div>
   </div>
 </template>
 <script>
@@ -40,8 +43,12 @@ export default {
       return {
         selected: '未读'
       }
-    }  
-    
+    }, 
+    methods: {
+      loginOut: function(){
+        this.$router.push('loginout')
+      }
+    }
 }
 </script>
 <style>
