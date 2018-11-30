@@ -72,7 +72,9 @@ export default {
       if (this.$store.getters["user/isLogin"]) {
         await this.$store.dispatch("permission/loadData");
          this.$indicator.close();
-        _this.$router.push("/");
+         setTimeout(()=>{
+          _this.$router.push("/");
+         },200)
       } else {
         this.$indicator.close();
         this.$toast({
