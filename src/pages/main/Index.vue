@@ -23,17 +23,18 @@
 export default {
   data() {
     return {
-      selected: this.$route.name
     };
   },
-  methods: {},
-  watch: {
-    selected(curVal, oldVal) {
-      if (curVal !== oldVal) {
-        this.$router.push(curVal);
+  computed:{
+    selected:{
+      get(){
+        return this.$route.name;
+      },
+      set(v){
+          this.$router.push(v);
       }
-    },
-    immediate: true
-  }
+    }
+  },
+  methods: {}
 };
 </script>
