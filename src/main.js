@@ -9,6 +9,7 @@ import animated from 'animate.css'
 import 'rs-ui1/dist/css/mui.css'
 import '@/assets/css/rrfont.css'
 import '@/assets/css/public.css'
+
 Vue.use(Rui);
 Vue.use(animated);
 Vue.config.productionTip = false
@@ -16,6 +17,23 @@ Vue.config.productionTip = false
 Vue.prototype.isPower = function(code) {
     return !!this.$store.getters.pcode[code];
 }
+
+Vue.prototype.$alert = async function(message, title) {
+    return Rui.MessageBox.alert(message, title);
+}
+
+Vue.prototype.$confirm = async function(message, title) {
+    return Rui.MessageBox.confirm(message, title);
+}
+
+Vue.prototype.$busy = function(options) {
+    return this.$indicator.open(options);
+}
+
+Vue.prototype.$free = function() {
+    return this.$indicator.close();
+}
+
 Vue.prototype.$callAction = function({ action, param, successText, errorText, successCall, errorCall, isBusy, isSuccessBack, isErrorBack, timeOut }) {
     setTimeout(async() => {
         this.$indicator.open();

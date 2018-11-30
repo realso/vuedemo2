@@ -1,6 +1,6 @@
 <template>
     <div class="mui-layout mui-layout-top">
-        <rs-header :title="TITLE" color="primary">
+        <rs-header :title="BILLTYPEID=='109304'?'分时结算':'日结算'" color="primary">
            <a slot="left" @click="$router.goBack()" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
           <div slot="right">
               <rs-button v-if="ISSHOWDELETE" link @click="del">删除</rs-button>
@@ -31,12 +31,12 @@
               <div class="rs-flex-row">
                 <span class="rr-justify rr-width-4em">日 期</span>
                 <span>：</span>
-                <div class="rs-flex-item" :class="BILLTYPEID=='分时'?'rr-line-b':''">
+                <div class="rs-flex-item" :class="BILLTYPEID=='109304'?'rr-line-b':''">
                     {{BILLDATE|getWeek}}
                 </div>
               </div>
             </rs-list-item>
-            <rs-list-item noborder isright v-if="BILLTYPEID=='分日'"  @click.native="open('picker1')">
+            <rs-list-item noborder isright v-if="BILLTYPEID=='109304'"  @click.native="open('picker1')">
               <div class="rs-flex-row">
                 <span class="rr-justify rr-width-4em">时 段</span>
                 <span>：</span>
@@ -55,9 +55,11 @@
             >
           </rs-datetime>
           <rs-datetime
+          v-if="BILLTYPEID=='109304'"
            key="jiesuan1.2"
             ref="picker1"
             type="time"
+            v-model.lazy="DEADLINE"
             @confirm="handleChangeT">
           </rs-datetime>
           <div class="rr-text-right"><rs-button link @click.native="linkUrl('set')">设置项目</rs-button></div>
@@ -119,7 +121,7 @@ export default {
   },
   computed: {
       ...mapGetters(["ISSHOWSAVE","ISSHOWDELETE"]),
-      ...mapDateTable("MAIN",['BILLTYPEID','BILLDATE','BILLCODE','SNODEID.SNODECODE',"SNODEID.SNODENAME","MANAGER","DIFFREMARK","MAKER","VERIFIER","MAKEDATE","VERIFYDATE","TALLIER","TALLYDATE","FHOUR","FMINUTE"]),
+      ...mapDateTable("MAIN",['BILLTYPEID','BILLDATE','BILLCODE','SNODEID.SNODECODE',"SNODEID.SNODENAME","MANAGER","DIFFREMARK","MAKER","VERIFIER","MAKEDATE","VERIFYDATE","TALLIER","TALLYDATE","FHOUR","FMINUTE","DEADLINE"]),
       ...mapDateTable("DTS",[])
   },
   methods: {
@@ -139,7 +141,8 @@ export default {
     save(){
        this.$callAction({action:`${Constants.STORE_NAME}/mySave`,successText:"保存成功"});
     },
-    del(){
+    async del(){
+       await this.$confirm("确认删除？");
        this.$callAction({action:`${Constants.STORE_NAME}/delete`,successText:"删除成功",isSuccessBack:true});
     }
   },
