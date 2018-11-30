@@ -45,10 +45,10 @@
             >
                 <label style="width: 80px;display: inline-block;">{{item.SNODECODE}}</label>{{item["SNODENAME"]}}
             </li>
-            <div v-if="allLoaded"  class="rs-list-nodata">
+          </ul>
+           <div v-if="allLoaded"  class="rs-list-nodata">
               <span>没有数据啦</span>
             </div>
-          </ul>
         </rs-loadmore>
       </div>
     </div>
