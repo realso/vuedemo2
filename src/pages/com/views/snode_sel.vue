@@ -46,7 +46,7 @@
                 <label style="width: 80px;display: inline-block;">{{item.SNODECODE}}</label>{{item["SNODENAME"]}}
             </li>
             <div v-if="allLoaded"  class="rs-list-nodata">
-              我也是有底线的.
+              我也是有底线的. 
             </div>
           </ul>
         </rs-loadmore>
