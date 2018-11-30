@@ -13,11 +13,9 @@ routes.push(MainRouter);
 routes.push(T404);
 routes.push(JieSuanRouter);
 routes.push(JieSuanRouter1);
-console.log(routes)
 const router = new Router({
     routes: routes
 });
-console.log(router)
 router.beforeEach((to, from, next) => {
     if (!to.matched || to.matched.length == 0) {
         next({ path: "/404" });
