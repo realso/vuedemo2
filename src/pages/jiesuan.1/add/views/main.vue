@@ -36,7 +36,7 @@
                 </div>
               </div>
             </rs-list-item>
-            <rs-list-item noborder isright v-if="BILLTYPEID=='分时'"  @click.native="open('picker1')">
+            <rs-list-item noborder isright v-if="BILLTYPEID=='分日'"  @click.native="open('picker1')">
               <div class="rs-flex-row">
                 <span class="rr-justify rr-width-4em">时 段</span>
                 <span>：</span>
@@ -56,7 +56,6 @@
           </rs-datetime>
           <rs-datetime
            key="jiesuan1.2"
-            v-if="BILLTYPEID=='分时'"
             ref="picker1"
             type="time"
             @confirm="handleChangeT">

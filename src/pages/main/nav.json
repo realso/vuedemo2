@@ -17,7 +17,7 @@
         "query": { "ACTION": "ADD", "BILLTYPEID": "109303", "STLTYPEID": "107066" }
     },
     {
-        "path": "/jiesuan1",
+        "path": "/jiesuan",
         "name": "分时结算",
         "icon": "rr-font rr-jiesuan c-icon-blue",
         "pcode": "my-score",
