@@ -3,7 +3,8 @@
         <rs-header :title="TITLE" color="primary">
            <a slot="left" @click="$router.goBack()" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
           <div slot="right">
-            <rs-button v-if="ISSHOWSAVE" link @click="save">保存</rs-button>
+              <rs-button v-if="ISSHOWDELETE" link @click="del">删除</rs-button>
+              <rs-button v-if="ISSHOWSAVE" link @click="save">保存</rs-button>
           </div>
         </rs-header>
         <div class="mui-content">
@@ -48,7 +49,9 @@
           <rs-datetime
             ref="picker2"
             type="date"
-            v-model.lazy="BILLDATE">
+            v-model.lazy="BILLDATE"
+             @confirm="handleChangeD"
+            >
           </rs-datetime>
           <rs-datetime
             ref="picker1"
@@ -60,7 +63,7 @@
             <main_dts v-for="(item) in DTS"   :item="item" :key="item.ENTRYID"/> 
           </rs-list>
            <div class="rr-list-textarea">
-            <textarea rows="3" placeholder="说明" v-model.lazy="REMARK"></textarea>
+            <textarea rows="3" placeholder="差异说明" v-model.lazy="DIFFREMARK"></textarea>
            </div>
            <div class="rr-bill-top">
               <div class="rs-flex-row" style="height:33px" v-if="MAKER!=''">
@@ -99,8 +102,8 @@ export default {
     main_dts
   },
   computed: {
-      ...mapGetters(["ISSHOWSAVE"]),
-      ...mapDateTable("MAIN",['BILLTYPEID','BILLDATE','BILLCODE','SNODEID.SNODECODE',"SNODEID.SNODENAME","MANAGER","REMARK","MAKER","VERIFIER","MAKEDATE","VERIFYDATE","FHOUR","FMINUTE"]),
+      ...mapGetters(["ISSHOWSAVE","ISSHOWDELETE"]),
+      ...mapDateTable("MAIN",['BILLTYPEID','BILLDATE','BILLCODE','SNODEID.SNODECODE',"SNODEID.SNODENAME","MANAGER","DIFFREMARK","MAKER","VERIFIER","MAKEDATE","VERIFYDATE","TALLEER","TALLYDATE","FHOUR","FMINUTE"]),
       ...mapDateTable("DTS",[]),
       ISSHOWWD:function(){
           return this["EMPID"]!="";
@@ -113,19 +116,18 @@ export default {
     open(picker) {
       this.$refs[picker].open();
     },
+    handleChangeD:function(){
+      this.$callAction({action:`${Constants.STORE_NAME}/loadSTLFMITE`});
+    },
     handleChangeT:function(date){
       this.FHOUR = date.substring(0, 2)
       this.FMINUTE = date.substring(-1, 2)
     },
-    save:function(){
-       this.$indicator.open("");
-       this.$store.dispatch(`${Constants.STORE_NAME}/save`).then(()=>{
-         this.$toast("保存成功");
-       }).catch((e)=>{
-         this.$toast(e.message)
-       }).then(()=>{
-          this.$indicator.close("");
-       });
+    save(){
+       this.$callAction({action:`${Constants.STORE_NAME}/mySave`,successText:"保存成功"});
+    },
+    del(){
+       this.$callAction({action:`${Constants.STORE_NAME}/delete`,successText:"删除成功",isSuccessBack:true});
     }
   },
   activated: function() {

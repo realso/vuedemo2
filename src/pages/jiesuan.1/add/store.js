@@ -3,7 +3,7 @@ import { createNamespacedHelpers } from 'vuex'
 import service from "../service";
 import { Store01, Constants as SConstants } from "rs-vcore/store/Store01";
 import { dateToString } from "rs-vcore/utils/Date";
-import { execFormula } from "rs-vcore/utils/String";
+import { execFormula, isNull } from "rs-vcore/utils/String";
 
 const Constants = Object.assign(SConstants, {
     STORE_NAME: "jiesuan1",
@@ -334,8 +334,9 @@ const actions = {
     loadSTLFMITE: async function({ dispatch, commit, state }) {
         let STLFMITEM = storeHelper.getTable("STLFMITEM");
         let STLFMID = STLFMITEM.getValue("STLFMID");
-        let ret = await service.doLoadSTLFMITE({ STLTYPEID: state.params.STLTYPEID });
-        commit(Constants.M_BATCHSETDATA, ret.data);
+        let MAIN = storeHelper.getTable("MAIN");
+        let ret = await service.doLoadSTLFMITE({ STLTYPEID: state.params.STLTYPEID, BILLDATE: MAIN.getValue("BILLDATE") });
+        commit(Constants.M_INITDATA, { path: "STLFMITEM", data: (ret.data || {}).items });
         if (STLFMID != STLFMITEM.getValue("STLFMID")) {
             dispatch("loadCOPYDTS");
         }
@@ -350,9 +351,68 @@ const actions = {
         commit(Constants.M_SETDTS04);
         commit(Constants.M_SETDTS05);
         commit(Constants.M_SETAMT);
+    },
+    mySave: async function({ dispatch, commit }) {
+        await getPromise(checkNull);
+        await dispatch("save");
     }
 }
+const checkNull = function() {
+    //主表：“经营门店,日期,店长,单据号,<差异说明>，不可空！”
+    //明细：值域的合法性    vs 可正数(否)、可0(否)、可空(否)、可负数(否)
+    let MAIN = storeHelper.getTable("MAIN");
+    let DTS = storeHelper.getTable("DTS");
+    let nullFields = [];
+    if (isNull(MAIN.getValue("SNODEID"))) {
+        nullFields.push("经营门店");
+    }
+    if (isNull(MAIN.getValue("BILLDATE"))) {
+        nullFields.push("日期");
+    }
+    if (isNull(MAIN.getValue("MANAGERID"))) {
+        nullFields.push("店长");
+    }
+    let item = DTS.data.find(item => {
+        return item["ITEMID.PARANAME"] == "差异"
+    })
+    if (item) {
+        if (!isNull(item["AMT"]) && item["AMT"] != 0) {
+            if (isNull(MAIN.getValue("DIFFREMARK"))) {
+                nullFields.push("差异说明");
+            }
+        }
+    }
+    let nullDtsFields = [];
+    DTS.data.forEach(item => {
+        let AMT = item["AMT"];
+        let STLITEMID_ISPN = item["STLITEMID.ISPN"];
+        let STLITEMID_ISNULLF = item["STLITEMID.ISNULLF"]
+        let STLITEMID_ISZERO = item["STLITEMID.ISZERO"];
+        let STLITEMID_ISNN = item["STLITEMID.ISNN"];
+        if ((STLITEMID_ISPN == 0 && AMT > 0) || (STLITEMID_ISNULLF == 0 && isNull(AMT)) || (STLITEMID_ISZERO == 0 && AMT == 0) || (STLITEMID_ISNN == 0 && AMT < 0)) {
 
+        }
+        if (STLITEMID_ISPN == 0 && AMT > 0) {
+            nullDtsFields.push("\n" + item["ITEMID.PARANAME"] + "金额不可大于零");
+        }
+        if (STLITEMID_ISNULLF == 0 && isNull(AMT)) {
+            nullDtsFields.push("\n" + item["ITEMID.PARANAME"] + "金额不可为空");
+        }
+        if (STLITEMID_ISZERO == 0 && AMT == "0") {
+            nullDtsFields.push("\n" + item["ITEMID.PARANAME"] + "金额不可为零");
+        }
+        if (STLITEMID_ISNN == 0 && AMT < 0) {
+            nullDtsFields.push("\n" + item["ITEMID.PARANAME"] + "金额不可小于零");
+        }
+    });
+
+    if (nullFields.length > 0 || nullDtsFields.length > 0) {
+        if (nullFields.length > 0) {
+            throw new Error(nullFields.join(',') + " 空," + nullDtsFields.join(',') + " \n不可保存");
+        }
+        throw new Error(nullDtsFields.join(',') + " \n不可保存");
+    }
+}
 
 Store.registerModule(Constants.STORE_NAME, {
     namespaced: true,

@@ -14,9 +14,41 @@ Vue.use(animated);
 Vue.config.productionTip = false
 
 Vue.prototype.isPower = function(code) {
-        return !!this.$store.getters.pcode[code];
-    }
-    /* eslint-disable no-new */
+    return !!this.$store.getters.pcode[code];
+}
+Vue.prototype.$callAction = function({ action, param, successText, errorText, successCall, errorCall, isBusy, isSuccessBack, isErrorBack, timeOut }) {
+    setTimeout(async() => {
+        this.$indicator.open();
+        this.$store
+            .dispatch(action, param)
+            .then(() => {
+                this.$indicator.close();
+                if (successText) {
+                    this.$toast({
+                        message: successText,
+                        position: "bottom"
+                    });
+                }
+                if (successCall) {
+                    successCall();
+                }
+                if (isSuccessBack)
+                    this.$router.goBack();
+            })
+            .catch(e => {
+                this.$indicator.close();
+                this.$toast({
+                    message: errorText || e.message || "加载失败",
+                    position: "bottom"
+                });
+                if (errorCall) {
+                    errorCall();
+                }
+                if (isErrorBack)
+                    this.$router.goBack();
+            });
+    }, timeOut || 0);
+}
 window.$app = new Vue({
     el: '#app',
     router,
