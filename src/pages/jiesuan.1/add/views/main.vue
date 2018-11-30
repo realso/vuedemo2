@@ -54,6 +54,7 @@
             >
           </rs-datetime>
           <rs-datetime
+            v-if="BILLTYPEID=='分时'"
             ref="picker1"
             type="time"
             @confirm="handleChangeT">
@@ -66,7 +67,7 @@
             <textarea rows="3" placeholder="差异说明" v-model.lazy="DIFFREMARK"></textarea>
            </div>
            <div class="rr-bill-top">
-             <div class="rs-flex-row" style="height:33px" v-if="MAKER!=''">
+             <div class="rs-flex-row" style="height:33px" v-if="BILLCODE!=''">
                   <span class="rr-justify rr-width-4em">单据号</span>
                   <span>：</span>
                   <div class="rs-flex-item">
