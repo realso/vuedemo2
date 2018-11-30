@@ -73,10 +73,6 @@ export default {
         await this.$store.dispatch("permission/loadData");
         _this.$router.push("/");
         this.$indicator.close();
-        this.$toast({
-          message: "登陆成功",
-          position: "bottom"
-        });
       } else {
         this.$indicator.close();
         this.$toast({
