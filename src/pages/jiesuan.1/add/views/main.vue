@@ -47,6 +47,7 @@
             </rs-list-item>
           </rs-list> 
           <rs-datetime
+            key="jiesuan1.1"
             ref="picker2"
             type="date"
             v-model.lazy="BILLDATE"
@@ -54,6 +55,8 @@
             >
           </rs-datetime>
           <rs-datetime
+           key="jiesuan1.2"
+            v-if="BILLTYPEID=='分时'"
             ref="picker1"
             type="time"
             @confirm="handleChangeT">
@@ -66,6 +69,13 @@
             <textarea rows="3" placeholder="差异说明" v-model.lazy="DIFFREMARK"></textarea>
            </div>
            <div class="rr-bill-top">
+             <div class="rs-flex-row" style="height:33px" v-if="BILLCODE!=''">
+                  <span class="rr-justify rr-width-4em">单据号</span>
+                  <span>：</span>
+                  <div class="rs-flex-item">
+                      {{BILLCODE}}
+                  </div>
+              </div>
               <div class="rs-flex-row" style="height:33px" v-if="MAKER!=''">
                   <span class="rr-justify rr-width-4em">制 单</span>
                   <span>：</span>
@@ -78,6 +88,13 @@
                   <span>：</span>
                   <div class="rs-flex-item">
                        {{VERIFIER}} {{VERIFYDATE}}
+                  </div>
+              </div>
+              <div class="rs-flex-row" style="height:33px;" v-if="TALLIER!=''">
+                  <span class="rr-justify rr-width-4em">记 账</span>
+                  <span>：</span>
+                  <div class="rs-flex-item">
+                       {{TALLIER}} {{TALLYDATE}}
                   </div>
               </div>
           </div>
@@ -103,11 +120,8 @@ export default {
   },
   computed: {
       ...mapGetters(["ISSHOWSAVE","ISSHOWDELETE"]),
-      ...mapDateTable("MAIN",['BILLTYPEID','BILLDATE','BILLCODE','SNODEID.SNODECODE',"SNODEID.SNODENAME","MANAGER","DIFFREMARK","MAKER","VERIFIER","MAKEDATE","VERIFYDATE","TALLEER","TALLYDATE","FHOUR","FMINUTE"]),
-      ...mapDateTable("DTS",[]),
-      ISSHOWWD:function(){
-          return this["EMPID"]!="";
-      }
+      ...mapDateTable("MAIN",['BILLTYPEID','BILLDATE','BILLCODE','SNODEID.SNODECODE',"SNODEID.SNODENAME","MANAGER","DIFFREMARK","MAKER","VERIFIER","MAKEDATE","VERIFYDATE","TALLIER","TALLYDATE","FHOUR","FMINUTE"]),
+      ...mapDateTable("DTS",[])
   },
   methods: {
     linkUrl: function(url) {

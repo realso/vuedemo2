@@ -1,19 +1,47 @@
 <template>
-  <div id="login" selected="true">
-    <div class="rs-login" id="rs-login">
+  <div
+    id="login"
+    selected="true"
+  >
+    <div
+      class="rs-login"
+      id="rs-login"
+    >
       <div class="rs-login-logo">
-        <img src="@/assets/logo.png" alt="" />
+        <img
+          src="@/assets/logo.png"
+          alt=""
+        />
       </div>
-      <form id='login-form' class="mui-input-group">
+      <form
+        id='login-form'
+        class="mui-input-group"
+      >
         <div class="mui-input-row">
-          <input type="text" v-model="form_email" id="main.form_email" class="mui-input-clear mui-input" placeholder="请输入账号">
+          <input
+            type="text"
+            v-model="form_email"
+            id="main.form_email"
+            class="mui-input-clear mui-input"
+            placeholder="请输入账号"
+          >
         </div>
         <div class="mui-input-row">
-          <input id='password' type="password" @focus="fouce()" v-model="form_password" class="mui-input-clear mui-input" placeholder="请输入密码">
+          <input
+            id='password'
+            type="password"
+            @focus="fouce()"
+            v-model="form_password"
+            class="mui-input-clear mui-input"
+            placeholder="请输入密码"
+          >
         </div>
       </form>
       <div class="rs-login-bottom">
-        <rs-button size="normal" @click="doLogin">登录</rs-button>
+        <rs-button
+          size="normal"
+          @click="doLogin"
+        >登录</rs-button>
       </div>
     </div>
   </div>
@@ -35,17 +63,24 @@ export default {
   methods: {
     doLogin: async function() {
       let _this = this;
+      this.$indicator.open();
       await this.$store.dispatch("user/login", {
         form_email: this.form_email,
         form_password: this.form_password,
         guid: this.getGuidGenerator()
       });
-      
       if (this.$store.getters["user/isLogin"]) {
         await this.$store.dispatch("permission/loadData");
-        _this.$router.push("/");
+         this.$indicator.close();
+         setTimeout(()=>{
+          _this.$router.push("/");
+         },200)
       } else {
-        alert(this.$store.state.user.ERRMESSAGE);
+        this.$indicator.close();
+        this.$toast({
+          message: this.$store.state.user.ERRMESSAGE,
+          position: "bottom"
+        });
       }
     },
     getGuidGenerator: function() {
@@ -67,8 +102,8 @@ export default {
         S4()
       );
     },
-    fouce: function(){
-      document.getElementById("rs-login").style.marginTop='-260px'
+    fouce: function() {
+      document.getElementById("rs-login").style.marginTop = "-260px";
     }
   }
 };

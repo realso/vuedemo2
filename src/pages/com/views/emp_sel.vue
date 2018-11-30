@@ -46,7 +46,7 @@
             </li>
           </ul>
           <div v-if="allLoaded" class="rs-list-nodata">
-            <span>我也是有底线的</span>
+            <span>没有数据啦</span>
           </div>
         </rs-loadmore>
       </div>
