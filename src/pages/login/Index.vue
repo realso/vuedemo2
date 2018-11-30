@@ -1,6 +1,6 @@
 <template>
   <div id="login" selected="true">
-    <div class="rs-login">
+    <div class="rs-login" id="rs-login">
       <div class="rs-login-logo">
         <img src="@/assets/logo.png" alt="" />
       </div>
@@ -9,10 +9,10 @@
           <input type="text" v-model="form_email" id="main.form_email" class="mui-input-clear mui-input" placeholder="请输入账号">
         </div>
         <div class="mui-input-row">
-          <input id='password' type="password" v-model="form_password" class="mui-input-clear mui-input" placeholder="请输入密码">
+          <input id='password' type="password" @focus="fouce()" v-model="form_password" class="mui-input-clear mui-input" placeholder="请输入密码">
         </div>
       </form>
-      <div class="mui-content-padded">
+      <div class="rs-login-bottom">
         <rs-button size="normal" @click="doLogin">登录</rs-button>
       </div>
     </div>
@@ -66,6 +66,9 @@ export default {
         S4() +
         S4()
       );
+    },
+    fouce: function(){
+      document.getElementById("rs-login").style.marginTop='-260px'
     }
   }
 };
@@ -80,11 +83,10 @@ export default {
   width: 100%;
   position: absolute;
   top: 50%;
-  margin-top: -190px;
+  margin-top: -200px;
 }
 .rs-login-logo {
   width: 50%;
-  padding: 15px 0;
   margin: 0 auto;
 }
 .rs-login-logo img {
@@ -112,7 +114,7 @@ export default {
 .mui-input-group .mui-input-row {
   margin-bottom: 10px;
 }
-.mui-content-padded {
+.rs-login-bottom {
   margin: 10px auto;
   width: 80%;
 }

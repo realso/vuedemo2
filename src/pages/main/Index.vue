@@ -32,7 +32,8 @@ export default {
       if (curVal !== oldVal) {
         this.$router.push(curVal);
       }
-    }
+    },
+    immediate: true
   }
 };
 </script>
