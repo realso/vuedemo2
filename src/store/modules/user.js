@@ -2,7 +2,10 @@ import {
     login
 } from "@/api/user"
 const state = {
-    userInfo: {}
+    userInfo: {},
+    form_email: "",
+    form_password: "",
+    form_recordPass: true
 }
 const mutations = {
     "INIT_DATA": function(state) {

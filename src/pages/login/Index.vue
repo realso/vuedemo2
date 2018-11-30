@@ -24,9 +24,9 @@ export default {
   name: "login",
   data() {
     return {
-      form_email: "wh",
-      form_password: "123456@s",
-      form_recordPass: true
+      form_email: this.$store.state.user.form_email,
+      form_password: this.$store.state.user.form_password,
+      form_recordPass: this.$store.state.user.form_recordPass
     };
   },
   computed: {},
