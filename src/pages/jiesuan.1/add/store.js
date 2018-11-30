@@ -5,7 +5,7 @@ import { Store01, Constants as SConstants } from "rs-vcore/store/Store01";
 import { dateToString } from "rs-vcore/utils/Date";
 import { execFormula, isNull } from "rs-vcore/utils/String";
 
-const Constants = Object.assign(SConstants, {
+const Constants = Object.assign({}, SConstants, {
     STORE_NAME: "jiesuan1",
     M_ADDDEFAULT: "addDefault",
     M_SETDTS01: "setDts01",

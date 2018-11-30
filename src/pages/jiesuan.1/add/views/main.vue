@@ -47,6 +47,7 @@
             </rs-list-item>
           </rs-list> 
           <rs-datetime
+            key="jiesuan1.1"
             ref="picker2"
             type="date"
             v-model.lazy="BILLDATE"
@@ -54,6 +55,7 @@
             >
           </rs-datetime>
           <rs-datetime
+           key="jiesuan1.2"
             v-if="BILLTYPEID=='分时'"
             ref="picker1"
             type="time"
