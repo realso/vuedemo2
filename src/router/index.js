@@ -19,6 +19,11 @@ const router = new Router({
 });
 console.log(router)
 router.beforeEach((to, from, next) => {
+    if (!to.matched || to.matched.length == 0) {
+        next({ path: "/404" });
+        return;
+    }
+
     if (["login", "404", "503"].indexOf(to.name) != -1 || Store.getters["user/isLogin"]) {
         next();
     } else {
