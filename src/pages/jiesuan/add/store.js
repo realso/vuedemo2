@@ -328,10 +328,12 @@ const actions = {
         commit(Constants.M_SETAMT);
     },
     loadSTLFMITE: async function ({ dispatch, commit, state }) {
+        debugger;
         let STLFMITEM = storeHelper.getTable("STLFMITEM");
         let STLFMID = STLFMITEM.getValue("STLFMID");
-        let ret = await service.doLoadSTLFMITE({ STLTYPEID: state.params.STLTYPEID });
-        commit(Constants.M_BATCHSETDATA, ret.data);
+        let MAIN = storeHelper.getTable("MAIN");
+        let ret = await service.doLoadSTLFMITE({ STLTYPEID: state.params.STLTYPEID ,BILLDATE: MAIN.getValue("BILLDATE")  });
+        commit(Constants.M_INITDATA, { path: "STLFMITEM", data: (ret.data || {}).items });
         if (STLFMID != STLFMITEM.getValue("STLFMID")) {
             dispatch("loadCOPYDTS");
         }

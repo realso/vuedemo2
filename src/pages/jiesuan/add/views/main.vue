@@ -46,7 +46,7 @@
           </div>
         </rs-list-item>
       </rs-list>
-      <rs-datetime ref="picker2" type="date" v-model.lazy="BILLDATE"></rs-datetime>
+      <rs-datetime ref="picker2" type="date" v-model.lazy="BILLDATE" @confirm="handleChangeD"></rs-datetime>
       <rs-datetime ref="picker1" type="time" @confirm="handleChangeT"></rs-datetime>
       <div class="rr-text-right">
         <rs-button link @click.native="linkUrl('set')">设置项目</rs-button>
@@ -73,7 +73,7 @@
   </div>
 </template>
 <script>
-import { mapGetters, mapDateTable } from "../store";
+import { mapGetters, mapDateTable,Constants } from "../store";
 import { getWeek } from "rs-vcore/utils/Date";
 import main_dts from "./components/main_dts";
 export default {
@@ -97,6 +97,7 @@ export default {
       "ISSHOWDELETE"
     ]),
     ...mapDateTable("MAIN", [
+      "BILLTYPEID",
       "BILLDATE",
       "BILLCODE",
       "SNODEID.SNODECODE",
@@ -122,6 +123,9 @@ export default {
     },
     open(picker) {
       this.$refs[picker].open();
+    },
+    handleChangeD: function() {
+      this.$callAction({ action: `${Constants.STORE_NAME}/loadSTLFMITE` });
     },
     handleChangeT: function(date) {
       this.FHOUR = date.substring(0, 2);
@@ -150,6 +154,11 @@ export default {
   },
   activated: function() {
     console.log("%c" + this.$route.path, "color:red");
+  },
+  filters: {
+    getWeek(value) {
+      return value ? value + " " + getWeek(value) : "";
+    }
   }
 };
 </script>
