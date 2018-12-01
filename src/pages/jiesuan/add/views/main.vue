@@ -31,31 +31,30 @@
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">日 期</span>
             <span>：</span>
-            <div class="rs-flex-item" :class="BILLTYPEID=='109304'?'rr-line-b':''">{{BILLDATE|getWeek}}</div>
+            <div class="rs-flex-item" :class="ISTIME?'rr-line-b':''">{{BILLDATE|getWeek}}</div>
           </div>
         </rs-list-item>
-        <rs-list-item noborder isright v-if="BILLTYPEID=='109304'" @click.native="open('picker1')">
+        <rs-list-item noborder isright v-if="ISTIME" @click.native="open('picker1')">
           <div class="rs-flex-row">
-            <span class="rr-justify rr-width-4em">时 段</span>
+            <span class="rr-justify rr-width-4em">截 止 时 间</span>
             <span>：</span>
             <div class="rs-flex-item">
-              {{FHOUR}}
-              <span v-if="FMINUTE!=''">:</span>
-              {{FMINUTE}}
+               {{DEADLINE}}
             </div>
           </div>
         </rs-list-item>
       </rs-list>
-      <rs-datetime ref="picker2" type="date" v-model.lazy="BILLDATE" @confirm="handleChangeD"></rs-datetime>
+      <rs-datetime key="jiesuan.2" ref="picker2" type="date" v-model.lazy="BILLDATE" @confirm="handleChangeD"></rs-datetime>
+      <rs-datetime key="jiesuan.1" ref="picker1" type="time" v-model.lazy="DEADLINE" ></rs-datetime>
       <div class="rr-text-right">
         <rs-button link @click.native="linkUrl('set')">设置项目</rs-button>
       </div>
-       <rs-datetime ref="picker1" type="time" @confirm="handleChangeT"></rs-datetime>
+      
       <rs-list size="14" noborder>
         <main_dts v-for="(item) in DTS" :item="item" :key="item.ENTRYID"/>
       </rs-list>
       <div class="rr-list-textarea">
-        <textarea rows="3" placeholder="差异说明" v-model.lazy="DIFFREMARK"></textarea>
+        <textarea v-if="!ISTIME" rows="3" placeholder="差异说明" v-model.lazy="DIFFREMARK"></textarea>
       </div>
       <div class="rr-bill-top">
         <div class="rs-flex-row" style="height:33px" v-if="MAKER!=''">
@@ -94,7 +93,9 @@ export default {
       "ISSHOWSAVE",
       "ISSHOWCHECK",
       "ISSHOWRECHECK",
-      "ISSHOWDELETE"
+      "ISSHOWDELETE",
+      "TITLE",
+      "ISTIME"
     ]),
     ...mapDateTable("MAIN", [
       "BILLTYPEID",
@@ -109,6 +110,7 @@ export default {
       "VERIFIER",
       "MAKEDATE",
       "VERIFYDATE",
+      "DEADLINE",
       "FHOUR",
       "FMINUTE"
     ]),
@@ -131,21 +133,27 @@ export default {
       this.FHOUR = date.substring(0, 2);
       this.FMINUTE = date.substring(-1, 2);
     },
-    save: function() {
+    save() {
       this.$callAction({action:`${Constants.STORE_NAME}/list_save`,successText:"保存成功"});
     },
-    check: function() {
+    check() {
       this.$callAction({action:`${Constants.STORE_NAME}/check`,successText:"审核成功"});
     },
-    reCheck: function() {
+    reCheck() {
       this.$callAction({action:`${Constants.STORE_NAME}/recheck`,successText:"已撤销审核"});
     },
-    del: function() {
+    async del() {
+      await this.$confirm("确认删除？");
       this.$callAction({action:`${Constants.STORE_NAME}/delete`,successText:"删除成功",isSuccessBack:true});
     }
   },
   activated: function() {
     console.log("%c" + this.$route.path, "color:red");
+  },
+  watch:{
+    "DEADLINE":function(){
+       this.$store.commit(`${Constants.STORE_NAME}/setTime`);
+    }
   },
   filters: {
     getWeek(value) {
