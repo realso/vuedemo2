@@ -39,9 +39,7 @@
             <span class="rr-justify rr-width-4em">截 止 时 间</span>
             <span>：</span>
             <div class="rs-flex-item">
-              {{FHOUR}}
-              <span v-if="FMINUTE!=''">:</span>
-              {{FMINUTE}}
+               {{DEADLINE}}
             </div>
           </div>
         </rs-list-item>
@@ -154,8 +152,7 @@ export default {
   },
   watch:{
     "DEADLINE":function(){
-      debugger;
-       this.$store.commit(`${Constants.STORE_NAME}/setTIME`);
+       this.$store.commit(`${Constants.STORE_NAME}/setTime`);
     }
   },
   filters: {

@@ -2,7 +2,7 @@ import Store from "@/store"
 import { createNamespacedHelpers } from 'vuex'
 import service from "../service";
 import { Store01, Constants as SConstants } from "rs-vcore/store/Store01";
-import { dateToString } from "rs-vcore/utils/Date";
+import { dateToString,getTime } from "rs-vcore/utils/Date";
 import { execFormula } from "rs-vcore/utils/String";
 import { getPromise } from "rs-vcore/utils/Promise";
 import { isNull } from "rs-vcore/utils/String";
@@ -89,6 +89,9 @@ const mutations = {
         MAIN.setValue("BILLDATE", dateToString(new Date()));
         MAIN.setValue("STLFMID", STLFMITEM.getValue("STLFMID"));
         MAIN.setValue("STLFMCODE", STLFMITEM.getValue("STLFMCODE"));
+        if (this.getters[Constants.STORE_NAME + "/ISTIME"]) {
+            MAIN.setValue("DEADLINE", getTime(new Date()));
+        }
     },
     [Constants.M_SETDTS01]: function(state) {
         //加载 结算模板.所有 结算项目 判断 处理方式
@@ -268,8 +271,9 @@ const mutations = {
     },
     [Constants.M_SETTIME]:function(date){
         const MAIN = storeHelper.getTable("MAIN");
-        MAIN.setValue("FHOUR", date.substring(0, 2));
-        MAIN.setValue("FMINUTE", date.substring(-1, 2));
+        let DEADLINE = MAIN.getValue("DEADLINE");
+        MAIN.setValue("FHOUR", DEADLINE.split(':')[0]);
+        MAIN.setValue("FMINUTE", DEADLINE.split(':')[1]);
     },
     [Constants.M_SETSETDTS]: function(state) {
         let DTS = storeHelper.getTable("DTS");
