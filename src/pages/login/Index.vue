@@ -73,7 +73,7 @@ export default {
         await this.$store.dispatch("permission/loadData");
          this.$indicator.close();
          setTimeout(()=>{
-          _this.$router.push("/");
+          _this.$router.replace("/");
          },200)
       } else {
         this.$indicator.close();

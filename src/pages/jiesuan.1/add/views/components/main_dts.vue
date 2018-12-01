@@ -62,7 +62,7 @@ export default {
 .rs-listItem{min-height: 32px;}
 .rs-listItem.rr-border{position: relative}
 .rs-listItem.rr-border:after{position: absolute;content: ""; height: 1px; bottom: 5px;left: 15px; right: 15px; background: #000}
-.rr-weight{font-weight: 600;}
+.rr-weight{font-weight: bold;}
 .rs-listItem{ padding: 8px 15px 7px 15px;}
 .rs-numInput-input{position: absolute; top: 0; width: 100%; border: none; height: 100%; padding: 0; text-align: right; font-size: 14px;margin: 0;}
 </style>

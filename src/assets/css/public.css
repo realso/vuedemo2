@@ -12,6 +12,7 @@
 .c-fff{ color: #fff;}
 .c-000{ color: #000;}
 .c-333{ color: #333;}
+.c-999{ color: #999;}
 /*字体*/
 .f10{ font-size: 10px;}
 .f11{ font-size: 11px;}
@@ -37,6 +38,7 @@
 .rr-width-4em{ width: 4em;}
 .rr-width-5em{ width: 5em;}
 .rr-width-100{ width: 100%}
+.rr-img-block{ display: block;width: 100%}
 .rr-justify{
 	height: 33px; line-height: 33px;
 	display: inline-block;
@@ -74,5 +76,5 @@
 .rs-list-nodata{position: relative; font-size: 12px; text-align: center; padding: 8px;}
 .rs-list-nodata span{ padding: 0 10px; background: #efeff4;position: relative;z-index: 99;}
 .rs-list-nodata::before{position: absolute; content: ""; height: 1px; top: 50%; left: 10%; width: 80%; background: #ccc}
-
+.rs-loadmore-text{font-size: 14px;}
 
