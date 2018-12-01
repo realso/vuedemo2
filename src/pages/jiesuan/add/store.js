@@ -8,7 +8,7 @@ import { getPromise } from "rs-vcore/utils/Promise";
 import { isNull } from "rs-vcore/utils/String";
 import { throws } from "assert";
 
-const Constants = Object.assign(SConstants, {
+const Constants = Object.assign({}, SConstants, {
     STORE_NAME: "jiesuan",
     M_ADDDEFAULT: "addDefault",
     M_SETDTS01: "setDts01",
@@ -30,7 +30,7 @@ const storeHelper = new Store01({
     MAINPATH: "MAIN",
     SUBPATH: ["DTS"],
     XULID: "0000051437",
-    OPRTFLOWID:"30307",
+    OPRTFLOWID: "30307",
     EMPFILED: "MANAGERID"
 });
 
@@ -55,7 +55,7 @@ const getters = {
 }
 const mutations = {
     ...storeHelper.mixMutations(),
-    [Constants.M_ADDDEFAULT]: function (state) {
+    [Constants.M_ADDDEFAULT]: function(state) {
         debugger;
         //新增默认值
         let MAIN = storeHelper.getTable("MAIN");
@@ -75,7 +75,7 @@ const mutations = {
         MAIN.setValue("STLFMID", STLFMITEM.getValue("STLFMID"));
         MAIN.setValue("STLFMCODE", STLFMITEM.getValue("STLFMCODE"));
     },
-    [Constants.M_SETDTS01]: function (state) {
+    [Constants.M_SETDTS01]: function(state) {
         //加载 结算模板.所有 结算项目 判断 处理方式
         let MAIN = storeHelper.getTable("MAIN");
         let STLFMITEM = storeHelper.getTable("STLFMITEM");
@@ -86,7 +86,7 @@ const mutations = {
             titem["ITEMID"] = item["ITEMID"];
             titem["ITEMID.PARANAME"] = item["ITEMID.PARANAME"];
             titem["STLITEMID"] = item["STLITEMID"];
-            Object.keys(item).forEach(function (f) {
+            Object.keys(item).forEach(function(f) {
                 titem[`STLITEMID.${f}`] = item[f];
             });
             titem["DEALTYPE"] = item["DEALTYPE"];
@@ -101,7 +101,7 @@ const mutations = {
             })
         }
     },
-    [Constants.M_SETDTS02]: function (state) {
+    [Constants.M_SETDTS02]: function(state) {
         //继承 用户移除(否)
         let COPYDTS = storeHelper.getTable("COPYDTS");
         let DTS = storeHelper.getTable("DTS");
@@ -115,7 +115,7 @@ const mutations = {
             }
         })
     },
-    [Constants.M_SETDTS03]: function (state) {
+    [Constants.M_SETDTS03]: function(state) {
         //判断 项目显示(否)
         let DTS = storeHelper.getTable("DTS");
         DTS.data.forEach(item1 => {
@@ -140,15 +140,15 @@ const mutations = {
             let ISHOW = 0;
             if ("judge" == ITEMPROPERTY) {
                 if (DTS.data.find(item => {
-                    return (item["STLITEMID.GRPID"] == item1["ITEMID"]) && (item["ISSHOW"] == 1) && (item["ITEMID"] != item["STLITEMID.GRPID"])
-                })) {
+                        return (item["STLITEMID.GRPID"] == item1["ITEMID"]) && (item["ISSHOW"] == 1) && (item["ITEMID"] != item["STLITEMID.GRPID"])
+                    })) {
                     ISHOW = 1;
                 }
                 DTS.setValue("ISSHOW", ISHOW, item1);
             }
         })
     },
-    [Constants.M_SETDTS04]: function (state) {
+    [Constants.M_SETDTS04]: function(state) {
         //据 结算项目.分录号(顺序)、整理 分录号
         let DTS = storeHelper.getTable("DTS");
         let items = DTS.data.sort((item1, item2) => {
@@ -162,7 +162,7 @@ const mutations = {
             }
         })
     },
-    [Constants.M_SETDTS05]: function (state) {
+    [Constants.M_SETDTS05]: function(state) {
         //处理 金额
         let DTS = storeHelper.getTable("DTS");
         DTS.data.forEach(item1 => {
@@ -179,12 +179,12 @@ const mutations = {
             DTS.setValue("AMT", AMT, item1);
         });
     },
-    [Constants.M_SETAMT]: function (state) {
+    [Constants.M_SETAMT]: function(state) {
         let MAIN = storeHelper.getTable("MAIN");
         let DTS = storeHelper.getTable("DTS");
         let items = DTS.data.filter(item => {
             return item["STLITEMID.CFORMULA"] != ""
-        }).sort((item1, item2) => { });
+        }).sort((item1, item2) => {});
         items.forEach(item => {
             let AMT = execFormula(item["ITEMID.PARANAME"], (name) => {
                 let titem = DTS.data.find(item1 => {
@@ -205,14 +205,14 @@ const mutations = {
             });
             DTS.setValue("AMT", AMT, item);
             //0.00 空  的 显示处理
-            if(item["STLITEMID.ISZERO"]=="1"&&item["STLITEMID.ISNULLF"]=="0"){
+            if (item["STLITEMID.ISZERO"] == "1" && item["STLITEMID.ISNULLF"] == "0") {
                 DTS.setValue("AMT", AMT, item);
-            }else{
-                DTS.setValue("AMT", AMT!=0?AMT:"", item);
+            } else {
+                DTS.setValue("AMT", AMT != 0 ? AMT : "", item);
             }
         });
         //设置主表字段
-        const FILEDITEMS = { "OFFLINEAMT": 107070, "ONLINEAMT": 107069, "DIFFAMT": 107064, "FACTAMT": 107063,"CALAMT": 107062}
+        const FILEDITEMS = { "OFFLINEAMT": 107070, "ONLINEAMT": 107069, "DIFFAMT": 107064, "FACTAMT": 107063, "CALAMT": 107062 }
         Object.keys(FILEDITEMS).forEach(field => {
             let titem = DTS.data.find(item => {
                 return item["ITEMID"] == FILEDITEMS[field];
@@ -230,7 +230,7 @@ const mutations = {
         MAIN.setValue("ONLINERATE", ONLINERATE);
         MAIN.setValue("DIFFRATE", DIFFRATE);
     },
-    [Constants.M_CHECKRANGE]: function (state, { item }) {
+    [Constants.M_CHECKRANGE]: function(state, { item }) {
         let DTS = storeHelper.getTable("DTS");
         let AMT = item["AMT"];
         let STLITEMID_ISPN = item["STLITEMID.ISPN"];
@@ -240,18 +240,18 @@ const mutations = {
             DTS.setValue("AMT", "", item);
         }
     },
-    [Constants.M_SETEMP]: function (state, { path, item }) {
+    [Constants.M_SETEMP]: function(state, { path, item }) {
         const dt = storeHelper.getTable(path);
         dt.setValue("MANAGERID", item["EMPID"]);
         dt.setValue("MANAGER", item["EMPNAME"]);
     },
-    [Constants.M_SETSNODE]: function (state, { path, item }) {
+    [Constants.M_SETSNODE]: function(state, { path, item }) {
         const dt = storeHelper.getTable(path);
         dt.setValue("SNODEID", item["SNODEID"]);
         dt.setValue("SNODEID.SNODECODE", item["SNODECODE"]);
         dt.setValue("SNODEID.SNODENAME", item["SNODENAME"]);
     },
-    [Constants.M_SETSETDTS]: function (state) {
+    [Constants.M_SETSETDTS]: function(state) {
         let DTS = storeHelper.getTable("DTS");
         let SETDTS = storeHelper.getTable("SETDTS");
         SETDTS.initData();
@@ -274,7 +274,7 @@ const mutations = {
             SETDTS.add(titme);
         })
     },
-    [Constants.M_SETDTSISDELBYU]: function () {
+    [Constants.M_SETDTSISDELBYU]: function() {
         let DTS = storeHelper.getTable("DTS");
         let SETDTS = storeHelper.getTable("SETDTS");
         SETDTS.data.filter(item => { return item["DISABLE"] == false }).forEach(item1 => {
@@ -288,8 +288,8 @@ const mutations = {
 
 const actions = {
     ...storeHelper.mixActions(),
-    add: async function ({ dispatch, commit, state }) {
-        await getPromise(function () { });
+    add: async function({ dispatch, commit, state }) {
+        await getPromise(function() {});
         //初始化所有数据源
         commit(Constants.M_INITBYPATH, {
             paths: ["MAIN", "DTS"]
@@ -315,7 +315,7 @@ const actions = {
         commit(Constants.M_SETAMT);
         commit(Constants.M_SETSTATE);
     },
-    loadCOPYDTS: async function ({ dispatch, commit }) {
+    loadCOPYDTS: async function({ dispatch, commit }) {
         debugger;
         let MAIN = storeHelper.getTable("MAIN");
         let DSNODEID = MAIN.getValue("SNODEID");
@@ -329,35 +329,35 @@ const actions = {
         commit(Constants.M_SETDTS05);
         commit(Constants.M_SETAMT);
     },
-    loadSTLFMITE: async function ({ dispatch, commit, state }) {
+    loadSTLFMITE: async function({ dispatch, commit, state }) {
         debugger;
         let STLFMITEM = storeHelper.getTable("STLFMITEM");
         let STLFMID = STLFMITEM.getValue("STLFMID");
         let MAIN = storeHelper.getTable("MAIN");
-        let ret = await service.doLoadSTLFMITE({ STLTYPEID: state.params.STLTYPEID ,BILLDATE: MAIN.getValue("BILLDATE")  });
+        let ret = await service.doLoadSTLFMITE({ STLTYPEID: state.params.STLTYPEID, BILLDATE: MAIN.getValue("BILLDATE") });
         commit(Constants.M_INITDATA, { path: "STLFMITEM", data: (ret.data || {}).items });
         if (STLFMID != STLFMITEM.getValue("STLFMID")) {
             dispatch("loadCOPYDTS");
         }
     },
-    setSnode: async function ({ dispatch, commit }, { path, item }) {
+    setSnode: async function({ dispatch, commit }, { path, item }) {
         debugger;
         commit(Constants.M_SETSNODE, { path, item });
         dispatch("loadCOPYDTS");
     },
-    setSetDTS: function ({ commit }) {
+    setSetDTS: function({ commit }) {
         commit(Constants.M_SETDTSISDELBYU);
         commit(Constants.M_SETDTS03);
         commit(Constants.M_SETDTS04);
         commit(Constants.M_SETDTS05);
         commit(Constants.M_SETAMT);
     },
-    list_save: async function ({ dispatch, commit }) {
+    list_save: async function({ dispatch, commit }) {
         await getPromise(checkNull);
         await dispatch("save");
     }
 }
-const checkNull = function () {
+const checkNull = function() {
     //主表：“经营门店,日期,店长,单据号,<差异说明>，不可空！”
     //明细：值域的合法性    vs 可正数(否)、可0(否)、可空(否)、可负数(否)
     let MAIN = storeHelper.getTable("MAIN");
@@ -392,25 +392,25 @@ const checkNull = function () {
         let STLITEMID_ISNULLF = item["STLITEMID.ISNULLF"]
         let STLITEMID_ISZERO = item["STLITEMID.ISZERO"];
         let STLITEMID_ISNN = item["STLITEMID.ISNN"];
-        if ((STLITEMID_ISPN == 0 && AMT > 0) || (STLITEMID_ISNULLF == 0 && isNull(AMT))||(STLITEMID_ISZERO == 0 && AMT == 0) || (STLITEMID_ISNN == 0 && AMT < 0)) {
-            
+        if ((STLITEMID_ISPN == 0 && AMT > 0) || (STLITEMID_ISNULLF == 0 && isNull(AMT)) || (STLITEMID_ISZERO == 0 && AMT == 0) || (STLITEMID_ISNN == 0 && AMT < 0)) {
+
         }
-        if(STLITEMID_ISPN == 0 && AMT > 0){
-            nullDtsFields.push("\n"+item["ITEMID.PARANAME"]+"金额不可大于零");
+        if (STLITEMID_ISPN == 0 && AMT > 0) {
+            nullDtsFields.push("\n" + item["ITEMID.PARANAME"] + "金额不可大于零");
         }
-        if(STLITEMID_ISNULLF == 0 && isNull(AMT)){
-            nullDtsFields.push("\n"+item["ITEMID.PARANAME"]+"金额不可为空");
+        if (STLITEMID_ISNULLF == 0 && isNull(AMT)) {
+            nullDtsFields.push("\n" + item["ITEMID.PARANAME"] + "金额不可为空");
         }
-        if(STLITEMID_ISZERO == 0 && AMT == "0"){
-            nullDtsFields.push("\n"+item["ITEMID.PARANAME"]+"金额不可为零");
+        if (STLITEMID_ISZERO == 0 && AMT == "0") {
+            nullDtsFields.push("\n" + item["ITEMID.PARANAME"] + "金额不可为零");
         }
-        if(STLITEMID_ISNN == 0 && AMT < 0){
-            nullDtsFields.push("\n"+item["ITEMID.PARANAME"]+"金额不可小于零");
+        if (STLITEMID_ISNN == 0 && AMT < 0) {
+            nullDtsFields.push("\n" + item["ITEMID.PARANAME"] + "金额不可小于零");
         }
     });
-    
-    if (nullFields.length > 0||nullDtsFields.length>0) {
-        if(nullFields.length > 0){
+
+    if (nullFields.length > 0 || nullDtsFields.length > 0) {
+        if (nullFields.length > 0) {
             throw new Error(nullFields.join(',') + " 空," + nullDtsFields.join(',') + " \n不可保存");
         }
         throw new Error(nullDtsFields.join(',') + " \n不可保存");
@@ -428,7 +428,7 @@ Store.registerModule(Constants.STORE_NAME, {
     actions
 });
 
-const mapDateTable = function (path, aFields, itemProp) {
+const mapDateTable = function(path, aFields, itemProp) {
     return storeHelper.mapGetters(path, aFields, itemProp);
 }
 

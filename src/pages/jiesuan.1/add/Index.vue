@@ -9,7 +9,7 @@
   </div>
 </template>
 <script>
-import { mapDateTable, Constants } from "./store";
+import { mapDateTable, Constants} from "./store";
 export default {
   data() {
     return {

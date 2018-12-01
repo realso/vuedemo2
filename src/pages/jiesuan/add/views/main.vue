@@ -47,10 +47,10 @@
         </rs-list-item>
       </rs-list>
       <rs-datetime ref="picker2" type="date" v-model.lazy="BILLDATE" @confirm="handleChangeD"></rs-datetime>
-      <rs-datetime ref="picker1" type="time" @confirm="handleChangeT"></rs-datetime>
       <div class="rr-text-right">
         <rs-button link @click.native="linkUrl('set')">设置项目</rs-button>
       </div>
+       <rs-datetime ref="picker1" type="time" @confirm="handleChangeT"></rs-datetime>
       <rs-list size="14" noborder>
         <main_dts v-for="(item) in DTS" :item="item" :key="item.ENTRYID"/>
       </rs-list>
