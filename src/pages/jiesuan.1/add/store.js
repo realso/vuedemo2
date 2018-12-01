@@ -404,9 +404,17 @@ const checkNull = function() {
     if (isNull(MAIN.getValue("MANAGERID"))) {
         nullFields.push("店长");
     }
+
+    if (!Store.getters[Constants.STORE_NAME + "/ISTIME"]) {
+        if (isNull(MAIN.getValue("DEADTIME"))) {
+            nullFields.push("截止时间");
+        }
+    }
+
     let item = DTS.data.find(item => {
         return item["ITEMID.PARANAME"] == "差异"
     })
+
     if (item) {
         if (!isNull(item["AMT"]) && item["AMT"] != 0) {
             if (isNull(MAIN.getValue("DIFFREMARK"))) {

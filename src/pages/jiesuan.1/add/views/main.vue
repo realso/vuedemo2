@@ -65,8 +65,8 @@
           <rs-list size="14" noborder>
             <main_dts v-for="(item) in DTS"   :item="item" :key="item.ENTRYID"/> 
           </rs-list>
-           <div class="rr-list-textarea">
-            <textarea rows="3" placeholder="差异说明" v-model.lazy="DIFFREMARK"></textarea>
+           <div class="rr-list-textarea" v-if="!ISTIME">
+             <textarea rows="3" placeholder="差异说明" v-model.lazy="DIFFREMARK"></textarea>
            </div>
            <div class="rr-bill-top">
              <div class="rs-flex-row" style="height:33px" v-if="BILLCODE!=''">
