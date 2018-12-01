@@ -2,7 +2,7 @@ import Store from "@/store"
 import { createNamespacedHelpers } from 'vuex'
 import service from "../service";
 import { Store01, Constants as SConstants } from "rs-vcore/store/Store01";
-import { dateToString } from "rs-vcore/utils/Date";
+import { dateToString, getTime } from "rs-vcore/utils/Date";
 import { execFormula, isNull } from "rs-vcore/utils/String";
 
 const Constants = Object.assign({}, SConstants, {
@@ -18,7 +18,8 @@ const Constants = Object.assign({}, SConstants, {
     M_SETSNODE: "setSnode",
     M_SETSETDTS: "setSetDTS",
     M_SETDTSISDELBYU: "setDTSISDELBYU",
-    M_SETREJECTAMT: "setRejectAMT"
+    M_SETREJECTAMT: "setRejectAMT",
+    M_SETDEADLINE: "setDEADLINE"
 });
 const { mapState, mapGetters } = createNamespacedHelpers(Constants.STORE_NAME);
 const storeHelper = new Store01({
@@ -85,6 +86,21 @@ const mutations = {
         MAIN.setValue("BILLDATE", dateToString(new Date()));
         MAIN.setValue("STLFMID", STLFMITEM.getValue("STLFMID"));
         MAIN.setValue("STLFMCODE", STLFMITEM.getValue("STLFMCODE"));
+        if (this.getters[Constants.STORE_NAME + "/ISTIME"]) {
+            MAIN.setValue("DEADLINE", getTime(new Date()));
+        }
+    },
+    [Constants.M_SETDEADLINE]: function(state) {
+        let MAIN = storeHelper.getTable("MAIN");
+        let DEADLINE = MAIN.getValue("DEADLINE");
+        let FHOUR = "";
+        let FMINUTE = "";
+        if (DEADLINE) {
+            FHOUR = DEADLINE.split(':')[0];
+            FMINUTE = DEADLINE.split(':')[1];
+        }
+        MAIN.setValue("FHOUR", FHOUR);
+        MAIN.setValue("FMINUTE", FMINUTE);
     },
     [Constants.M_SETDTS01]: function(state) {
         //加载 结算模板.所有 结算项目 判断 处理方式

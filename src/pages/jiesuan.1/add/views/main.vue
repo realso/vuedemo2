@@ -41,7 +41,7 @@
                 <span class="rr-justify rr-width-4em">时 段</span>
                 <span>：</span>
                 <div class="rs-flex-item">
-                    {{FHOUR}}<span v-if="FMINUTE!=''">:</span>{{FMINUTE}}
+                    {{DEADLINE}}
                 </div>
               </div>
             </rs-list-item>
@@ -59,8 +59,7 @@
            key="jiesuan1.2"
             ref="picker1"
             type="time"
-            v-model.lazy="DEADLINE"
-            @confirm="handleChangeT">
+            v-model.lazy="DEADLINE">
           </rs-datetime>
           <div class="rr-text-right"><rs-button link @click.native="linkUrl('set')">设置项目</rs-button></div>
           <rs-list size="14" noborder>
@@ -133,10 +132,6 @@ export default {
     handleChangeD:function(){
       this.$callAction({action:`${Constants.STORE_NAME}/loadSTLFMITE`});
     },
-    handleChangeT:function(date){
-      this.FHOUR = date.substring(0, 2)
-      this.FMINUTE = date.substring(-1, 2)
-    },
     save(){
        this.$callAction({action:`${Constants.STORE_NAME}/mySave`,successText:"保存成功"});
     },
@@ -145,6 +140,12 @@ export default {
        this.$callAction({action:`${Constants.STORE_NAME}/delete`,successText:"删除成功",isSuccessBack:true});
     }
   },
+  watch:{
+    DEADLINE(){
+      this.$store.commit(`${Constants.STORE_NAME}/${Constants.M_SETDEADLINE}`);
+    }
+  }
+  ,
   activated: function() {
       console.log("%c"+this.$route.path,"color:red");
   },
