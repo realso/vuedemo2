@@ -37,6 +37,12 @@ const state = {
 }
 
 const getters = {
+    TITLE(state) {
+        return state.params.BILLTYPEID == '109304' ? '分时结算' : '日结算'
+    },
+    ISTIME(state) {
+        return state.params.BILLTYPEID == '109304'
+    },
     ISSHOWSAVE(state, getters, rootState, rootGetters) {
         return (state.STATE == "Add" || state.STATE == "ToVerify") && rootGetters.pcode["my-score"];
     },
@@ -52,6 +58,15 @@ const getters = {
 }
 const mutations = {
     ...storeHelper.mixMutations(),
+    [Constants.M_SETPARAMS]: function(state, params) {
+        state.params = params;
+        if (state.params.BILLTYPEID == "109303") {
+            storeHelper.setConfig({ XULID: "0000051437", OPRTFLOWID: "30307" });
+        }
+        if (state.params.BILLTYPEID == "109304") {
+            storeHelper.setConfig({ XULID: "0000051437", OPRTFLOWID: "30307" });
+        }
+    },
     [Constants.M_ADDDEFAULT]: function(state) {
         //新增默认值
         let MAIN = storeHelper.getTable("MAIN");

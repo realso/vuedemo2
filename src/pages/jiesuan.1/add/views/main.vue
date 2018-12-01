@@ -1,6 +1,6 @@
 <template>
     <div class="mui-layout mui-layout-top">
-        <rs-header :title="BILLTYPEID=='109304'?'分时结算':'日结算'" color="primary">
+        <rs-header :title="TITLE" color="primary">
            <a slot="left" @click="$router.goBack()" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
           <div slot="right">
               <rs-button v-if="ISSHOWDELETE" link @click="del">删除</rs-button>
@@ -31,12 +31,12 @@
               <div class="rs-flex-row">
                 <span class="rr-justify rr-width-4em">日 期</span>
                 <span>：</span>
-                <div class="rs-flex-item" :class="BILLTYPEID=='109304'?'rr-line-b':''">
+                <div class="rs-flex-item" :class="ISTIME?'rr-line-b':''">
                     {{BILLDATE|getWeek}}
                 </div>
               </div>
             </rs-list-item>
-            <rs-list-item noborder isright v-if="BILLTYPEID=='109304'"  @click.native="open('picker1')">
+            <rs-list-item noborder isright v-if="ISTIME"  @click.native="open('picker1')">
               <div class="rs-flex-row">
                 <span class="rr-justify rr-width-4em">时 段</span>
                 <span>：</span>
@@ -55,7 +55,7 @@
             >
           </rs-datetime>
           <rs-datetime
-          v-if="BILLTYPEID=='109304'"
+          v-if="ISTIME"
            key="jiesuan1.2"
             ref="picker1"
             type="time"
@@ -108,7 +108,6 @@ import { getWeek } from "rs-vcore/utils/Date";
 import main_dts from "./components/main_dts";
 export default {
   props:{
-     TITLE:""
   },
   name: "jiesuan",
   data() {
@@ -120,7 +119,7 @@ export default {
     main_dts
   },
   computed: {
-      ...mapGetters(["ISSHOWSAVE","ISSHOWDELETE"]),
+      ...mapGetters(["ISSHOWSAVE","ISSHOWDELETE","TITLE","ISTIME"]),
       ...mapDateTable("MAIN",['BILLTYPEID','BILLDATE','BILLCODE','SNODEID.SNODECODE',"SNODEID.SNODENAME","MANAGER","DIFFREMARK","MAKER","VERIFIER","MAKEDATE","VERIFYDATE","TALLIER","TALLYDATE","FHOUR","FMINUTE","DEADLINE"]),
       ...mapDateTable("DTS",[])
   },

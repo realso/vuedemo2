@@ -9,7 +9,7 @@ export default [{
         name: 'loginout',
         beforeEnter(to, from, next) {
             Store.dispatch("user/loginOut").then(function() {
-                next('/login');
+                next({ path: '/login', replace: true });
             });
         }
     }
