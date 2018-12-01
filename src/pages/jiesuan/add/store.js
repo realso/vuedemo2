@@ -21,6 +21,7 @@ const Constants = Object.assign({}, SConstants, {
     M_SETEMP: "setEmp",
     M_SETSNODE: "setSnode",
     M_SETSETDTS: "setSetDTS",
+    M_SETTIME:"setTime",
     M_SETDTSISDELBYU: "setDTSISDELBYU",
 });
 const { mapState, mapGetters } = createNamespacedHelpers(Constants.STORE_NAME);
@@ -40,23 +41,37 @@ const state = {
 }
 
 const getters = {
+    TITLE(state) {
+        return state.params.BILLTYPEID == '109304' ? '分时结算' : '日结算'
+    },
+    ISTIME(state) {
+        return state.params.BILLTYPEID == '109304'
+    },
     ISSHOWSAVE(state, getters, rootState, rootGetters) {
-        return (state.STATE == "Add" || state.STATE == "ToVerify") && rootGetters.pcode["jiesuan-rijs-submit"];
+        return state.params.BILLTYPEID != '109304' ? (state.STATE == "Add" || state.STATE == "ToVerify") && rootGetters.pcode["jiesuan-rijs-submit"]: (state.STATE == "Add" || state.STATE == "ToVerify") && rootGetters.pcode["jiesuan-fsjs-submit"];
     },
     ISSHOWDELETE(state, getters, rootState, rootGetters) {
-        return (state.STATE == "ToVerify") && rootGetters.pcode["jiesuan-rijs-delete"];
+        return state.params.BILLTYPEID != '109304' ? (state.STATE == "ToVerify") && rootGetters.pcode["jiesuan-rijs-delete"]:(state.STATE == "ToVerify") && rootGetters.pcode["jiesuan-fsjs-delete"];
     },
     ISSHOWCHECK(state, getters, rootState, rootGetters) {
-        return (state.STATE == "ToVerify") && rootGetters.pcode["jiesuan-rijs-verify"];
+        return state.params.BILLTYPEID != '109304' ? (state.STATE == "ToVerify") && rootGetters.pcode["jiesuan-rijs-verify"]:(state.STATE == "ToVerify") && rootGetters.pcode["jiesuan-fsjs-verify"];
     },
     ISSHOWRECHECK(state, getters, rootState, rootGetters) {
-        return (state.STATE == "Verified") && rootGetters.pcode["jiesuan-rijs-reverify"];
+        return state.params.BILLTYPEID != '109304' ? (state.STATE == "Verified") && rootGetters.pcode["jiesuan-rijs-reverify"]:(state.STATE == "Verified") && rootGetters.pcode["jiesuan-fsjs-reverify"];
     }
 }
 const mutations = {
     ...storeHelper.mixMutations(),
+    [Constants.M_SETPARAMS]: function(state, params) {
+        state.params = params;
+        if (state.params.BILLTYPEID == "109303") {
+            storeHelper.setConfig({ XULID: "0000051437", OPRTFLOWID: "30307" });
+        }
+        if (state.params.BILLTYPEID == "109304") {
+            storeHelper.setConfig({ XULID: "0000051465", OPRTFLOWID: "30307" });
+        }
+    },
     [Constants.M_ADDDEFAULT]: function(state) {
-        debugger;
         //新增默认值
         let MAIN = storeHelper.getTable("MAIN");
         let STLFMITEM = storeHelper.getTable("STLFMITEM");
@@ -251,6 +266,11 @@ const mutations = {
         dt.setValue("SNODEID.SNODECODE", item["SNODECODE"]);
         dt.setValue("SNODEID.SNODENAME", item["SNODENAME"]);
     },
+    [Constants.M_SETTIME]:function(date){
+        const MAIN = storeHelper.getTable("MAIN");
+        MAIN.setValue("FHOUR", date.substring(0, 2));
+        MAIN.setValue("FMINUTE", date.substring(-1, 2));
+    },
     [Constants.M_SETSETDTS]: function(state) {
         let DTS = storeHelper.getTable("DTS");
         let SETDTS = storeHelper.getTable("SETDTS");
@@ -316,7 +336,6 @@ const actions = {
         commit(Constants.M_SETSTATE);
     },
     loadCOPYDTS: async function({ dispatch, commit }) {
-        debugger;
         let MAIN = storeHelper.getTable("MAIN");
         let DSNODEID = MAIN.getValue("SNODEID");
         let STLFMID = MAIN.getValue("STLFMID");
@@ -330,7 +349,6 @@ const actions = {
         commit(Constants.M_SETAMT);
     },
     loadSTLFMITE: async function({ dispatch, commit, state }) {
-        debugger;
         let STLFMITEM = storeHelper.getTable("STLFMITEM");
         let STLFMID = STLFMITEM.getValue("STLFMID");
         let MAIN = storeHelper.getTable("MAIN");
@@ -341,7 +359,6 @@ const actions = {
         }
     },
     setSnode: async function({ dispatch, commit }, { path, item }) {
-        debugger;
         commit(Constants.M_SETSNODE, { path, item });
         dispatch("loadCOPYDTS");
     },
@@ -372,19 +389,25 @@ const checkNull = function() {
     if (isNull(MAIN.getValue("MANAGERID"))) {
         nullFields.push("店长");
     }
-    // if (isNull(MAIN.getValue("BILLCODE"))) {
-    //     nullFields.push("单据号");
-    // }
-    let item = DTS.data.find(item => {
-        return item["ITEMID.PARANAME"] == "差异"
-    })
-    if (item) {
-        if (!isNull(item["AMT"]) && item["AMT"] != 0) {
-            if (isNull(MAIN.getValue("DIFFREMARK"))) {
-                nullFields.push("差异说明");
+
+    if(state.params.BILLTYPEID == "109303"){
+        //日结算时 对差异进行判断
+        let item = DTS.data.find(item => {
+            return item["ITEMID.PARANAME"] == "差异"
+        })
+        if (item) {
+            if (!isNull(item["AMT"]) && item["AMT"] != 0) {
+                if (isNull(MAIN.getValue("DIFFREMARK"))) {
+                    nullFields.push("差异说明");
+                }
             }
         }
+    }else{
+        if (isNull(MAIN.getValue("FHOUR"))) {
+            nullFields.push("截止时间");
+        }
     }
+    
     let nullDtsFields = [];
     DTS.data.forEach(item => {
         let AMT = item["AMT"];
