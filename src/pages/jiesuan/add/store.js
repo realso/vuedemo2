@@ -2,7 +2,7 @@ import Store from "@/store"
 import { createNamespacedHelpers } from 'vuex'
 import service from "../service";
 import { Store01, Constants as SConstants } from "rs-vcore/store/Store01";
-import { dateToString,getTime } from "rs-vcore/utils/Date";
+import { dateToString, getTime } from "rs-vcore/utils/Date";
 import { execFormula } from "rs-vcore/utils/String";
 import { getPromise } from "rs-vcore/utils/Promise";
 import { isNull } from "rs-vcore/utils/String";
@@ -21,7 +21,7 @@ const Constants = Object.assign({}, SConstants, {
     M_SETEMP: "setEmp",
     M_SETSNODE: "setSnode",
     M_SETSETDTS: "setSetDTS",
-    M_SETTIME:"setTime",
+    M_SETTIME: "setTime",
     M_SETDTSISDELBYU: "setDTSISDELBYU",
 });
 const { mapState, mapGetters } = createNamespacedHelpers(Constants.STORE_NAME);
@@ -48,16 +48,16 @@ const getters = {
         return state.params.BILLTYPEID == '109304'
     },
     ISSHOWSAVE(state, getters, rootState, rootGetters) {
-        return state.params.BILLTYPEID != '109304' ? (state.STATE == "Add" || state.STATE == "ToVerify") && rootGetters.pcode["jiesuan-rijs-submit"]: (state.STATE == "Add" || state.STATE == "ToVerify") && rootGetters.pcode["jiesuan-fsjs-submit"];
+        return state.params.BILLTYPEID != '109304' ? (state.STATE == "Add" || state.STATE == "ToVerify") && rootGetters.pcode["jiesuan-rijs-submit"] : (state.STATE == "Add" || state.STATE == "ToVerify") && rootGetters.pcode["jiesuan-fsjs-submit"];
     },
     ISSHOWDELETE(state, getters, rootState, rootGetters) {
-        return state.params.BILLTYPEID != '109304' ? (state.STATE == "ToVerify") && rootGetters.pcode["jiesuan-rijs-delete"]:(state.STATE == "ToVerify") && rootGetters.pcode["jiesuan-fsjs-delete"];
+        return state.params.BILLTYPEID != '109304' ? (state.STATE == "ToVerify") && rootGetters.pcode["jiesuan-rijs-delete"] : (state.STATE == "ToVerify") && rootGetters.pcode["jiesuan-fsjs-delete"];
     },
     ISSHOWCHECK(state, getters, rootState, rootGetters) {
-        return state.params.BILLTYPEID != '109304' ? (state.STATE == "ToVerify") && rootGetters.pcode["jiesuan-rijs-verify"]:(state.STATE == "ToVerify") && rootGetters.pcode["jiesuan-fsjs-verify"];
+        return state.params.BILLTYPEID != '109304' ? (state.STATE == "ToVerify") && rootGetters.pcode["jiesuan-rijs-verify"] : (state.STATE == "ToVerify") && rootGetters.pcode["jiesuan-fsjs-verify"];
     },
     ISSHOWRECHECK(state, getters, rootState, rootGetters) {
-        return state.params.BILLTYPEID != '109304' ? (state.STATE == "Verified") && rootGetters.pcode["jiesuan-rijs-reverify"]:(state.STATE == "Verified") && rootGetters.pcode["jiesuan-fsjs-reverify"];
+        return state.params.BILLTYPEID != '109304' ? (state.STATE == "Verified") && rootGetters.pcode["jiesuan-rijs-reverify"] : (state.STATE == "Verified") && rootGetters.pcode["jiesuan-fsjs-reverify"];
     }
 }
 const mutations = {
@@ -98,7 +98,7 @@ const mutations = {
         let MAIN = storeHelper.getTable("MAIN");
         let STLFMITEM = storeHelper.getTable("STLFMITEM");
         let DTS = storeHelper.getTable("DTS");
-        DTS.initData();
+        DTS.clear();
         STLFMITEM.data.forEach(item => {
             let titem = {};
             titem["ITEMID"] = item["ITEMID"];
@@ -269,7 +269,7 @@ const mutations = {
         dt.setValue("SNODEID.SNODECODE", item["SNODECODE"]);
         dt.setValue("SNODEID.SNODENAME", item["SNODENAME"]);
     },
-    [Constants.M_SETTIME]:function(date){
+    [Constants.M_SETTIME]: function(date) {
         const MAIN = storeHelper.getTable("MAIN");
         let DEADLINE = MAIN.getValue("DEADLINE");
         MAIN.setValue("FHOUR", DEADLINE.split(':')[0]);
@@ -394,7 +394,7 @@ const checkNull = function() {
         nullFields.push("店长");
     }
 
-    if(state.params.BILLTYPEID == "109303"){
+    if (state.params.BILLTYPEID == "109303") {
         //日结算时 对差异进行判断
         let item = DTS.data.find(item => {
             return item["ITEMID.PARANAME"] == "差异"
@@ -406,12 +406,12 @@ const checkNull = function() {
                 }
             }
         }
-    }else{
+    } else {
         if (isNull(MAIN.getValue("FHOUR"))) {
             nullFields.push("截止时间");
         }
     }
-    
+
     let nullDtsFields = [];
     DTS.data.forEach(item => {
         let AMT = item["AMT"];
