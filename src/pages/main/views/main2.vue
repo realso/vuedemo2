@@ -15,7 +15,7 @@
           <div slot="header">
             <div class="f14 rs-flex-row">
               <div class="rs-flex-item">{{item.title}}</div>
-              <span class="rr-font c-icon-red" :class="item.shoucang?'rr-shoucangA':'rr-shoucang'" @click.stop="item.shoucang=!item.shoucang"></span>
+              <span class="rr-font c-icon-red rs-padding-lr" style="margin-right:-10px" :class="item.shoucang?'rr-shoucangA':'rr-shoucang'" @click.stop="item.shoucang=!item.shoucang"></span>
             </div>
             <div class="f12 c-999">{{item.text}}</div>
           </div>

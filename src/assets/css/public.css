@@ -34,6 +34,8 @@
 .rr-text-center{text-align: center}
 /*内边距*/
 .rs-padding-10{padding: 10px}
+.rs-padding-5{padding: 5px}
+.rs-padding-lr{padding-left: 10px;padding-right: 10px;}
 /* 宽度 */
 .rr-width-4em{ width: 4em;}
 .rr-width-5em{ width: 5em;}
