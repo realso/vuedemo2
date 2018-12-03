@@ -57,6 +57,11 @@
         <textarea v-if="!ISTIME" rows="3" placeholder="差异说明" v-model.lazy="DIFFREMARK"></textarea>
       </div>
       <div class="rr-bill-top">
+         <div class="rs-flex-row" style="height:33px" v-if="BILLCODE!=''">
+          <span class="rr-justify rr-width-4em">单 据 号</span>
+          <span>：</span>
+          <div class="rs-flex-item">{{BILLCODE}}</div>
+        </div>
         <div class="rs-flex-row" style="height:33px" v-if="MAKER!=''">
           <span class="rr-justify rr-width-4em">制 单</span>
           <span>：</span>
