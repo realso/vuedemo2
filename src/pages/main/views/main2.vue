@@ -11,7 +11,7 @@
     </rs-navbar>
     <div class="mui-content">
       <rs-loadmore :bottom-method="loadBottom" @bottom-status-change="handleBottomChange" :bottom-all-loaded="allLoaded" :top-method="loadTop" @translate-change="translateChange" @top-status-change="handleTopChange" ref="loadmore">
-        <rs-card type="header" v-for="(item,index) in list" :key="index" @click.native="linkUrl(item.path)">
+        <rs-card type="header" v-for="(item,index) in list" :key="index" @click.native="linkUrl(item.path,item.title)">
           <div slot="header">
             <div class="f14">{{item.title}}</div>
             <div class="f12 c-999">{{item.text}}</div>
@@ -109,8 +109,8 @@ export default {
           this.$refs.loadmore.onBottomLoaded();
         }, 1500);
       },
-      linkUrl: function(path) {
-        this.$router.push({path:path});
+      linkUrl: function(path,title) {
+        this.$router.push({path:path,query:{TITLE:title}})
       },
       doQuery: function(){
         let list=[

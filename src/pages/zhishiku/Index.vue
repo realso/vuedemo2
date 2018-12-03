@@ -1,6 +1,6 @@
 <template>
   <div class="mui-layout mui-layout-top">
-    <rs-header :title="Title" color="primary">
+    <rs-header :title="TITLE" color="primary">
       <a slot="left" class="mui-icon mui-icon-left-nav mui-pull-left" @click="$router.goBack()"></a>
     </rs-header>
     <div class="mui-content ">
@@ -15,17 +15,6 @@
               :playsinline="true"
               :options="playerOptions"
           ></video-player>
-          <!-- <div class="rr-article-player">
-            <video-player  
-              class="video-player vjs-custom-skin"
-              ref="videoPlayer"
-              :playsinline="true"
-              :options="playerOptions"
-              @play="onPlayerPlay($event)"
-              @pause="onPlayerPause($event)"
-            >
-            </video-player>
-          </div> -->
           <p class="f12">
             大事件！ [ 万中选一，你就是超级锦鲤 ] 杜阿姨门店助理要挑选的就是你大事件！ [ 万中选一，你就是超级锦鲤 ] 杜阿姨门店助理要挑选的就是你大事件！ [ 万中选一，你就是超级锦鲤 ] 杜阿姨门店助理要挑选的就是你大事件！ [ 万中选一，你就是超级锦鲤 ] 杜阿姨门店助理要挑选的就是你大事件！ [ 万中选一，你就是超级锦鲤 ] 杜阿姨门店助理要挑选的就是你大事件！ [ 万中选一，你就是超级锦鲤 ] 杜阿姨门店助理要挑选的就是你
           </p>
@@ -44,6 +33,7 @@ export default {
   },
   data () {
     return {
+      TITLE: this.$route.query.TITLE,
       playerOptions : {
         playbackRates: [0.7, 1.0, 1.5, 2.0], //播放速度
         autoplay: false, //如果true,浏览器准备好时开始回放。
