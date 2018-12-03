@@ -81,7 +81,7 @@ export default {
           this.searchInput
         }%') AND p_ldh_viewparam.SET_INT(${
           this.$store.state.user.userInfo.COMPID
-        }) = ${this.$store.state.user.userInfo.COMPID} AND [EMPID] IN (SELECT COLUMN_VALUE FROM TABLE(tss_getpowwhere('EMP','250','2')))`,
+        }) = ${this.$store.state.user.userInfo.COMPID} AND [EMPID] IN (SELECT COLUMN_VALUE FROM TABLE(tss_getpowwhere('EMP','250','2')) UNION ALL SELECT ${this.$store.state.user.userInfo.EMPID||0} FROM DUAL)`,
         orderBy:
           "[ISEXTOBJ],[COMPRULECODE],[DEPTRULECODE],[POSTRULECODE],[JOBRULECODE],[EMPCODE]",
         pageSize: 25,
