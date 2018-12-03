@@ -77,4 +77,5 @@
 .rs-list-nodata span{ padding: 0 10px; background: #efeff4;position: relative;z-index: 99;}
 .rs-list-nodata::before{position: absolute; content: ""; height: 1px; top: 50%; left: 10%; width: 80%; background: #ccc}
 .rs-loadmore-text{font-size: 14px;}
-
+/* 导航底部阴影无 */
+.rr-header-nobox{box-shadow: none !important}

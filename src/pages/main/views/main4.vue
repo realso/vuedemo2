@@ -6,6 +6,7 @@
           <rs-medialist-item noborder>
             <img slot="left" src="@/assets/logo.jpg">
             Andy
+            <div>18356789902</div>
           </rs-medialist-item>
         </rs-list>
         <rs-list size="14" class="mt10" noborder>

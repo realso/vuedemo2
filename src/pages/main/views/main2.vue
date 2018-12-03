@@ -1,7 +1,7 @@
 <template>
   <div class="mui-layout mui-layout-bottomtop">
-    <rs-header title="知识库"></rs-header>
-    <rs-navbar v-model="selected">
+    <rs-header class="rr-header-nobox" title="知识库"></rs-header>
+    <rs-navbar class="rr-navbar" inverted color="white" v-model="selected">
       <rs-nav-item id="全部">
         全部
       </rs-nav-item>
@@ -157,4 +157,5 @@ export default {
 <style>
 .rs-card-header:after{display: none}
 .rs-card .rs-card-content-inner{padding-top: 0}
+.rr-navbar{background: #58cffa;}
 </style>
