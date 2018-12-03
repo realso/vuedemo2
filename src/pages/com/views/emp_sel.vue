@@ -38,7 +38,7 @@
             <li
               class="mui-table-view-cell"
               v-for="item in list"
-              :key="item.id"
+              :key="item.EMPID"
               @click="selectItem(item)"
               style="font-size:15px;"
             >
@@ -81,7 +81,7 @@ export default {
           this.searchInput
         }%') AND p_ldh_viewparam.SET_INT(${
           this.$store.state.user.userInfo.COMPID
-        }) = ${this.$store.state.user.userInfo.COMPID}`,
+        }) = ${this.$store.state.user.userInfo.COMPID} AND [EMPID] IN (SELECT COLUMN_VALUE FROM TABLE(tss_getpowwhere('EMP','250','2')))`,
         orderBy:
           "[ISEXTOBJ],[COMPRULECODE],[DEPTRULECODE],[POSTRULECODE],[JOBRULECODE],[EMPCODE]",
         pageSize: 25,

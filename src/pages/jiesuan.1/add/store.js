@@ -45,16 +45,16 @@ const getters = {
         return state.params.BILLTYPEID == '109304'
     },
     ISSHOWSAVE(state, getters, rootState, rootGetters) {
-        return (state.STATE == "Add" || state.STATE == "ToVerify") && rootGetters.pcode["my-score"];
+        return (state.STATE == "Add" || state.STATE == "ToVerify") && rootGetters.pcode[getters.ISTIME ? "jiesuan-fsjs-submit" : "jiesuan-rijs-submit"];
     },
     ISSHOWDELETE(state, getters, rootState, rootGetters) {
-        return (state.STATE == "ToVerify") && rootGetters.pcode["my-score"];
+        return (state.STATE == "ToVerify") && rootGetters.pcode[getters.ISTIME ? "jiesuan-fsjs-delete" : "jiesuan-rijs-delete"];
     },
     ISSHOWCHECK(state, getters, rootState, rootGetters) {
-        return (state.STATE == "ToVerify") && rootGetters.pcode["my-score"];
+        return (state.STATE == "ToVerify") && rootGetters.pcode[getters.ISTIME ? "jiesuan-fsjs-verify" : "jiesuan-rijs-verify"];
     },
     ISSHOWRECHECK(state, getters, rootState, rootGetters) {
-        return (state.STATE == "Verified") && rootGetters.pcode["my-score"];
+        return state.STATE == (getters.ISTIME ? "Verified" : "ToTally") && rootGetters.pcode[getters.ISTIME ? "jiesuan-fsjs-reverify" : "jiesuan-rijs-reverify"];
     }
 }
 const mutations = {
@@ -65,7 +65,7 @@ const mutations = {
             storeHelper.setConfig({ XULID: "0000051437", OPRTFLOWID: "30307" });
         }
         if (state.params.BILLTYPEID == "109304") {
-            storeHelper.setConfig({ XULID: "0000051437", OPRTFLOWID: "30307" });
+            storeHelper.setConfig({ XULID: "0000051465", OPRTFLOWID: "30244" });
         }
     },
     [Constants.M_ADDDEFAULT]: function(state) {
@@ -199,7 +199,7 @@ const mutations = {
                 //TODO:通过可判断
                 AMT = "";
             } else {
-                AMT = item1["STLITEMID.DEFAULTVALUE"]
+                AMT = item1["AMT"] || item1["STLITEMID.DEFAULTVALUE"]
             }
             if ("EDI" == item1["DEALTYPE"]) {
                 //TODO:待接通后考虑
@@ -404,9 +404,17 @@ const checkNull = function() {
     if (isNull(MAIN.getValue("MANAGERID"))) {
         nullFields.push("店长");
     }
+
+    if (!Store.getters[Constants.STORE_NAME + "/ISTIME"]) {
+        if (isNull(MAIN.getValue("DEADTIME"))) {
+            nullFields.push("截止时间");
+        }
+    }
+
     let item = DTS.data.find(item => {
         return item["ITEMID.PARANAME"] == "差异"
     })
+
     if (item) {
         if (!isNull(item["AMT"]) && item["AMT"] != 0) {
             if (isNull(MAIN.getValue("DIFFREMARK"))) {

@@ -39,7 +39,7 @@
             <li
               class="mui-table-view-cell"
               v-for="item in list"
-              :key="item.id"
+              :key="item.SNODEID"
               @click="selectItem(item)"
               style="font-size:15px;"
             >
@@ -82,7 +82,7 @@ export default {
           this.searchInput
         }%' OR [SNODENAME] LIKE '%${
           this.searchInput
-        }%') AND [MNGSTATEID] IN(104067)  AND  [OBJTYPEID]=101028  AND [AID]='@AID'`,
+        }%') AND [MNGSTATEID] IN(104067)  AND  [OBJTYPEID]=101028  AND [AID]='@AID' AND [SNODEID] IN(SELECT COLUMN_VALUE FROM TABLE(tss_getpowwhere('MSNODE','@UID','@AID')))`,
         orderBy: "[CITYRULECODE],[SNODECODE]",
         pageSize: 25,
         pageIndex: 1

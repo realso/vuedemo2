@@ -99,7 +99,7 @@ const mutations = {
         let MAIN = storeHelper.getTable("MAIN");
         let STLFMITEM = storeHelper.getTable("STLFMITEM");
         let DTS = storeHelper.getTable("DTS");
-        DTS.initData();
+        DTS.clear();
         STLFMITEM.data.forEach(item => {
             let titem = {};
             titem["ITEMID"] = item["ITEMID"];
@@ -192,7 +192,7 @@ const mutations = {
                 //TODO:通过可判断
                 AMT = "";
             } else {
-                AMT = item1["STLITEMID.DEFAULTVALUE"]
+                AMT = item1["AMT"] || item1["STLITEMID.DEFAULTVALUE"]
             }
             if ("EDI" == item1["DEALTYPE"]) {
                 //TODO:待接通后考虑
