@@ -38,7 +38,7 @@
             </rs-list-item>
             <rs-list-item noborder isright v-if="ISTIME"  @click.native="open('picker1')">
               <div class="rs-flex-row">
-                <span class="rr-justify rr-width-4em">时 段</span>
+                <span class="rr-justify rr-width-4em">截止时间</span>
                 <span>：</span>
                 <div class="rs-flex-item">
                     {{DEADLINE}}

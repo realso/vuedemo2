@@ -39,7 +39,7 @@
             <li
               class="mui-table-view-cell"
               v-for="item in list"
-              :key="item.id"
+              :key="item.SNODEID"
               @click="selectItem(item)"
               style="font-size:15px;"
             >
