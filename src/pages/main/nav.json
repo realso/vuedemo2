@@ -1,6 +1,6 @@
 [{
         "path": "/jiesuan",
-        "name": "结算记录",
+        "name": "日结算",
         "icon": "rr-font rr-jiesuan c-icon-blue",
         "pcode": "my-score",
         "isshow": true,

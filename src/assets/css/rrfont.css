@@ -18,7 +18,8 @@
 .rr-wode:before { content: "\e602"; }
 .rr-dinghuo:before { content: "\e603"; }
 .rr-list-style:before { content: "\e604"; }
-
+.rr-shoucangA:before { content: "\e605"; }
+.rr-shoucang:before { content: "\e606"; }
 .rr-jiaokuan:before { content: "\e608"; }
 .rr-zhishiku:before { content: "\e60a"; }
 

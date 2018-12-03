@@ -1,7 +1,7 @@
 <template>
   <div class="mui-layout mui-layout-bottomtop">
-    <rs-header title="知识库"></rs-header>
-    <rs-navbar v-model="selected">
+    <rs-header class="rr-header-nobox" title="知识库"></rs-header>
+    <rs-navbar class="rr-navbar" inverted color="white" v-model="selected">
       <rs-nav-item id="全部">
         全部
       </rs-nav-item>
@@ -13,7 +13,10 @@
       <rs-loadmore :bottom-method="loadBottom" @bottom-status-change="handleBottomChange" :bottom-all-loaded="allLoaded" :top-method="loadTop" @translate-change="translateChange" @top-status-change="handleTopChange" ref="loadmore">
         <rs-card type="header" v-for="(item,index) in list" :key="index" @click.native="linkUrl(item.path,item.title)">
           <div slot="header">
-            <div class="f14">{{item.title}}</div>
+            <div class="f14 rs-flex-row">
+              <div class="rs-flex-item">{{item.title}}</div>
+              <span class="rr-font c-icon-red rs-padding-lr" style="margin-right:-10px" :class="item.shoucang?'rr-shoucangA':'rr-shoucang'" @click.stop="item.shoucang=!item.shoucang"></span>
+            </div>
             <div class="f12 c-999">{{item.text}}</div>
           </div>
           <div slot="content" class="rs-flex-row">
@@ -46,6 +49,7 @@ export default {
             path: '/zhishiku',
             title: '第一个标题',
             text: '能和心爱的人一起睡觉，是件幸福的事情；可是，打呼噜怎么办？',
+            shoucang: false,
             list: [
               {src: require("@/assets/img/yuantiao.jpg")},
               {src: require("@/assets/img/yuantiao.jpg")},
@@ -157,4 +161,5 @@ export default {
 <style>
 .rs-card-header:after{display: none}
 .rs-card .rs-card-content-inner{padding-top: 0}
+.rr-navbar{background: #58cffa;}
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="mui-layout mui-layout-bottomtop">
-    <rs-header title="消息"></rs-header>
-    <rs-navbar v-model="selected">
+    <rs-header class="rr-header-nobox" title="消息"></rs-header>
+    <rs-navbar class="rr-navbar" inverted color="white" v-model="selected">
           <rs-nav-item id="未读">
             未读
           </rs-nav-item>
@@ -91,5 +91,6 @@ export default {
 }
 </script>
 <style>
+.rr-navbar{background: #58cffa;}
 .rr-radius-100{border-radius: 100%}
 </style>
