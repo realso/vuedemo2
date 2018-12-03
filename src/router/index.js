@@ -6,6 +6,7 @@ import MainRouter from "@/pages/main/router"
 import T404 from "@/pages/T404/router"
 import JieSuanRouter from "@/pages/jiesuan/router"
 import JieSuanRouter1 from "@/pages/jiesuan.1/router"
+import zhishiku from "@/pages/zhishiku/router"
 Vue.use(Router);
 let routes = [];
 routes = routes.concat(LoginRouter);
@@ -13,6 +14,7 @@ routes.push(MainRouter);
 routes.push(T404);
 routes.push(JieSuanRouter);
 routes.push(JieSuanRouter1);
+routes.push(zhishiku);
 const router = new Router({
     routes: routes
 });
