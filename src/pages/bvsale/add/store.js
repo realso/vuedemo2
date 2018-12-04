@@ -2,7 +2,7 @@ import Store from "@/store"
 import { createNamespacedHelpers } from 'vuex'
 import service from "../service";
 import { Store02, Constants as SConstants } from "rs-vcore/store/Store02";
-import { dateToString, dateAdd } from "rs-vcore/utils/Date";
+import { dateToString, dateAdd, stringToDate } from "rs-vcore/utils/Date";
 
 const Constants = Object.assign({}, SConstants, {
     STORE_NAME: "bvsale",
@@ -101,8 +101,9 @@ const mutations = {
         MAIN.setValue("STLTYPEID", item["STLTYPEID"]);
     },
     [Constants.M_SETSNODEXY]: function(state, { data }) {
+        let MAIN = storeHelper.getTable(Constants.P_PATHS.MAIN);
         data = data || [];
-        MAIN.setValue("SNODEID.ISXY", items.length > 0 ? "1" : "0");
+        MAIN.setValue("SNODEID.ISXY", data.length > 0 ? "1" : "0");
     },
     [Constants.M_SETCUST]: function(state, { item }) {
         let MAIN = storeHelper.getTable(Constants.P_PATHS.MAIN);
@@ -114,6 +115,7 @@ const mutations = {
         MAIN.setValue("SALEPLCID", item["SALEPLCID"] || "");
     },
     [Constants.M_SETAMTLMT]: function(state) {
+        let MAIN = storeHelper.getTable(Constants.P_PATHS.MAIN);
         let AMTLMT = storeHelper.getTable(Constants.P_PATHS.AMTLMT);
         state.PLCMID = {};
         AMTLMT.data.forEach(item => {
@@ -174,8 +176,10 @@ const actions = {
             ret = await service.doQuerySnode({ SNODEID });
             item = ret.data.items[0] || {};
             commit(Constants.M_SETSNODE, { item });
+            let WEEK = stringToDate(BILLDATE);
+            WEEK = WEEK.getDay() == 0 ? 7 : WEEK.getDay();
             //息业信息
-            ret = await service.doCheckXiYe({ SNODEID, BILLDATE });
+            ret = await service.doCheckXiYe({ SNODEID, BILLDATE, WEEK });
             commit(Constants.M_SETSNODEXY, { data: ret.data.items || [] });
             //客户赋值
             ret = await service.doQueryCust({ CUSTID: MAIN.getValue("CUSTID") });
@@ -195,10 +199,15 @@ const actions = {
     },
 
     async changeSnode({ commit, dispatch }, item) {
+        let MAIN = storeHelper.getTable(Constants.P_PATHS.MAIN);
         //网点赋值
         commit(Constants.M_SETSNODE, { item });
         let SNODEID = MAIN.getValue("SNODEID");
         let BILLDATE = MAIN.getValue("BILLDATE");
+        let WEEK = stringToDate(BILLDATE);
+        WEEK = WEEK.getDay() == 0 ? 7 : WEEK.getDay();
+        //息业信息
+        ret = await service.doCheckXiYe({ SNODEID, BILLDATE, WEEK });
         //息业赋值
         ret = await service.doCheckXiYe({ SNODEID, BILLDATE });
         commit(Constants.M_SETSNODEXY, { data: ret.data.items || [] });
@@ -216,6 +225,7 @@ const actions = {
         }
     },
     async changeBillDate({ commit, dispatch }) {
+        let MAIN = storeHelper.getTable(Constants.P_PATHS.MAIN);
         let SNODEID = MAIN.getValue("SNODEID");
         let BILLDATE = MAIN.getValue("BILLDATE");
         let OSALEPLCID = MAIN.getValue("SALEPLCID");
@@ -229,6 +239,7 @@ const actions = {
         }
     },
     async changeSalePlc({ commit }) {
+        let MAIN = storeHelper.getTable(Constants.P_PATHS.MAIN);
         //获取销售政策明细
         ret = await service.doQuerySalePlcDts({ SALEPLCID });
         commit(Constants.M_INITDATA, { path: Constants.P_PATHS.MAT, data: (ret.data || {}).items });

@@ -9,8 +9,8 @@ const SQLID = {
 }
 
 //查询当日是否订货
-const doCheckIsOrder = async function({ BILLDATE }) {
-    return db.open({ sqlId: SQLID.杜阿姨_销货单_日是否订货, BILLDATE })
+const doCheckIsOrder = async function({ BILLDATE, SNODEID }) {
+    return db.open({ sqlId: SQLID.杜阿姨_销货单_日是否订货, BILLDATE, SNODEID })
 }
 
 //查询业务类型详细信息
@@ -46,13 +46,12 @@ const doQuerySnode = async function({ SNODEID }) {
 
 //查询网点详细信息
 const doQueryCust = async function({ CUSTID }) {
-    debugger;
     return db.open({ sqlId: SQLID.杜阿姨_销货单_客户信息, CUSTID })
 }
 
 //查询网点息业信息
-const doCheckXiYe = async function({ BILLDATE, SNODEID }) {
-    return db.open({ sqlId: SQLID.杜阿姨_销货单_日网点是否息业, BILLDATE, SNODEID })
+const doCheckXiYe = async function({ BILLDATE, SNODEID, WEEK }) {
+    return db.open({ sqlId: SQLID.杜阿姨_销货单_日网点是否息业, BILLDATE, SNODEID, WEEK })
 }
 
 //查询网点销售政策
