@@ -38,20 +38,6 @@ export default {
   data () {
     return {
       navs: [],
-      listImg: [
-        {
-          url: require("@/assets/img/shuijiao.jpg"),
-          title: '第一个标题'
-        },
-        {
-          url: require("@/assets/img/yuantiao.jpg"),
-          title: '第二个标题'
-        },
-        {
-          url: require("@/assets/img/yuantiao.jpg"),
-          title: '第二个标题'
-        }
-      ],
       mianBanBk:{
         backgroundImage: "url(" + url + ")"
       }
