@@ -19,4 +19,20 @@ export default [{
         component: r => require.ensure([], () => r(require('@/pages/com/views/jsnode_sel')), "bvsale"),
         props: { TITLE: '选择经营网点', refStore: { action: "bvsale/setSnode", path: "MAIN" } }
     }]
+}, {
+    path: '/bvsale/list',
+    name: 'bvsale',
+    component: r => require.ensure([], () => r(require('@/pages/bvsale/list/index')), "bvsale"),
+    redirect: '/bvsale/list/main',
+    children: [{
+        path: '/bvsale/list/main',
+        name: "/bvsale/list/main",
+        component: r => require.ensure([], () => r(require('@/pages/bvsale/list/views/main')), "bvsale"),
+        props: { TITLE: '销货单' }
+    }, {
+        path: '/bvsale/add/jsnodesel',
+        name: "/bvsale/add/jsnodesel",
+        component: r => require.ensure([], () => r(require('@/pages/com/views/jsnode_sel')), "bvsale"),
+        props: { TITLE: '选择经营网点' }
+    }]
 }]

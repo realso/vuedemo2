@@ -43,6 +43,14 @@
         "query": { "BILLTYPEID": "109304", "STLTYPEID": "107067" }
     },
     {
+        "path": "/bvsale/list",
+        "name": "订货管理",
+        "icon": "rr-font rr-dinghuo c-icon-green",
+        "pcode": "my-score",
+        "isshow": true,
+        "isfixed": true
+    },
+    {
         "path": "/bvsale",
         "name": "订货单",
         "icon": "rr-font rr-dinghuo c-icon-green",
