@@ -120,9 +120,11 @@ export default {
         if (this.refStore.mutation) {
           this.$store.commit(this.refStore.mutation, para);
         }
-        if (this.refStore.action) {
+        else if (this.refStore.action) {
           this.$indicator.open();
           this.$store.dispatch(this.refStore.action, para).then(()=>this.$indicator.close());
+        }else{
+          this.$emit("selectItem",item);
         }
       }, 600);
        this.$router.goBack();
