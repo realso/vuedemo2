@@ -29,7 +29,13 @@ const doGetPeriod = async function({ PTYPE, BILLDATE }) {
     let param = { periodTypeID: PTYPE, date: BILLDATE, accountType: "ISCHECKOUT4" };
     const api = { "namespace": "GJ.EBZ.BS", "class": "Period", "method": "GetCheckPeriod", params: [param], ISCHECKREPEAT: true };
     return db.call(api).then((ret) => {
-        debugger;
+        return new Promise(function(resolve, reject) {
+            if (ret.data.ERRORCODE < 0) {
+                reject(new Error(ret.data.ERRORTXT));
+            } else {
+                resolve(ret);
+            }
+        })
     });
 }
 

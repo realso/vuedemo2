@@ -30,8 +30,8 @@ export default [{
         component: r => require.ensure([], () => r(require('@/pages/bvsale/list/views/main')), "bvsale"),
         props: { TITLE: '销货单' }
     }, {
-        path: '/bvsale/add/jsnodesel',
-        name: "/bvsale/add/jsnodesel",
+        path: '/bvsale/list/jsnodesel',
+        name: "/bvsale/list/jsnodesel",
         component: r => require.ensure([], () => r(require('@/pages/com/views/jsnode_sel')), "bvsale"),
         props: { TITLE: '选择经营网点' }
     }]

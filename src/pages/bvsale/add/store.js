@@ -13,6 +13,7 @@ const Constants = Object.assign({}, SConstants, {
     M_SETSALEPLC: "setSalePlc",
     M_SETAMTLMT: "setAMTLMT",
     M_SETCUST: "setCust",
+    M_SETPERIOD: "setPeriod",
     M_ADDDTS: "addDTS",
     P_PATHS: {
         MAIN: "MAIN",
@@ -155,6 +156,13 @@ const mutations = {
             titem["UNITID.MQTYPREC"] = item["MID.MQTYPREC"];
             DTS.add(titem);
         });
+    },
+    [Constants.M_SETPERIOD]: function(state, { PTYPE, VALUE }) {
+        let YEAR = VALUE.PYEAR || "";
+        let MONTH = VALUE.PMONTH || "";
+        let MAIN = storeHelper.getTable(Constants.P_PATHS.MAIN);
+        MAIN.setValue(PTYPE == 192 ? "FYEAR" : "PYEAR", YEAR);
+        MAIN.setValue(PTYPE == 192 ? "FMONTH" : "PMONTH", MONTH);
     }
 }
 const actions = {
@@ -165,12 +173,19 @@ const actions = {
         //新增默认
         commit(Constants.M_ADDDEFAULT);
         let MAIN = storeHelper.getTable(Constants.P_PATHS.MAIN);
-        //业务类型赋值
-        let ret = await service.doQueryBusType({ BILLTYPEID: MAIN.getValue("BILLTYPEID"), BUSTYPEID: MAIN.getValue("BUSTYPEID") });
-        commit(Constants.M_SETBUSTYPE, { item: (ret.data.items[0] || {}) });
         //网点赋值
         let SNODEID = MAIN.getValue("SNODEID");
         let BILLDATE = MAIN.getValue("BILLDATE");
+        //判断当前是否已做销货单
+        let ret = await service.doCheckIsOrder({ SNODEID, BILLDATE });
+        if (ret.data.items.length == 1) {
+            dispatch("open", ret.data.items[0]["BILLID"]);
+            return
+        }
+        //业务类型赋值
+        ret = await service.doQueryBusType({ BILLTYPEID: MAIN.getValue("BILLTYPEID"), BUSTYPEID: MAIN.getValue("BUSTYPEID") });
+        commit(Constants.M_SETBUSTYPE, { item: (ret.data.items[0] || {}) });
+
         let item = {};
         if (SNODEID) {
             ret = await service.doQuerySnode({ SNODEID });
@@ -196,14 +211,29 @@ const actions = {
         } else {
             //清空：新增已清空无需处理
         }
-    },
+        if (BILLDATE) {
+            //获取期间
+            //会计期间
+            ret = await service.doGetPeriod({ PTYPE: "191", BILLDATE });
+            commit(Constants.M_SETPERIOD, { PTYPE: 191, VALUE: (ret.data.VALUE || {}) })
 
+            //销售期间
+            ret = await service.doGetPeriod({ PTYPE: "192", BILLDATE });
+            commit(Constants.M_SETPERIOD, { PTYPE: 192, VALUE: (ret.data.VALUE || {}) })
+        }
+    },
     async changeSnode({ commit, dispatch }, item) {
         let MAIN = storeHelper.getTable(Constants.P_PATHS.MAIN);
         //网点赋值
         commit(Constants.M_SETSNODE, { item });
         let SNODEID = MAIN.getValue("SNODEID");
         let BILLDATE = MAIN.getValue("BILLDATE");
+        //判断当前是否已做销货单
+        let ret = await service.doCheckIsOrder({ SNODEID, BILLDATE });
+        if (ret.data.items.length == 1) {
+            dispatch("open", ret.data.items[0]["BILLID"]);
+            return
+        }
         let WEEK = stringToDate(BILLDATE);
         WEEK = WEEK.getDay() == 0 ? 7 : WEEK.getDay();
         //息业信息
@@ -229,6 +259,12 @@ const actions = {
         let SNODEID = MAIN.getValue("SNODEID");
         let BILLDATE = MAIN.getValue("BILLDATE");
         let OSALEPLCID = MAIN.getValue("SALEPLCID");
+        //判断当前是否已做销货单
+        let ret = await service.doCheckIsOrder({ SNODEID, BILLDATE });
+        if (ret.data.items.length == 1) {
+            dispatch("open", ret.data.items[0]["BILLID"]);
+            return
+        }
         //获取销售政策
         ret = await service.doQuerySalePlc({ BILLDATE, SNODEID });
         commit(Constants.M_SETSALEPLC, { item: (ret.data.items[0] || {}) });
@@ -237,6 +273,14 @@ const actions = {
         if (SALEPLCID != OSALEPLCID) {
             await dispatch("changeSalePlc");
         }
+        //获取期间
+        //会计期间
+        ret = await service.doGetPeriod({ PTYPE: "191", BILLDATE });
+        commit(Constants.M_SETPERIOD, { PTYPE: 191, VALUE: (ret.data.VALUE || {}) })
+
+        //销售期间
+        ret = await service.doGetPeriod({ PTYPE: "192", BILLDATE });
+        commit(Constants.M_SETPERIOD, { PTYPE: 192, VALUE: (ret.data.VALUE || {}) })
     },
     async changeSalePlc({ commit }) {
         let MAIN = storeHelper.getTable(Constants.P_PATHS.MAIN);
@@ -269,11 +313,29 @@ const actions = {
         let saveTables = {};
         let MAIN = storeHelper.getTable(Constants.P_PATHS.MAIN);
         let DTS = storeHelper.getTable(Constants.P_PATHS.DTS);
-        //MAIN.clear();
-        //DTS.clear();
         saveTables[Constants.P_PATHS.MAIN] = MAIN.getXML();
         saveTables[Constants.P_PATHS.DTS] = DTS.getXML();
         await service.doDelete({ saveTables });
+    },
+    upMat({ commit }, item) {
+        let DTS = storeHelper.getTable(Constants.P_PATHS.DTS);
+        let cidx = -2;
+        DTS.data.forEach((titem, index) => {
+            if (titem["MID"] == item["MID"]) {
+                cidx = index;
+            }
+        });
+        return DTS.data[cidx + 1];
+    },
+    downMat({ commit }, item) {
+        let DTS = storeHelper.getTable(Constants.P_PATHS.DTS);
+        let cidx = -2;
+        DTS.data.forEach((titem, index) => {
+            if (titem["MID"] == item["MID"]) {
+                cidx = index;
+            }
+        });
+        return DTS.data[cidx - 1];
     }
 }
 Store.registerModule(Constants.STORE_NAME, {
