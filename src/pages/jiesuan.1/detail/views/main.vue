@@ -16,7 +16,7 @@
                 <span class="rr-justify rr-width-4em">经 营 门 店</span>
                 <span>：</span>
                 <div class="rs-flex-item rr-line-b">
-                   {{index}}{{length}} {{this["SNODEID.SNODECODE"]}} {{this["SNODEID.SNODENAME"]}}
+                   index:{{index}}length:{{length}} {{this["SNODEID.SNODECODE"]}} {{this["SNODEID.SNODENAME"]}}
                 </div>
               </div>
             </rs-list-item>
