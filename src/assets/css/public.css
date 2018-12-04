@@ -13,6 +13,8 @@
 .c-000{ color: #000;}
 .c-333{ color: #333;}
 .c-999{ color: #999;}
+/* 背景颜色 */
+.bk-fff{background: #fff}
 /*字体*/
 .f10{ font-size: 10px;}
 .f11{ font-size: 11px;}
@@ -25,6 +27,7 @@
 .f24{ font-size: 24px;}
 .f34{ font-size: 34px;}
 .f40{ font-size: 40px;}
+.rr-weight{font-weight: bold;}
 /* 距离 */
 .mt10{margin-top: 10px !important;}
 .mr15{margin-right: 15px !important;}
@@ -81,3 +84,6 @@
 .rs-loadmore-text{font-size: 14px;}
 /* 导航底部阴影无 */
 .rr-header-nobox{box-shadow: none !important}
+/* 详细查看 */
+.rs-nex-prev{ background: #f8f8f8; padding: 10px}
+.rs-nex-prev .rr-font{ padding: 0 15px; font-size: 20px;}

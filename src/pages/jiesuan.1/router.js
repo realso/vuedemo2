@@ -38,5 +38,21 @@ export default {
         meta: {
             keepAlive: true
         }
+    },{
+        path: '/jiesuan1/detail/jiesuanribao',
+        name: "/jiesuan1/detail/jiesuanribao",
+        component: r => require.ensure([], () => r(require('@/pages/jiesuan.1/detail/views/jiesuanribao')), "jiesuan"),
+        props: { TITLE: '结算日报' },
+        meta: {
+            keepAlive: true
+        }
+    },{
+        path: '/jiesuan1/detail/main',
+        name: "/jiesuan1/detail/main",
+        component: r => require.ensure([], () => r(require('@/pages/jiesuan.1/detail/views/main')), "jiesuan"),
+        props: { TITLE: '明细' },
+        meta: {
+            keepAlive: true
+        }
     }]
 }
