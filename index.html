@@ -3,11 +3,15 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=2.0, user-scalable=no, width=device-width" name="viewport">
     <title>门店助理</title>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
     <script>
         if (location.href.indexOf("?version=") == -1)
             location.href = location.href + "?version=" + (new Date()).getTime();
+        document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+            WeixinJSBridge.call('hideToolbar');
+        });
     </script>
 </head>
 
