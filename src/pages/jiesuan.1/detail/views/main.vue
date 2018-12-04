@@ -4,19 +4,19 @@
           <a slot="left" @click="$router.goBack()" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
         </rs-header>
         <div class="rs-nex-prev">
-          <span class="rr-left rr-font rr-prevA c-999" @click="more_first"></span>
-          <span class="rr-left rr-font rr-prev c-999" @click="more_prev"></span>
-          <span class="rr-right rr-font rr-next c-active" @click="more_next"></span>
-          <span class="rr-right rr-font rr-nextA c-active" @click="more_end"></span>
+          <span class="rr-left rr-font rr-prevA" :class="firstIndex!=-1?'c-active':'c-999'" @click="more_first"></span>
+          <span class="rr-left rr-font rr-prev" :class="preIndex!=-1?'c-active':'c-999'" @click="more_pre"></span>
+          <span class="rr-right rr-font rr-nextA" :class="endIndex!=-1?'c-active':'c-999'" @click="more_end"></span>
+          <span class="rr-right rr-font rr-next" :class="nextIndex!=-1?'c-active':'c-999'" @click="more_next"></span>
         </div>
-        <div class="mui-content">                                                                                                                                                                                                             
+        <div class="mui-content">                                                                                                                                                                                                      
           <rs-list class="rr-line-24" size="15" noborder>
             <rs-list-item noborder>
               <div class="rs-flex-row">
                 <span class="rr-justify rr-width-4em">经 营 门 店</span>
                 <span>：</span>
                 <div class="rs-flex-item rr-line-b">
-                    {{this["SNODEID.SNODECODE"]}} {{this["SNODEID.SNODENAME"]}}
+                   {{index}}{{length}} {{this["SNODEID.SNODECODE"]}} {{this["SNODEID.SNODENAME"]}}
                 </div>
               </div>
             </rs-list-item>
@@ -42,7 +42,7 @@
               <div class="rs-flex-row">
                 <span class="rr-justify rr-width-4em">实 际 收 入</span>
                 <span>：</span>
-                <div class="rs-flex-item rr-line-b">
+                <div class="rs-flex-item rr-text-center rr-line-b">
                     {{DEADLINE}}
                 </div>
               </div>
@@ -51,8 +51,9 @@
               <div class="rs-flex-row">
                 <span class="rr-justify rr-width-4em">线 下</span>
                 <span>：</span>
-                <div class="rs-flex-item rr-line-b">
-                    {{DEADLINE}}
+                <div class="rs-flex-item rr-text-center rr-line-b">
+                  <span class="rr-right">n.n%</span>
+                  200
                 </div>
               </div>
             </rs-list-item>
@@ -60,8 +61,9 @@
               <div class="rs-flex-row">
                 <span class="rr-justify rr-width-4em">线 上</span>
                 <span>：</span>
-                <div class="rs-flex-item rr-line-b">
-                    {{DEADLINE}}
+                <div class="rs-flex-item rr-text-center rr-line-b">
+                  <span class="rr-right">n.n%</span>
+                    10000
                 </div>
               </div>
             </rs-list-item>
@@ -69,7 +71,8 @@
               <div class="rs-flex-row">
                 <span class="rr-justify rr-width-4em">差 异</span>
                 <span>：</span>
-                <div class="rs-flex-item rr-line-b">
+                <div class="rs-flex-item rr-text-center rr-line-b">
+                  <span class="rr-right">n.n‰</span>
                     {{DEADLINE}}
                 </div>
               </div>
@@ -126,7 +129,9 @@ export default {
   name: "jiesuan",
   data() {
     return {
-      ISINPUTSHOW: false
+      ISINPUTSHOW: false,
+      length: parseInt(this.$route.query.length),
+      index: parseInt(this.$route.query.index)
     };
   },
   components:{
@@ -135,23 +140,47 @@ export default {
   computed: {
       ...mapGetters(["ISSHOWSAVE","ISSHOWDELETE","ISTIME"]),
       ...mapDateTable("MAIN",['BILLTYPEID','BILLDATE','BILLCODE','SNODEID.SNODECODE',"SNODEID.SNODENAME","MANAGER","DIFFREMARK","MAKER","VERIFIER","MAKEDATE","VERIFYDATE","TALLIER","TALLYDATE","FHOUR","FMINUTE","DEADLINE"]),
-      ...mapDateTable("DTS",[])
+      ...mapDateTable("DTS",[]),
+      firstIndex(){
+        return this.index!=0?this.index:-1
+      },
+      preIndex(){
+        return (this.index-1)>=0?this.index-1:-1
+      },
+      nextIndex(){
+        return (this.index+1)<=this.length-1?this.index+1:-1
+      },
+      endIndex(){
+        return this.index!=this.length-1?this.index:-1
+      }
   },
   methods: {
-    more_first: function(ID) {
-      doquery(ID)
+    more_first: function() {
+      if(this.firstIndex!=-1){
+        this.index = 0
+        this.doquery()
+      }
     },
-    more_prev: function(ID) {
-      doquery(ID)
+    more_pre: function() {
+      if(this.preIndex!=-1){
+        this.index = this.index-1
+        this.doquery()
+      }
     },
-    more_next: function(ID) {
-      doquery(ID)
+    more_next: function() {
+      if(this.nextIndex!=-1){
+        this.index = this.index+1
+        this.doquery()
+      }
     },
-    more_end: function(ID) {
-      doquery(ID)
+    more_end: function() {
+      if(this.endIndex!=-1){
+        this.index = this.length-1
+        this.doquery()
+      }
     },
-    doquery: function(ID) {
-      
+    doquery: function(index) {
+      this.$router.push({path:"/jiesuan1/detail/main",query:{"index":this.index}});
     }
   },
   watch:{

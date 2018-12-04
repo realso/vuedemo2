@@ -44,16 +44,8 @@
                 </tr>
               </thead>
               <tbody class="rr-table-body">
-                <!-- <tr v-for="(item,index) in list" :key="index" @click="linkUrl(item.SNODEID)"> -->
-                <tr @click="linkUrl('1001')">  
-                  <td>10001<br/>小木桥店</td>
-                  <td class="rr-text-right">30.1</td>
-                  <td class="rr-text-right">20<br/>2.09%</td>
-                  <td class="rr-text-right">9<br/>2.09%</td>
-                  <td class="rr-text-right">1.1<br/>2.09%</td>
-                </tr>
-                <tr @click="linkUrl('1001')">  
-                  <td>10001<br/>小木桥店</td>
+                <tr v-for="(item,index) in list" :key="index" @click="linkUrl(item.SNODEID,index)">
+                  <td>{{item.SNODEID}}<br/>{{item.SNODEID.SNODENAME}}</td>
                   <td class="rr-text-right">30.1</td>
                   <td class="rr-text-right">20<br/>2.09%</td>
                   <td class="rr-text-right">9<br/>2.09%</td>
@@ -83,17 +75,29 @@ export default {
   data() {
     return {
       ISINPUTSHOW: false,
-      list: []
+      list: [
+        {
+          'SNODEID':'10001',
+          'SNODEID.SNODENAME':'小木桥店'
+        },
+        {
+          'SNODEID':'10002',
+          'SNODEID.SNODENAME':'小木桥店2222'
+        }
+      ]
     };
   },
   computed: {
       ...mapGetters(["ISSHOWSAVE","ISSHOWDELETE","ISTIME"]),
       ...mapDateTable("MAIN",['BILLTYPEID','BILLDATE','BILLCODE','SNODEID.SNODECODE',"SNODEID.SNODENAME","MANAGER","DIFFREMARK","MAKER","VERIFIER","MAKEDATE","VERIFYDATE","TALLIER","TALLYDATE","FHOUR","FMINUTE","DEADLINE"]),
-      ...mapDateTable("DTS",[])
+      ...mapDateTable("DTS",[]),
+      length(){
+        return this.list.length
+      }
   },
   methods: {
-    linkUrl: function(SNODEID) {
-      this.$router.push({path:"/jiesuan1/detail/main",query:{"SNODEID":SNODEID}});
+    linkUrl: function(SNODEID,index) {
+      this.$router.push({path:"/jiesuan1/detail/main",query:{SNODEID:SNODEID,index:index,length:this.length}})
     },
     open(picker) {
       this.$refs[picker].open();

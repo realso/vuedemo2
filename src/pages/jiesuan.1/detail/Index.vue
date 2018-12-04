@@ -18,14 +18,12 @@ export default {
   },
   activated: function() {
     this.$store.commit(`${Constants.STORE_NAME}/setParams`, this.$route.query);
-    // if ("VIEW" == this.$route.query.ACTION) {
-    //   this.$callAction({
-    //     action: `${Constants.STORE_NAME}/open`,
-    //     param: this.$route.query.DID,
-    //     isErrorBack: true,
-    //     timeOut: 600
-    //   });
-    // }
+    this.$callAction({
+        action: `${Constants.STORE_NAME}/open`,
+        param: this.$route.query,
+        isErrorBack: true,
+        timeOut: 600
+      });
   },
   deactivated() {
     this.$destroy();

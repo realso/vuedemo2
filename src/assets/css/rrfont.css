@@ -25,8 +25,8 @@
 
 .rr-prevA:before { content: "\e65d"; }
 .rr-prev:before { content: "\e675"; }
-.rr-nextA:before { content: "\e6a1"; }
-.rr-next:before { content: "\e789"; }
+.rr-next:before { content: "\e6a1"; }
+.rr-nextA:before { content: "\e789"; }
 
 .rr-wodegongzi:before { content: "\e612"; }
 .rr-shezhi:before { content: "\e66e"; }
