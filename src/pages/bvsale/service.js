@@ -1,4 +1,4 @@
-import db from "@api/db";
+import db from "@/api/db";
 
 const SQLID = {
     "杜阿姨_销货单_日是否订货": 51494,
@@ -17,7 +17,7 @@ const doCheckIsOrder = async function({ BILLDATE }) {
 const doQueryBusType = async function({ BILLTYPEID, BUSTYPEID }) {
     return db.open({
         modalName: "VBS_SALETYPE_4ZCC",
-        where: `[BUSTYPEID] ='${BUSTYPEID}' AND [BILLTYPEID] = '${BILLTYPEID}'`,
+        where: `[BUSTYPEID] ='${BUSTYPEID}' AND [BILLTYPEID] = '${BILLTYPEID}' AND AID=@AID AND ISUSE = 1 AND ISVERIFY = 1 AND NVL(ISDEL,0) = 0`,
         orderBy: "",
         pageSize: 1,
         pageIndex: 1
@@ -46,6 +46,7 @@ const doQuerySnode = async function({ SNODEID }) {
 
 //查询网点详细信息
 const doQueryCust = async function({ CUSTID }) {
+    debugger;
     return db.open({ sqlId: SQLID.杜阿姨_销货单_客户信息, CUSTID })
 }
 

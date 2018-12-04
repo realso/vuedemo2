@@ -66,7 +66,7 @@ const mutations = {
     [Constants.M_ADDDEFAULT]: function(state) {
         let item = {};
         let SNODEID = state.params.SNODEID || this.getters.userInfo.SNODEID;
-        let BILLDATE = state.params.BILLDATE || dateToString(dateAdd(new date(), 'd', 1));
+        let BILLDATE = state.params.BILLDATE || dateToString(dateAdd(new Date(), 'd', 1));
         item["OBJTYPEID"] = 9021;
         item["SNODEID"] = SNODEID;
         item["BILLDATE"] = BILLDATE;
@@ -74,7 +74,7 @@ const mutations = {
         item["BILLTYPEID"] = 232;
         item["STATE"] = 9937;
         item["FACID"] = 0;
-        g_helper.getTable("MAIN").add(item);
+        storeHelper.getTable("MAIN").add(item);
     },
     [Constants.M_SETBUSTYPE]: function(state, { item }) {
         let MAIN = storeHelper.getTable(Constants.P_PATHS.MAIN);
