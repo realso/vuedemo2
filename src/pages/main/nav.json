@@ -16,6 +16,15 @@
         "query": { "ACTION": "ADD", "BILLTYPEID": "109304", "STLTYPEID": "107067" }
     },
     {
+        "path": "/jiesuanribao",
+        "name": "结算日报",
+        "icon": "rr-font rr-jiesuan c-icon-blue",
+        "pcode": "my-score",
+        "isshow": true,
+        "isfixed": true,
+        "query": {"ACTION": "VIEW"}
+    },
+    {
         "path": "/jiesuan1",
         "name": "日结算测试",
         "icon": "rr-font rr-jiesuan c-icon-blue",

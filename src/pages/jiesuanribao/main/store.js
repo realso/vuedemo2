@@ -1,0 +1,316 @@
+import Store from "@/store"
+import { createNamespacedHelpers } from 'vuex'
+import service from "../service";
+import { Store01, Constants as SConstants } from "rs-vcore/store/Store01";
+import { dateToString, getTime } from "rs-vcore/utils/Date";
+import { execFormula } from "rs-vcore/utils/String";
+import { getPromise } from "rs-vcore/utils/Promise";
+import { throws } from "assert";
+
+const Constants = Object.assign({}, SConstants, {
+    STORE_NAME: "jiesuanribao",
+    M_ADDDEFAULT: "addDefault",
+    M_SETDTS01: "setDts01",
+    M_SETDTS02: "setDts02",
+    M_SETDTS03: "setDts03",
+    M_SETDTS04: "setDts04",
+    M_SETDTS05: "setDts05",
+    M_SETAMT: "setAMT",
+    M_SETEMP: "setEmp",
+    M_SETSNODE: "setSnode",
+    M_SETTIME: "setTime",
+});
+const { mapState, mapGetters } = createNamespacedHelpers(Constants.STORE_NAME);
+const storeHelper = new Store01({
+    service: service,
+    paths: { "QRY":"TBS_PARAMETER_REF", "QRYADV":"TBS_PARAMETER_REF","MAIN": "TBV_SNSTL_M", "DTS": "TBV_SNSTLDTS_M",  "STLFMITEM": "TBV_STLFMITEM", "COPYDTS": "TBV_SNSTLDTS_M", "SNODE": "TBV_CHAINSND_SEL" },
+    MAINPATH: "MAIN",
+    SUBPATH: ["DTS"],
+});
+
+const state = {
+    params: { ACTION: "", STLTYPEID: "", BILLTYPEID: "" },
+    ...storeHelper.mixState()
+}
+
+const getters = {
+    
+}
+const mutations = {
+    ...storeHelper.mixMutations(),
+    [Constants.M_ADDDEFAULT]: function (state) {
+        //新增默认值
+        let MAIN = storeHelper.getTable("MAIN");
+        let STLFMITEM = storeHelper.getTable("STLFMITEM");
+        let item = {};
+        MAIN.add(item);
+        //当前账套，单据类型=日结算，经营门店=用户.经营门店 ，日期=当前日，店长=当前员工，……
+        MAIN.setValue("AID", this.getters.userInfo.AID);
+        MAIN.setValue("BILLTYPEID", state.params.BILLTYPEID);
+        MAIN.setValue("SNODEID", this.getters.userInfo.DSNODEID);
+        MAIN.setValue("SNODEID.SNODECODE", this.getters.userInfo.DSNODECODE);
+        MAIN.setValue("SNODEID.SNODENAME", this.getters.userInfo.DSNODENAME);
+        //员工....
+        MAIN.setValue("MANAGERID", this.getters.userInfo.EMPID);
+        MAIN.setValue("MANAGER", this.getters.userInfo.EMPNAME);
+        MAIN.setValue("BILLDATE", dateToString(new Date()));
+
+    },
+    [Constants.M_SETDTS01]: function (state) {
+        //加载 结算模板.所有 结算项目 判断 处理方式
+        let MAIN = storeHelper.getTable("MAIN");
+        let STLFMITEM = storeHelper.getTable("STLFMITEM");
+        let DTS = storeHelper.getTable("DTS");
+        DTS.clear();
+        STLFMITEM.data.forEach(item => {
+            let titem = {};
+            titem["ITEMID"] = item["ITEMID"];
+            titem["ITEMID.PARANAME"] = item["ITEMID.PARANAME"];
+            titem["STLITEMID"] = item["STLITEMID"];
+            Object.keys(item).forEach(function (f) {
+                titem[`STLITEMID.${f}`] = item[f];
+            });
+            titem["DEALTYPE"] = item["DEALTYPE"];
+            DTS.add(titem);
+        });
+        let ISREADSTL = MAIN.getValue("SNODEID.ISREADSTL");
+        DTS.data.map(item => {
+            if (item["DEALTYPE"] == "EDI") {
+                if (ISREADSTL != "1") {
+                    DTS.setValue("DEALTYPE", "Write", item);
+                } else {
+                    DTS.setValue("DEALTYPE", "EDI", item);
+                }
+            }
+        })
+    },
+    [Constants.M_SETDTS02]: function (state) {
+        //继承 用户移除(否)
+        let COPYDTS = storeHelper.getTable("COPYDTS");
+        let DTS = storeHelper.getTable("DTS");
+        DTS.data.forEach(item1 => {
+            DTS.setValue("ISDELBYU", 0, item1);
+            if ("select" == item1["STLITEMID.ITEMPROPERTY"]) {
+                let item2 = COPYDTS.data.find(item2 => { return item2["STLITEMID"] == item1["STLITEMID"] });
+                if (item2) {
+                    DTS.setValue("ISDELBYU", item2["ISDELBYU"], item1);
+                }
+            }
+        })
+    },
+    [Constants.M_SETDTS03]: function (state) {
+        //判断 项目显示(否)
+        let DTS = storeHelper.getTable("DTS");
+        DTS.data.forEach(item1 => {
+            let ITEMPROPERTY = item1["STLITEMID.ITEMPROPERTY"];
+            let ISDELBYU = item1["ISDELBYU"];
+            let ISHOW = 1;
+            if ("fixed" == ITEMPROPERTY) {
+                ISHOW = 1;
+            }
+            if ("select" == ITEMPROPERTY) {
+                if ("1" == ISDELBYU) {
+                    ISHOW = 0;
+                }
+            }
+            if ("hide" == ITEMPROPERTY) {
+                ISHOW = 0;
+            }
+            DTS.setValue("ISSHOW", ISHOW, item1);
+        })
+        DTS.data.forEach(item1 => {
+            let ITEMPROPERTY = item1["STLITEMID.ITEMPROPERTY"];
+            let ISHOW = 0;
+            if ("judge" == ITEMPROPERTY) {
+                if (DTS.data.find(item => {
+                    return (item["STLITEMID.GRPID"] == item1["ITEMID"]) && (item["ISSHOW"] == 1) && (item["ITEMID"] != item["STLITEMID.GRPID"])
+                })) {
+                    ISHOW = 1;
+                }
+                DTS.setValue("ISSHOW", ISHOW, item1);
+            }
+        })
+    },
+    [Constants.M_SETDTS04]: function (state) {
+        //据 结算项目.分录号(顺序)、整理 分录号
+        let DTS = storeHelper.getTable("DTS");
+        let items = DTS.data.sort((item1, item2) => {
+            return parseFloat(item1["STLITEMID.ENTRYNUM"]) - parseFloat(item2["STLITEMID.ENTRYNUM"])
+        })
+        let ENTRYNUM = 1;
+        items.forEach(item => {
+            DTS.setValue("ENTRYNUM", "", item);
+            if (1 == item["ISSHOW"]) {
+                DTS.setValue("ENTRYNUM", ENTRYNUM++, item);
+            }
+        })
+    },
+    [Constants.M_SETDTS05]: function (state) {
+        //处理 金额
+        let DTS = storeHelper.getTable("DTS");
+        DTS.data.forEach(item1 => {
+            let AMT = "";
+            if ("1" == item1["ISDELBYU"]) {
+                //TODO:通过可判断
+                AMT = "";
+            } else {
+                AMT = item1["AMT"] || item1["STLITEMID.DEFAULTVALUE"]
+            }
+            if ("EDI" == item1["DEALTYPE"]) {
+                //TODO:待接通后考虑
+            }
+            DTS.setValue("AMT", AMT, item1);
+        });
+    },
+    [Constants.M_SETAMT]: function (state) {
+        let MAIN = storeHelper.getTable("MAIN");
+        let DTS = storeHelper.getTable("DTS");
+        let items = DTS.data.filter(item => {
+            return item["STLITEMID.CFORMULA"] != ""
+        }).sort((item1, item2) => { });
+        items.forEach(item => {
+            let AMT = execFormula(item["ITEMID.PARANAME"], (name) => {
+                let titem = DTS.data.find(item1 => {
+                    return item1["ITEMID.PARANAME"] == name
+                })
+                if (titem) {
+                    return titem["STLITEMID.CFORMULA"];
+                }
+            }, (name) => {
+                let titem = DTS.data.find(item1 => {
+                    return item1["ITEMID.PARANAME"] == name
+                })
+                if (titem) {
+                    return titem["AMT"] || 0;
+                } else {
+                    return 0;
+                }
+            });
+            DTS.setValue("AMT", AMT, item);
+            //0.00 空  的 显示处理
+            if (item["STLITEMID.ISZERO"] == "1" && item["STLITEMID.ISNULLF"] == "0") {
+                DTS.setValue("AMT", AMT, item);
+            } else {
+                DTS.setValue("AMT", AMT != 0 ? AMT : "", item);
+            }
+        });
+        //设置主表字段
+        const FILEDITEMS = { "OFFLINEAMT": 107070, "ONLINEAMT": 107069, "DIFFAMT": 107064, "FACTAMT": 107063, "CALAMT": 107062 }
+        Object.keys(FILEDITEMS).forEach(field => {
+            let titem = DTS.data.find(item => {
+                return item["ITEMID"] == FILEDITEMS[field];
+            })
+            let AMT = (titem || {})["AMT"] || "";
+            MAIN.setValue(field, AMT);
+        });
+        let OFFLINEAMT = MAIN.getValue("OFFLINEAMT");
+        let ONLINEAMT = MAIN.getValue("ONLINEAMT");
+        let DIFFAMT = MAIN.getValue("DIFFAMT");
+        let OFFLINERATE = parseFloat((parseFloat(OFFLINEAMT) / (parseFloat(OFFLINEAMT) + parseFloat(ONLINEAMT)) * 100).toFixed("1"));
+        let ONLINERATE = parseFloat((parseFloat(ONLINEAMT) / (parseFloat(OFFLINEAMT) + parseFloat(ONLINEAMT)) * 100).toFixed("1"));
+        let DIFFRATE = parseFloat((parseFloat(DIFFAMT) / (parseFloat(OFFLINEAMT) + parseFloat(ONLINEAMT)) * 1000).toFixed("1"));
+        MAIN.setValue("OFFLINERATE", OFFLINERATE);
+        MAIN.setValue("ONLINERATE", ONLINERATE);
+        MAIN.setValue("DIFFRATE", DIFFRATE);
+    },
+    [Constants.M_SETSNODE]: function (state, { path, item }) {
+        const dt = storeHelper.getTable(path);
+        dt.setValue("SNODEID", item["SNODEID"]);
+        dt.setValue("SNODEID.SNODECODE", item["SNODECODE"]);
+        dt.setValue("SNODEID.SNODENAME", item["SNODENAME"]);
+        dt.setValue("SNODEID.ISREADSTL", item["ISREADSTL"]);
+    },
+    [Constants.M_SETTIME]: function (date) {
+        const MAIN = storeHelper.getTable("MAIN");
+        let DEADLINE = MAIN.getValue("DEADLINE");
+        MAIN.setValue("FHOUR", DEADLINE.split(':')[0]);
+        MAIN.setValue("FMINUTE", DEADLINE.split(':')[1]);
+    }
+}
+
+const actions = {
+    ...storeHelper.mixActions(),
+    add: async function ({ dispatch, commit, state }) {
+        await getPromise(function () { });
+        //初始化所有数据源
+        commit(Constants.M_INITBYPATH, {
+            paths: ["MAIN", "DTS"]
+        });
+        //获取模板
+        let ret1 = await service.doLoadSTLFMITE({ STLTYPEID: state.params.STLTYPEID, BILLDATE: dateToString(new Date()) });
+        commit(Constants.M_INITDATA, { path: "STLFMITEM", data: (ret1.data || {}).items });
+        //新增主表数据源
+        commit(Constants.M_ADDDEFAULT);
+
+        //获取继承数据
+        let MAIN = storeHelper.getTable("MAIN");
+        let DSNODEID = MAIN.getValue("SNODEID");
+        let STLFMID = MAIN.getValue("STLFMID");
+        let ret2 = await service.doLoadCOPYDTS({ DSNODEID, STLFMID });
+        commit(Constants.M_INITDATA, { path: "COPYDTS", data: (ret2.data || {}).items });
+        //五步运算
+        commit(Constants.M_SETDTS01);
+        commit(Constants.M_SETDTS02);
+        commit(Constants.M_SETDTS03);
+        commit(Constants.M_SETDTS04);
+        commit(Constants.M_SETDTS05);
+        commit(Constants.M_SETAMT);
+        commit(Constants.M_SETSTATE);
+    },
+    loadCOPYDTS: async function ({ dispatch, commit }) {
+        let MAIN = storeHelper.getTable("MAIN");
+        let DSNODEID = MAIN.getValue("SNODEID");
+        let STLFMID = MAIN.getValue("STLFMID");
+        let ret = await service.doLoadCOPYDTS({ DSNODEID, STLFMID });
+        commit(Constants.M_INITDATA, { path: "COPYDTS", data: (ret.data || {}).items });
+        commit(Constants.M_SETDTS01);
+        commit(Constants.M_SETDTS02);
+        commit(Constants.M_SETDTS03);
+        commit(Constants.M_SETDTS04);
+        commit(Constants.M_SETDTS05);
+        commit(Constants.M_SETAMT);
+    },
+    loadSTLFMITE: async function ({ dispatch, commit, state }) {
+        let STLFMITEM = storeHelper.getTable("STLFMITEM");
+        let STLFMID = STLFMITEM.getValue("STLFMID");
+        let MAIN = storeHelper.getTable("MAIN");
+        let ret = await service.doLoadSTLFMITE({ STLTYPEID: state.params.STLTYPEID, BILLDATE: MAIN.getValue("BILLDATE") });
+        commit(Constants.M_INITDATA, { path: "STLFMITEM", data: (ret.data || {}).items });
+        if (STLFMID != STLFMITEM.getValue("STLFMID")) {
+            dispatch("loadCOPYDTS");
+        }
+    },
+    setSnode: async function ({ dispatch, commit }, { path, item }) {
+        commit(Constants.M_SETSNODE, { path, item });
+        dispatch("loadCOPYDTS");
+    },
+    openReport: function({commit}) {
+        let para = {};
+        let SNODEID = this.getters.userInfo.DSNODEID;
+        para["BILLID"] = "";
+        para["BILLDATE"] = dateToString(new Date());
+        para.sqlId = "51485";
+        para.pageSize = "10";
+        para.keyFields = "BILLID";
+        db.open(para).then(ret => {
+            debugger;
+            commit(Constants.M_INITDATA, { path: "QRY", data: (ret.data || {}).items });
+        });
+    }
+}
+
+
+
+Store.registerModule(Constants.STORE_NAME, {
+    namespaced: true,
+    state,
+    getters,
+    mutations,
+    actions
+});
+
+const mapDateTable = function (path, aFields, itemProp) {
+    return storeHelper.mapGetters(path, aFields, itemProp);
+}
+
+export { mapState, mapGetters, mapDateTable, Constants };
