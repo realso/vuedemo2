@@ -22,19 +22,19 @@
             </rs-list-item>
             <rs-list-item noborder>
               <div class="rs-flex-row">
-                <span class="rr-justify rr-width-4em">店 长</span>
+                <span class="rr-justify rr-width-4em">日 期</span>
                 <span>：</span>
                 <div class="rs-flex-item rr-line-b">
-                    {{MANAGER}} 
+                    {{BILLDATE|getWeek}}
                 </div>
               </div>
             </rs-list-item>
             <rs-list-item noborder>
               <div class="rs-flex-row">
-                <span class="rr-justify rr-width-4em">日 期</span>
+                <span class="rr-justify rr-width-4em">店 长</span>
                 <span>：</span>
                 <div class="rs-flex-item rr-line-b">
-                    {{BILLDATE|getWeek}}
+                    {{MANAGER}} 
                 </div>
               </div>
             </rs-list-item>

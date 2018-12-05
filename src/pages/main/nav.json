@@ -52,6 +52,15 @@
         "query": { "BILLTYPEID": "109304", "STLTYPEID": "107067" }
     },
     {
+        "path": "/dongtai",
+        "name": "结算动态表",
+        "icon": "rr-font rr-jiesuan c-icon-blue",
+        "pcode": "my-score",
+        "isshow": true,
+        "isfixed": true,
+        "query": { "BILLTYPEID": "109304", "STLTYPEID": "107067" }
+    },
+    {
         "path": "/bvsale/list",
         "name": "订货管理",
         "icon": "rr-font rr-dinghuo c-icon-green",
