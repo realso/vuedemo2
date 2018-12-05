@@ -48,7 +48,6 @@ export default {
   },
   methods: {
     NavClick: function(item){
-      debugger;
       this.$router.push({path:item.path,query:item.query});
     }
   }

@@ -1,140 +1,165 @@
 <template>
-    <div class="mui-layout mui-layout-top">
-        <rs-header :title="TITLE" color="primary">
-           <a slot="left" @click="$router.goBack()" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
-        </rs-header>
-        <div class="mui-content bk-fff">
-          <rs-list class="rr-line-24" size="15" noborder>
-            <rs-list-item noborder isright @click.native="open('picker2')">
-              <div class="rs-flex-row">
-                <span class="rr-justify rr-width-4em">日 期</span>
-                <span>：</span>
-                <div class="rs-flex-item rr-line-b">
-                    {{BILLDATE|getWeek}}
-                </div>
-              </div>
-            </rs-list-item>
-            <rs-list-item noborder isright  @click.native="linkUrl('snodesel')">
-              <div class="rs-flex-row">
-                <span class="rr-justify rr-width-4em">经营门店</span>
-                <span>：</span>
-                <div class="rs-flex-item">
-                    {{this["QRYSNODEID.SNODECODE"]}} {{this["QRYSNODEID.SNODENAME"]}}
-                </div>
-              </div>
-            </rs-list-item>
-          </rs-list> 
-          <rs-datetime
-            key="jiesuan1.1"
-            ref="picker2"
-            type="date"
-            v-model.lazy="BILLDATE"
-             @confirm="handleChangeD"
-            >
-          </rs-datetime>
-          <div class="mui-content-padded">
-            <table class="rr-table">
-              <thead class="rr-table-header">
-                <tr>
-                  <td>经营门店</td>
-                  <td class="rr-table-w4em">实际收入</td>
-                  <td class="rr-table-w4em">线下<br/>占比%</td>
-                  <td class="rr-table-w4em">线上<br/>占比%</td>
-                  <td class="rr-table-w4em">差异<br/>差异%</td>
-                </tr>
-              </thead>
-              <tbody class="rr-table-body">
-                <tr v-for="(item,index) in QRY" :key="index" @click="linkUrl(item.SNODEID,index)">
-                  <td>{{item.SNODENAME}}<br/>{{item.SNODEID}}</td>
-                  <td class="rr-text-right">{item.SNODEID}</td>
-                  <td class="rr-text-right">20<br/>2.09%</td>
-                  <td class="rr-text-right">9<br/>2.09%</td>
-                  <td class="rr-text-right">1.1<br/>2.09%</td>
-                </tr>
-                <tr class="rr-table-heji">
-                  <td class="rr-text-right rr-weight">合计:</td>
-                  <td class="rr-text-right">30.1</td>
-                  <td class="rr-text-right">20<br/>2.09%</td>
-                  <td class="rr-text-right">9<br/>2.09%</td>
-                  <td class="rr-text-right">1.1<br/>2.09%</td>
-                </tr>
-              </tbody>
-            </table> 
+  <div class="mui-layout mui-layout-top">
+    <rs-header :title="TITLE" color="primary">
+      <a slot="left" @click="$router.goBack()" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
+    </rs-header>
+    <div class="mui-content bk-fff">
+      <rs-list class="rr-line-24" size="15" noborder>
+        <rs-list-item noborder isright @click.native="open('picker1')">
+          <div class="rs-flex-row">
+            <span class="rr-justify rr-width-4em">日 期</span>
+            <span>：</span>
+            <div class="rs-flex-item rr-line-b">{{BILLDATE|getWeek}}</div>
           </div>
-        </div> 
+        </rs-list-item>
+        <rs-list-item noborder isright @click.native="linkUrl('snodesel')">
+          <div class="rs-flex-row">
+            <span class="rr-justify rr-width-4em">经营门店</span>
+            <span>：</span>
+            <div
+              class="rs-flex-item"
+            >{{this["SNODEID.SNODECODE"]}} {{this["SNODEID.SNODENAME"]}}</div>
+          </div>
+        </rs-list-item>
+      </rs-list>
+      <rs-datetime
+        key="jiesuanribao.1"
+        ref="picker1"
+        type="date"
+        v-model.lazy="BILLDATE"
+      ></rs-datetime>
+      <div class="mui-content-padded">
+        <table class="rr-table">
+          <thead class="rr-table-header">
+            <tr>
+              <td>经营门店</td>
+              <td class="rr-table-w4em">实际收入</td>
+              <td class="rr-table-w4em">线下
+                <br>占比%
+              </td>
+              <td class="rr-table-w4em">线上
+                <br>占比%
+              </td>
+              <td class="rr-table-w4em">差异
+                <br>差异%
+              </td>
+            </tr>
+          </thead>
+          <tbody class="rr-table-body">
+            <tr v-for="(item,index) in QRY" :key="index" @click="linkDetail(item.BILLID,item.SNODEID,index)">
+              <td>
+                {{item.SNODECODE}}
+                <br>
+                {{item.SNODENAME}}
+              </td>
+              <td class="rr-text-right">{{item.FACTAMT}}</td>
+              <td class="rr-text-right">{{item.ONLINEAMT}}
+                <br>{{item.ONLINERATE}}%
+              </td>
+              <td class="rr-text-right">{{item.OFFLINEAMT}}
+                <br>{{item.OFFLINERATE}}%
+              </td>
+              <td class="rr-text-right">{{item.DIFFAMT}}
+                <br>{{item.DIFFRATE}}%
+              </td>
+            </tr>
+            <tr class="rr-table-heji">
+              <td class="rr-text-right rr-weight">合计:</td>
+              <td class="rr-text-right">{{FACTAMTALL}}</td>
+              <td class="rr-text-right">{{ONLINEAMTALL}}
+                <br>{{ONLINERATEALL}}%
+              </td>
+              <td class="rr-text-right">{{OFFLINEAMTALL}}
+                <br>{{OFFLINERATEALL}}%
+              </td>
+              <td class="rr-text-right">{{DIFFAMTALL}}
+                <br>{{DIFFRATEALL}}%
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+  </div>
 </template>
 <script>
-import {mapGetters,mapDateTable,Constants} from "../store"
+import { mapGetters, mapDateTable, Constants } from "../store";
 import { getWeek } from "rs-vcore/utils/Date";
 export default {
-  props:{
-    TITLE:""
+  props: {
+    TITLE: ""
   },
   name: "jiesuan",
   data() {
     return {
-      ISINPUTSHOW: false,
-      list: [
-        {
-          'SNODEID':'10001',
-          'SNODEID.SNODENAME':'小木桥店'
-        },
-        {
-          'SNODEID':'10002',
-          'SNODEID.SNODENAME':'小木桥店2222'
-        }
-      ]
+      ISINPUTSHOW: false
     };
   },
   computed: {
-      ...mapGetters(["ISSHOWSAVE","ISSHOWDELETE","ISTIME"]),
-      ...mapDateTable("MAIN",['BILLTYPEID','BILLDATE','BILLCODE','SNODEID.SNODECODE',"SNODEID.SNODENAME","MANAGER","DIFFREMARK","MAKER","VERIFIER","MAKEDATE","VERIFYDATE","TALLIER","TALLYDATE","FHOUR","FMINUTE","DEADLINE"]),
-      ...mapDateTable("DTS",[]),
-      ...mapDateTable("QRY",[]),
-      length(){
-        return this.list.length
-      }
+    ...mapGetters([]),
+    ...mapDateTable("QRYADV", [
+      "BILLDATE",
+      "SNODEID",
+      "SNODEID.SNODECODE",
+      "SNODEID.SNODENAME",
+    ]),
+    ...mapDateTable("QRY", []),
+    ...mapDateTable("QRYALL", [
+      "FACTAMTALL",
+      "ONLINEAMTALL",
+      "ONLINERATEALL",
+      "OFFLINEAMTALL",
+      "OFFLINERATEALL",
+      "DIFFAMTALL",
+      "DIFFRATEALL"
+    ]),
+    length() {
+    }
   },
   methods: {
-    linkUrl: function(SNODEID,index) {
-      this.$router.push({path:"/jiesuan1/detail/main",query:{SNODEID:SNODEID,index:index,length:this.length}})
+    linkUrl: function(url) {
+      this.$router.push({ path: "/jiesuanribao/main/" + url });
+    },
+    linkDetail: function(BILLID,SNODEID, index) {
+      this.$router.push({
+        path: "/jiesuanribao/main/detail",
+        query: { BILLID:BILLID,SNODEID: SNODEID, index: index, length: this.length }
+      });
     },
     open(picker) {
       this.$refs[picker].open();
     },
-    handleChangeD:function(){
-      this.$callAction({action:`${Constants.STORE_NAME}/loadSTLFMITE`});
-    },
-    save(){
-       this.$callAction({action:`${Constants.STORE_NAME}/mySave`,successText:"保存成功"});
-    },
-    async del(){
-       await this.$confirm("确认删除？");
-       this.$callAction({action:`${Constants.STORE_NAME}/delete`,successText:"删除成功",isSuccessBack:true});
+    handleChangeD: function() {
+      this.$callAction({ action: `${Constants.STORE_NAME}/loadSTLFMITE` });
     }
   },
-  watch:{
-    DEADLINE(){
+  watch: {
+    DEADLINE() {
       this.$store.commit(`${Constants.STORE_NAME}/${Constants.M_SETDEADLINE}`);
     }
-  }
-  ,
-  activated: function() {
-      console.log("%c"+this.$route.path,"color:red");
-      this.$store.dispatch(`${Constants.STORE_NAME}/setForm`);
   },
-  filters:{
-    getWeek(value){
-      return value?(value+" "+getWeek(value)):"";
+  activated: function() {
+    console.log("%c" + this.$route.path, "color:red");
+    this.$store.dispatch(`${Constants.STORE_NAME}/setForm`);
+  },
+  filters: {
+    getWeek(value) {
+      return value ? value + " " + getWeek(value) : "";
     }
   }
 };
 </script>
 <style scoped lang="postcss">
-.rs-listItem{ padding: 8px 15px;}
-.rr-line-24,.rr-line-24 .rr-justify{line-height: 24px;}
-.rr-line-24 .rr-justify{height:24px;}
+.rs-listItem {
+  padding: 8px 15px;
+}
+.rr-line-24,
+.rr-line-24 .rr-justify {
+  line-height: 24px;
+}
+.rr-line-24 .rr-justify {
+  height: 24px;
+}
 @component-namespace rr {
   @component table {
     font-size: 14px;
@@ -143,29 +168,29 @@ export default {
       width: 4.5em;
     }
     @descendent header {
-      background: rgb(204,232,255);
+      background: rgb(204, 232, 255);
       text-align: center;
-      td{
+      td {
         padding: 3px;
-        border: 1px solid rgb(204,217,255);
-      }  
+        border: 1px solid rgb(204, 217, 255);
+      }
     }
     @descendent body {
       background: #fff;
-      td{
+      td {
         padding: 3px;
         border-bottom: 1px solid #eee;
-      }  
+      }
     }
     @descendent heji {
       background: #eee;
-      td{
+      td {
         padding: 3px;
         border-top: 1px solid #aaa;
         border-bottom: 1px solid #aaa;
-      }  
+      }
     }
   }
-}      
+}
 </style>
 

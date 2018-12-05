@@ -8,6 +8,7 @@ import JieSuanRouter from "@/pages/jiesuan/router"
 import JieSuanRouter1 from "@/pages/jiesuan.1/router"
 import zhishiku from "@/pages/zhishiku/router"
 import BVSale from "@/pages/bvsale/router"
+import JieSuanRiBao from "@/pages/jiesuanribao/router"
 import dongtai from "@/pages/dongtai/router"
 
 Vue.use(Router);
@@ -18,6 +19,7 @@ routes.push(T404);
 routes.push(JieSuanRouter);
 routes.push(JieSuanRouter1);
 routes.push(zhishiku);
+routes.push(JieSuanRiBao);
 routes.push(dongtai);
 routes = routes.concat(BVSale);
 const router = new Router({

@@ -24,7 +24,7 @@ export default {
         
       }
       if ("VIEW" == this.$route.query.ACTION) {
-        debugger;
+        this.$store.commit("jiesuanribao/addDefault");
         this.$store.dispatch("jiesuanribao/openReport", this.$route.query);
       }
     }, 600);

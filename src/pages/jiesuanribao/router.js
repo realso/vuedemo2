@@ -16,7 +16,7 @@ export default {
             path: '/jiesuanribao/main/snodesel',
             name: "/jiesuanribao/main/snodesel",
             component: r => require.ensure([], () => r(require('@/pages/com/views/snode_sel')), "jiesuanribao"),
-            props: { TITLE: '选择经营门店', refStore: { action: "jiesuanribao/setSnode", path: "QRYADV" } },
+            props: { TITLE: '选择经营门店', refStore: { mutation: "jiesuanribao/setSnode", path: "QRYADV" } },
             meta: {
                 keepAlive: true
             }
