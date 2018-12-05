@@ -71,7 +71,6 @@ const mutations = {
         let para = {};
         let SNODEID = this.getters.userInfo.DSNODEID;
         para["BILLID"] = "";
-        para["SNODEID"] = "10";
         para["BILLDATE"] = dateToString(new Date());
         para.sqlId = "51485";
         para.pageSize = "10";

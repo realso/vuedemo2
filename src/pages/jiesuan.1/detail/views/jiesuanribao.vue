@@ -45,7 +45,7 @@
               </thead>
               <tbody class="rr-table-body">
                 <tr v-for="(item,index) in QRY" :key="index" @click="linkUrl(item.SNODEID,index)">
-                  <td>{{item.SNODEID}}<br/>{{item.SNODEID}}</td>
+                  <td>{{item.SNODENAME}}<br/>{{item.SNODEID}}</td>
                   <td class="rr-text-right">{item.SNODEID}</td>
                   <td class="rr-text-right">20<br/>2.09%</td>
                   <td class="rr-text-right">9<br/>2.09%</td>
