@@ -3,13 +3,7 @@
     <rs-header :title="TITLE" color="primary">
       <a slot="left" @click="$router.goBack()" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
     </rs-header>
-    <div class="rs-nex-prev">
-        <span class="rr-left rr-font rr-prevA" :class="firstIndex!=-1?'c-active':'c-999'" @click="more_first"></span>
-        <span class="rr-left rr-font rr-prev" :class="preIndex!=-1?'c-active':'c-999'" @click="more_pre"></span>
-        <span class="rr-right rr-font rr-nextA" :class="endIndex!=-1?'c-active':'c-999'" @click="more_end"></span>
-        <span class="rr-right rr-font rr-next" :class="nextIndex!=-1?'c-active':'c-999'" @click="more_next"></span>
-    </div>
-    <div class="mui-content bk-fff">
+    <div class="mui-content">
       <rs-list class="rr-line-24" size="15" noborder>
         <rs-list-item>
            新加坡抛饼(88888)
@@ -31,9 +25,9 @@
         <rs-list-item>
           <div class="rs-flex-row">
             <div class="rs-flex-item">
-              <span class="rr-justify rr-width-4em">单 价</span>
+              <span class="rr-justify rr-width-4em">数 量</span>
               <span>：</span>
-                15.00
+              <input class="rr-width-4em rr-border rr-text-center" v-model="QTY"/>
             </div>
             <div class="rs-flex-item">
               <span class="rr-justify rr-width-4em">最 小 订 货</span>
@@ -43,16 +37,31 @@
           </div>
         </rs-list-item>
         <rs-list-item>
-          <span class="rr-justify rr-width-4em">数 量</span>
-          <span>：</span>
-          <input class="rr-width-5em rr-border rr-text-center" v-model="QTY"/>
-        </rs-list-item>
-        <rs-list-item>
-            <span class="rr-justify rr-width-4em">金 额</span>
-            <span>：</span>
-            30.00
+          <div class="rs-flex-row">
+            <div class="rs-flex-item">
+              <span class="rr-justify rr-width-4em">单 价</span>
+              <span>：</span>
+                15.00
+            </div>
+            <div class="rs-flex-item">
+              <span class="rr-justify rr-width-4em">金 额</span>
+              <span>：</span>
+              30.00
+            </div>
+          </div>
         </rs-list-item>
       </rs-list>      
+    </div>
+    <div class="rr-number-key">
+      <rs-grid type="white" border>
+        <rs-grid-item v-for="(item,index) in number" :key="index" @click.native="NavClick(item)">
+          {{item}}
+        </rs-grid-item>
+      </rs-grid>
+    </div>
+    <div class="rs-flex-row rr-text-center rr-footer">
+      <div class="rs-flex-item" @click="up"><span class="rr-font rr-iconleft f15"></span> 上一物料</div>
+      <div class="rs-flex-item" @click="down">下一物料 <span class="rr-font rr-iconright f15"></span></div>
     </div>
   </div>
 </template>
@@ -66,7 +75,8 @@ export default {
   },
   data() {
     return {
-        item:this.$route.params.item
+        item:this.$route.params.item,
+        number: []
     };
   },
   computed: {
@@ -98,6 +108,14 @@ export default {
     getWeek(value){
       return value?(value+" "+getWeek(value)):"";
     }
+  },
+  created() {
+    for (let i = 1; i < 10; i++) {
+      this.number.push(i);
+    }
+    this.number.push('');
+    this.number.push(0);
+    this.number.push("c");
   }
 };
 </script>
@@ -105,4 +123,5 @@ export default {
 .rr-line-24,.rr-line-24 .rr-justify{line-height: 24px;}
 .rr-line-24 .rr-justify{height:24px;}
 .rr-border{border: 1px solid #58cffa; display: inline-block;}
+.rr-number-key .rs-gridItem{padding: 20px 10px !important}
 </style>

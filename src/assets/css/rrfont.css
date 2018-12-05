@@ -28,6 +28,9 @@
 .rr-next:before { content: "\e6a1"; }
 .rr-nextA:before { content: "\e789"; }
 
+.rr-iconleft:before { content: "\e68c"; }
+.rr-iconright:before { content: "\e78a"; }
+
 .rr-wodegongzi:before { content: "\e612"; }
 .rr-shezhi:before { content: "\e66e"; }
 .rr-gerenxinxi:before { content: "\e691"; }

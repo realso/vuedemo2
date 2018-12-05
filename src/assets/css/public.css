@@ -20,6 +20,7 @@
 .f11{ font-size: 11px;}
 .f12{ font-size: 12px;}
 .f13{ font-size: 13px;}
+.f15{ font-size: 15px;}
 .f14{ font-size: 14px;}
 .f16{ font-size: 16px;}
 .f17{ font-size: 17px;}
@@ -89,3 +90,12 @@
 /* 详细查看 */
 .rs-nex-prev{ background: #f8f8f8; padding: 10px}
 .rs-nex-prev .rr-font{ padding: 0 15px; font-size: 20px;}
+/* 底部 */
+.rr-footer{ background: #58cffa; color: #fff; padding: 12px 0;}
+.rr-footer .rs-flex-item{ position: relative;}
+.rr-footer .rs-flex-item:after{position: absolute; content: ""; width: 1px; top: 0; bottom: 0; right: 0; background: #fff;}
+.rr-footer .rs-flex-item:last-child::after{ width: 0;}
+
+
+
+

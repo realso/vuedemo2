@@ -80,6 +80,7 @@
         </rs-list-item>
        </rs-list>  
     </div>
+    <div class="f14 bk-fff rs-padding-5">订货金额：</div>
   </div>
 </template>
 <script>
