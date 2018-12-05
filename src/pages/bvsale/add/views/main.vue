@@ -64,8 +64,8 @@
             {{item["MID.MNAME"]}}
           </div>
           <div class="">
-            <span class="rr-right" v-if="item['AMT']>0"> {{item["AMT"]}}(元)</span>
-            数量:<span class="rr-border rr-width-4em rr-text-center ml5">{{item["QTY"]}}</span> <span class="ml5 mr5">袋</span> × <span class="ml5 mr5">{{item["PRC"]}}</span>= 
+            <span class="rr-right" v-if="item['AMT']>0"> {{item["AMT"]|toFixed(2)}}(元)</span>
+            数量:<span class="rr-border rr-width-4em rr-text-center ml5" style="height:24px;">{{item["QTY"]}}</span> <span class="ml5 mr5">袋</span> × <span class="ml5 mr5">{{item["PRC"]}}</span>= 
           </div>
         </rs-list-item>
         <div v-if="DTSMESSAGE">
@@ -132,6 +132,11 @@ export default {
   filters:{
     getWeek(value){
       return value?(value+" "+getWeek(value)):"";
+    },
+    toFixed(value, cm) {
+      if(value=="0"||value!=""){
+          return parseFloat(value || 0).toFixed(cm);
+      }
     }
   }
 };
