@@ -32,6 +32,7 @@
 .mt10{margin-top: 10px !important;}
 .mr15{margin-right: 15px !important;}
 .ml5{margin-left: 5px !important;}
+.mr5{margin-right: 5px !important;}
 .mb10{margin-bottom: 10px !important;}
 .rr-text-right{ text-align: right}
 .rr-text-center{text-align: center}
@@ -42,6 +43,7 @@
 /* 宽度 */
 .rr-width-4em{ width: 4em;}
 .rr-width-5em{ width: 5em;}
+.rr-width-10em{ width: 10em;}
 .rr-width-100{ width: 100%}
 .rr-img-block{ display: block;width: 100%}
 .rr-justify{
