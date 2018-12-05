@@ -26,7 +26,7 @@
           </div>
         </div>
       </rs-list-item>
-      <rs-list-item noborder isright  @click.native="linkUrl('snodesel')">
+      <rs-list-item noborder isright  @click.native="linkUrl('jsnodesel')">
         <div class="rs-flex-row">
           <span class="rr-justify rr-width-4em">经 营 门 店</span>
           <span>：</span>
@@ -58,29 +58,22 @@
     <div class="mui-content">
       <rs-list class="rr-line-24" size="15" noborder>
         <!-- <rs-list-item v-for="(item,index) in DTS" :key="index" @click.native="linkMat(item)"> -->
-        <rs-list-item @click.native="linkMat(item)">
+        <rs-list-item v-for="(item) in DTS" :key="item.ENTRYID" v-if="showDts(item)" @click.native="linkMat(item)">
           <div class="mui-clearfix">
-            <span class="rr-right">110g*5*20</span>
-            新加坡抛饼
+            <span class="rr-right">{{item.SIZETYPE}}</span>
+            {{item["MID.MNAME"]}}
           </div>
           <div class="">
-            <span class="rr-right">300.00(元)</span>
-            数量:<span class="rr-border rr-width-4em rr-text-center ml5">20</span> <span class="ml5 mr5">袋</span> × <span class="ml5 mr5">15.00</span> =
+            <span class="rr-right" v-if="item['AMT']>0"> {{item["AMT"]}}(元)</span>
+            数量:<span class="rr-border rr-width-4em rr-text-center ml5">{{item["QTY"]}}</span> <span class="ml5 mr5">袋</span> × <span class="ml5 mr5">{{item["PRC"]}}</span>= 
           </div>
         </rs-list-item>
-        <rs-list-item>
-          <div class="mui-clearfix">
-            <span class="rr-right">110g*5*20</span>
-            新加坡抛饼
-          </div>
-          <div class="">
-            <span class="rr-right">300.00(元)</span>
-            数量:<span class="rr-border rr-width-4em rr-text-center ml5">20</span> <span class="ml5 mr5">袋</span> × <span class="ml5 mr5">15.00</span> =
-          </div>
-        </rs-list-item>
-       </rs-list>  
+        <div v-if="DTSMESSAGE">
+         {{DTSMESSAGE}}
+       </div>  
+       </rs-list>
     </div>
-    <div class="f14 bk-fff rs-padding-5">订货金额：</div>
+    <div class="f14 bk-fff rs-padding-5">订货金额：{{AMT}}</div>
   </div>
 </template>
 <script>
@@ -98,15 +91,26 @@ export default {
   },
   computed: {
       ...mapGetters(["ISSHOWSAVE","ISSHOWDELETE","DTSMESSAGE","SELECTEDTAB"]),
-      ...mapDateTable("MAIN",['BILLTYPEID','BILLDATE','BILLCODE','SNODEID.SNODECODE',"SNODEID.SNODENAME"]),
+      ...mapDateTable("MAIN",['SALEPLCID','SNODEID','BILLTYPEID','BILLDATE','BILLCODE','SNODEID.SNODECODE',"SNODEID.SNODENAME","AMT"]),
       ...mapDateTable("DTS",[])
   },
   methods: {
+    showDts:function(item){
+      if(this.selected==1){
+        return true;
+      }
+       if(this.selected==2){
+        return item["QTY"]>0;
+      }
+       if(this.selected==3){
+        return  item["QTY"]==0;;
+      }
+    },
     linkUrl: function(url) {
       this.$router.push({path:"/bvsale/add/"+url});
     },
     linkMat:function(item){
-        this.$router.push({path:"/bvsale/add/mat",params:{item}});
+        this.$router.push({name:"/bvsale/add/mat",params:{item}});
     },
     open(picker) {
       this.$refs[picker].open();

@@ -1,16 +1,25 @@
 import db from "@/api/db";
+import { setDB, doGetBillCode, doGetDate, doGetDateTime, doGetNewID } from "rs-vcore/service/Service02";
+setDB(db);
 
 const SQLID = {
     "杜阿姨_销货单_日是否订货": 51494,
     "杜阿姨_销货单_日网点是否息业": 51495,
     "杜阿姨_销货单_日网点销售政策": 51498,
     "杜阿姨_销货单_最小金额": 51499,
-    "杜阿姨_销货单_客户信息": 51500
+    "杜阿姨_销货单_最小订货量": 51509,
+    "杜阿姨_销货单_客户信息": 51500,
+    "杜阿姨_销货单_查询订单状态": 51510
 }
 
 //查询当日是否订货
-const doCheckIsOrder = async function({ BILLDATE, SNODEID }) {
-    return db.open({ sqlId: SQLID.杜阿姨_销货单_日是否订货, BILLDATE, SNODEID })
+const doCheckIsOrder = async function({ BILLDATE, SNODEID, BILLID }) {
+    return db.open({ sqlId: SQLID.杜阿姨_销货单_日是否订货, BILLDATE, SNODEID, BILLID })
+}
+
+//查询订单状态
+const doQueryOrderStatus = async function({ BILLID }) {
+    return db.open({ sqlId: SQLID.杜阿姨_销货单_查询订单状态, BILLID })
 }
 
 //查询业务类型详细信息
@@ -81,6 +90,11 @@ const doQueryAMTLMT = async function({ DISTID, SNODEID, BILLDATE, MNGTYPEID }) {
     return db.open({ sqlId: SQLID.杜阿姨_销货单_最小金额, DISTID, SNODEID, BILLDATE, MNGTYPEID })
 }
 
+//查询最小订货量
+const doQueryMINQTY = async function({ SALEPLCID }) {
+    return db.open({ sqlId: SQLID.杜阿姨_销货单_最小订货量, SALEPLCID })
+}
+
 //保存接口
 const doSave = async function({ saveTables }) {
     var param = { EXETYPE: "Delete" };
@@ -106,4 +120,4 @@ const doOpen = async function({ MAIN, DTS, DID }) {
     ]);
 }
 
-export default { doCheckIsOrder, doQueryBusType, doGetPeriod, doQuerySnode, doQueryCust, doCheckXiYe, doQuerySalePlc, doQuerySalePlcDts, doQueryAMTLMT, doOpen, doSave, doDelete }
+export default { doGetBillCode, doGetDate, doGetDateTime, doGetNewID, doCheckIsOrder, doQueryOrderStatus, doQueryBusType, doGetPeriod, doQuerySnode, doQueryCust, doCheckXiYe, doQuerySalePlc, doQuerySalePlcDts, doQueryAMTLMT, doQueryMINQTY, doOpen, doSave, doDelete }

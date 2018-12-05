@@ -17,7 +17,7 @@ export default [{
         path: '/bvsale/add/jsnodesel',
         name: "/bvsale/add/jsnodesel",
         component: r => require.ensure([], () => r(require('@/pages/com/views/jsnode_sel')), "bvsale"),
-        props: { TITLE: '选择经营网点', refStore: { action: "bvsale/setSnode", path: "MAIN" } }
+        props: { TITLE: '选择经营网点', refStore: { action: "bvsale/changeSnode", path: "MAIN" } }
     }]
 }, {
     path: '/bvsale/list',
