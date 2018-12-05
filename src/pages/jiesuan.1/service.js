@@ -40,4 +40,8 @@ const doLoadSnode = async function({ SNODEID }) {
     })
 }
 
+const doOpenData = async function({ }) {
+    return db.open()
+}
+
 export default { doLoadCOPYDTS, doLoadSTLFMITE, doLoadSnode, doOpen, doSave, doDelete, doCheck, doReCheck }

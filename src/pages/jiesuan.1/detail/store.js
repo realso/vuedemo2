@@ -1,3 +1,4 @@
+import db from "@/api/db";
 import Store from "@/store"
 import { createNamespacedHelpers } from 'vuex'
 import service from "../service";
@@ -19,12 +20,13 @@ const Constants = Object.assign({}, SConstants, {
     M_SETSETDTS: "setSetDTS",
     M_SETDTSISDELBYU: "setDTSISDELBYU",
     M_SETREJECTAMT: "setRejectAMT",
-    M_SETDEADLINE: "setDEADLINE"
+    M_SETDEADLINE: "setDEADLINE",
+    M_SETFORM: "setForm"
 });
 const { mapState, mapGetters } = createNamespacedHelpers(Constants.STORE_NAME);
 const storeHelper = new Store01({
     service: service,
-    paths: { "MAIN": "TBV_SNSTL_M", "DTS": "TBV_SNSTLDTS_M", "SETDTS": "TBV_SNSTLDTS_M", "STLFMITEM": "TBV_STLFMITEM", "COPYDTS": "TBV_SNSTLDTS_M", "SNODE": "TBV_CHAINSND_SEL" },
+    paths: { "QRY":"TBS_PARAMETER_REF","MAIN": "TBV_SNSTL_M", "DTS": "TBV_SNSTLDTS_M", "SETDTS": "TBV_SNSTLDTS_M", "STLFMITEM": "TBV_STLFMITEM", "COPYDTS": "TBV_SNSTLDTS_M", "SNODE": "TBV_CHAINSND_SEL" },
     MAINPATH: "MAIN",
     SUBPATH: ["DTS"],
     XULID: "0000051437",
@@ -64,6 +66,20 @@ const mutations = {
         if (state.params.BILLTYPEID == "109304") {
             storeHelper.setConfig({ XULID: "0000051465", OPRTFLOWID: "30244" });
         }
+    },
+    [Constants.M_SETFORM]: function({commit}) {
+        let para = {};
+        let SNODEID = this.getters.userInfo.DSNODEID;
+        para["BILLID"] = "";
+        para["SNODEID"] = "10";
+        para["BILLDATE"] = dateToString(new Date());
+        para.sqlId = "51485";
+        para.pageSize = "10";
+        para.keyFields = "BILLID";
+        db.open(para).then(ret => {
+            debugger;
+            commit(Constants.M_INITDATA, { path: "QRY", data: (ret.data || {}).items });
+        });
     },
     [Constants.M_ADDDEFAULT]: function(state) {
         //新增默认值
@@ -384,6 +400,20 @@ const actions = {
     mySave: async function({ dispatch, commit }) {
         await getPromise(checkNull);
         await dispatch("save");
+    },
+    setForm: function({commit}) {
+        let para = {};
+        let SNODEID = this.getters.userInfo.DSNODEID;
+        para["BILLID"] = "";
+        para["SNODEID"] = "10";
+        para["BILLDATE"] = dateToString(new Date());
+        para.sqlId = "51485";
+        para.pageSize = "10";
+        para.keyFields = "BILLID";
+        db.open(para).then(ret => {
+            debugger;
+            commit(Constants.M_INITDATA, { path: "QRY", data: (ret.data || {}).items });
+        });
     }
 }
 const checkNull = function() {

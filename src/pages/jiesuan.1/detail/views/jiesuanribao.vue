@@ -19,7 +19,7 @@
                 <span class="rr-justify rr-width-4em">经营门店</span>
                 <span>：</span>
                 <div class="rs-flex-item">
-                    {{this["SNODEID.SNODECODE"]}} {{this["SNODEID.SNODENAME"]}}
+                    {{this["QRYSNODEID.SNODECODE"]}} {{this["QRYSNODEID.SNODENAME"]}}
                 </div>
               </div>
             </rs-list-item>
@@ -44,9 +44,9 @@
                 </tr>
               </thead>
               <tbody class="rr-table-body">
-                <tr v-for="(item,index) in list" :key="index" @click="linkUrl(item.SNODEID,index)">
-                  <td>{{item.SNODEID}}<br/>{{item.SNODEID.SNODENAME}}</td>
-                  <td class="rr-text-right">30.1</td>
+                <tr v-for="(item,index) in QRY" :key="index" @click="linkUrl(item.SNODEID,index)">
+                  <td>{{item.SNODEID}}<br/>{{item.SNODEID}}</td>
+                  <td class="rr-text-right">{item.SNODEID}</td>
                   <td class="rr-text-right">20<br/>2.09%</td>
                   <td class="rr-text-right">9<br/>2.09%</td>
                   <td class="rr-text-right">1.1<br/>2.09%</td>
@@ -91,6 +91,7 @@ export default {
       ...mapGetters(["ISSHOWSAVE","ISSHOWDELETE","ISTIME"]),
       ...mapDateTable("MAIN",['BILLTYPEID','BILLDATE','BILLCODE','SNODEID.SNODECODE',"SNODEID.SNODENAME","MANAGER","DIFFREMARK","MAKER","VERIFIER","MAKEDATE","VERIFYDATE","TALLIER","TALLYDATE","FHOUR","FMINUTE","DEADLINE"]),
       ...mapDateTable("DTS",[]),
+      ...mapDateTable("QRY",[]),
       length(){
         return this.list.length
       }
@@ -121,6 +122,7 @@ export default {
   ,
   activated: function() {
       console.log("%c"+this.$route.path,"color:red");
+      this.$store.dispatch(`${Constants.STORE_NAME}/setForm`);
   },
   filters:{
     getWeek(value){
