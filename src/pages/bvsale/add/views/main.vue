@@ -73,7 +73,7 @@
        </div>  
        </rs-list>
     </div>
-    <div class="f14 bk-fff rs-padding-5">订货金额：{{AMT}}</div>
+    <div class="f14 bk-fff rs-padding-5">订货金额：{{AMT|toFixed(2)}}</div>
   </div>
 </template>
 <script>
