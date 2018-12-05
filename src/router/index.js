@@ -7,6 +7,8 @@ import T404 from "@/pages/T404/router"
 import JieSuanRouter from "@/pages/jiesuan/router"
 import JieSuanRouter1 from "@/pages/jiesuan.1/router"
 import zhishiku from "@/pages/zhishiku/router"
+import BVSale from "@/pages/bvsale/router"
+
 Vue.use(Router);
 let routes = [];
 routes = routes.concat(LoginRouter);
@@ -15,6 +17,7 @@ routes.push(T404);
 routes.push(JieSuanRouter);
 routes.push(JieSuanRouter1);
 routes.push(zhishiku);
+routes = routes.concat(BVSale);
 const router = new Router({
     routes: routes
 });

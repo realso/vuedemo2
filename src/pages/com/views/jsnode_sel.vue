@@ -43,7 +43,7 @@
               @click="selectItem(item)"
               style="font-size:15px;"
             >
-                <label style="width: 80px;display: inline-block;">{{item.SNODECODE}}</label>{{item["SNODENAME"]}}
+                <label style="width: 100px;display: inline-block;">{{item.SNODECODE}}</label>{{item["SNODENAME"]}}
             </li>
           </ul>
            <div v-if="allLoaded"  class="rs-list-nodata">
@@ -57,12 +57,14 @@
 <script>
 import db from "@/api/db";
 import { setTimeout } from "timers";
+import { dateToString } from "rs-vcore/utils/Date";
 export default {
   name: "snode_sel",
   props: {
     refStore: { type: Object },
     singleOpen: { type: Boolean },
-    TITLE: { type: String }
+    TITLE: { type: String },
+    STATE:{type:string,default:"Su"}
   },
   data() {
     return {
@@ -70,20 +72,18 @@ export default {
       topStatus: "",
       allLoaded: false,
       searchInput: "",
-      query: {},
+      query: this.$route.query,
       openParam: {}
     };
   },
   methods: {
     setOpenParam: function() {
+      let BILLDATE = this.query.BILLDATE||dateToString(new Date());
+      let owhere = `[AID] = @AID AND [SDATE] <= TO_DATE('${BILLDATE}','YYYY-MM-DD') AND ([EDATE] >= TO_DATE('${BILLDATE}','YYYY-MM-DD') OR [EDATE] IS NULL)  ${this.STATE=='Su'?' AND [ISVERIFY]=1':''}`;
       this.openParam = {
-        modalName: "TBV_CHAINSND_SEL",
-        where: `([SNODECODE] LIKE '%${
-          this.searchInput
-        }%' OR [SNODENAME] LIKE '%${
-          this.searchInput
-        }%') AND [MNGSTATEID] IN(104067)  AND  [OBJTYPEID]=101028  AND [AID]='@AID' AND [SNODEID] IN(SELECT COLUMN_VALUE FROM TABLE(tss_getpowwhere('MSNODE','@UID','@AID')) UNION ALL SELECT ${this.$store.state.user.userInfo.DSNODEID||0} FROM DUAL)`,
-        orderBy: "[CITYRULECODE],[SNODECODE]",
+        modalName: "VBS_SNODE",
+        where: `${owhere} AND ([SNODECODE] LIKE '%${this.searchInput}%' OR [HEADCODE] LIKE '%${this.searchInput}%' OR [SNODENAME] LIKE '%${this.searchInput}%') AND [MNGSTATEID] IN(104067)  AND [SNODEID] IN(SELECT COLUMN_VALUE FROM TABLE(tss_getpowwhere('SNODE','@UID','@AID')) UNION ALL SELECT ${this.$store.state.user.userInfo.SNODEID||0} FROM DUAL)`,
+        orderBy: "[DISTRULECODE],[ORDERCODE],[SNODECODE]",
         pageSize: 25,
         pageIndex: 1
       };
@@ -119,7 +119,8 @@ export default {
       setTimeout(() => {
         if (this.refStore.mutation) {
           this.$store.commit(this.refStore.mutation, para);
-        }else if (this.refStore.action) {
+        }
+        else if (this.refStore.action) {
           this.$indicator.open();
           this.$store.dispatch(this.refStore.action, para).then(()=>this.$indicator.close());
         }else{

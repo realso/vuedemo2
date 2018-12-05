@@ -81,7 +81,7 @@ export default {
           this.searchInput
         }%') AND p_ldh_viewparam.SET_INT(${
           this.$store.state.user.userInfo.COMPID
-        }) = ${this.$store.state.user.userInfo.COMPID} AND [EMPID] IN (SELECT COLUMN_VALUE FROM TABLE(tss_getpowwhere('EMP','250','2')))`,
+        }) = ${this.$store.state.user.userInfo.COMPID} AND [EMPID] IN (SELECT COLUMN_VALUE FROM TABLE(tss_getpowwhere('EMP','250','2')) UNION ALL SELECT ${this.$store.state.user.userInfo.EMPID||0} FROM DUAL)`,
         orderBy:
           "[ISEXTOBJ],[COMPRULECODE],[DEPTRULECODE],[POSTRULECODE],[JOBRULECODE],[EMPCODE]",
         pageSize: 25,
@@ -121,10 +121,11 @@ export default {
       setTimeout(() => {
         if (this.refStore.mutation) {
           this.$store.commit(this.refStore.mutation, para);
-        }
-        if (this.refStore.action) {
+        }else if (this.refStore.action) {
             this.$indicator.open();
             this.$store.dispatch(this.refStore.action, para).then(()=>this.$indicator.close());
+        }else{
+          this.$emit("selectItem",item);
         }
       }, 600);
       this.$router.goBack();

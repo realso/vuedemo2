@@ -96,6 +96,9 @@ const postData = function(param) {
                 if ("-100" == res.data.resulttype) {
                     console.error(res)
                     reject(new Error(res.data.message));
+                } else if ("-105" == res.data.resulttype) {
+                    console.error(res)
+                    reject(new Error("内部错误"));
                 } else {
                     resolve(res.data);
                 }
