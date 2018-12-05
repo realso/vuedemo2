@@ -21,7 +21,7 @@ export default [{
     }]
 }, {
     path: '/bvsale/list',
-    name: 'bvsale',
+    name: '/bvsale/list',
     component: r => require.ensure([], () => r(require('@/pages/bvsale/list/index')), "bvsale"),
     redirect: '/bvsale/list/main',
     children: [{
