@@ -20,6 +20,7 @@
 .f11{ font-size: 11px;}
 .f12{ font-size: 12px;}
 .f13{ font-size: 13px;}
+.f15{ font-size: 15px;}
 .f14{ font-size: 14px;}
 .f16{ font-size: 16px;}
 .f17{ font-size: 17px;}
@@ -32,6 +33,7 @@
 .mt10{margin-top: 10px !important;}
 .mr15{margin-right: 15px !important;}
 .ml5{margin-left: 5px !important;}
+.mr5{margin-right: 5px !important;}
 .mb10{margin-bottom: 10px !important;}
 .rr-text-right{ text-align: right}
 .rr-text-center{text-align: center}
@@ -42,6 +44,7 @@
 /* 宽度 */
 .rr-width-4em{ width: 4em;}
 .rr-width-5em{ width: 5em;}
+.rr-width-10em{ width: 10em;}
 .rr-width-100{ width: 100%}
 .rr-img-block{ display: block;width: 100%}
 .rr-justify{
@@ -87,3 +90,11 @@
 /* 详细查看 */
 .rs-nex-prev{ background: #f8f8f8; padding: 10px}
 .rs-nex-prev .rr-font{ padding: 0 15px; font-size: 20px;}
+/* 底部 */
+.rr-footer{ background: #58cffa; color: #fff; padding: 12px 0;}
+.rr-footer .rs-flex-item{ position: relative;}
+.rr-footer .rs-flex-item:after{position: absolute; content: ""; width: 1px; top: 0; bottom: 0; right: 0; background: #fff;}
+.rr-footer .rs-flex-item:last-child::after{ width: 0;}
+
+
+

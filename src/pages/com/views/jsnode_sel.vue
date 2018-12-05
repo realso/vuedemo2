@@ -64,7 +64,7 @@ export default {
     refStore: { type: Object },
     singleOpen: { type: Boolean },
     TITLE: { type: String },
-    STATE:{type:string,default:"Su"}
+    STATE:{type:String,default:"Su"}
   },
   data() {
     return {
@@ -82,7 +82,7 @@ export default {
       let owhere = `[AID] = @AID AND [SDATE] <= TO_DATE('${BILLDATE}','YYYY-MM-DD') AND ([EDATE] >= TO_DATE('${BILLDATE}','YYYY-MM-DD') OR [EDATE] IS NULL)  ${this.STATE=='Su'?' AND [ISVERIFY]=1':''}`;
       this.openParam = {
         modalName: "VBS_SNODE",
-        where: `${owhere} AND ([SNODECODE] LIKE '%${this.searchInput}%' OR [HEADCODE] LIKE '%${this.searchInput}%' OR [SNODENAME] LIKE '%${this.searchInput}%') AND [MNGSTATEID] IN(104067)  AND [SNODEID] IN(SELECT COLUMN_VALUE FROM TABLE(tss_getpowwhere('SNODE','@UID','@AID')) UNION ALL SELECT ${this.$store.state.user.userInfo.SNODEID||0} FROM DUAL)`,
+        where: `${owhere} AND ([SNODECODE] LIKE '%${this.searchInput}%' OR [HEADCODE] LIKE '%${this.searchInput}%' OR [SNODENAME] LIKE '%${this.searchInput}%')  AND [SNODEID] IN(SELECT COLUMN_VALUE FROM TABLE(tss_getpowwhere('SNODE','@UID','@AID')) UNION ALL SELECT ${this.$store.state.user.userInfo.SNODEID||0} FROM DUAL)`,
         orderBy: "[DISTRULECODE],[ORDERCODE],[SNODECODE]",
         pageSize: 25,
         pageIndex: 1

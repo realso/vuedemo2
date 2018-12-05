@@ -1,25 +1,116 @@
 <template>
+  <div class="mui-layout mui-layout-top">
+    <rs-header :title="TITLE" color="primary">
+      <a slot="left" @click="$router.goBack()" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
+      <div slot="right">
+        <rs-button v-if="ISSHOWDELETE" link @click="del">删除</rs-button>
+        <rs-button v-if="ISSHOWSAVE" link @click="save">保存</rs-button>
+      </div>
+    </rs-header>
+    <rs-list class="rr-line-24" size="15" noborder>
+      <rs-list-item noborder v-if="BILLCODE!=''">
+        <div class="rs-flex-row">
+          <span class="rr-justify rr-width-4em">订 货 单 号</span>
+          <span>：</span>
+          <div class="rs-flex-item rr-line-b">
+              {{BILLCODE}}
+          </div>
+        </div>
+      </rs-list-item>
+      <rs-list-item noborder isright @click.native="open('picker1')">
+        <div class="rs-flex-row">
+          <span class="rr-justify rr-width-4em">订 货 日 期</span>
+          <span>：</span>
+          <div class="rs-flex-item rr-line-b">
+              {{BILLDATE|getWeek}}
+          </div>
+        </div>
+      </rs-list-item>
+      <rs-list-item noborder isright  @click.native="linkUrl('jsnodesel')">
+        <div class="rs-flex-row">
+          <span class="rr-justify rr-width-4em">经 营 门 店</span>
+          <span>：</span>
+          <div class="rs-flex-item">
+                {{this["SNODEID.SNODECODE"]}} {{this["SNODEID.SNODENAME"]}}
+          </div>
+        </div>
+      </rs-list-item>
+    </rs-list> 
+    <rs-datetime
+      key="bvsale.1"
+      ref="picker1"
+      type="date"
+      v-model.lazy="BILLDATE"
+        @confirm="handleChangeD"
+      >
+    </rs-datetime> 
+    <rs-navbar v-model="selected">
+      <rs-nav-item id="1">
+        全部
+      </rs-nav-item>
+      <rs-nav-item id="2">
+        已定
+      </rs-nav-item>
+      <rs-nav-item id="3">
+        未定
+      </rs-nav-item>
+    </rs-navbar>
+    <div class="mui-content">
+      <rs-list class="rr-line-24" size="15" noborder>
+        <!-- <rs-list-item v-for="(item,index) in DTS" :key="index" @click.native="linkMat(item)"> -->
+        <rs-list-item v-for="(item) in DTS" :key="item.ENTRYID" v-if="showDts(item)" @click.native="linkMat(item)">
+          <div class="mui-clearfix">
+            <span class="rr-right">{{item.SIZETYPE}}</span>
+            {{item["MID.MNAME"]}}
+          </div>
+          <div class="">
+            <span class="rr-right" v-if="item['AMT']>0"> {{item["AMT"]|toFixed(2)}}(元)</span>
+            数量:<span class="rr-border rr-width-4em rr-text-center ml5" style="height:24px;">{{item["QTY"]}}</span> <span class="ml5 mr5">袋</span> × <span class="ml5 mr5">{{item["PRC"]}}</span>= 
+          </div>
+        </rs-list-item>
+        <div v-if="DTSMESSAGE">
+         {{DTSMESSAGE}}
+       </div>  
+       </rs-list>
+    </div>
+    <div class="f14 bk-fff rs-padding-5">订货金额：{{AMT}}</div>
+  </div>
 </template>
 <script>
 import {mapGetters,mapDateTable,Constants} from "../store"
 import { getWeek } from "rs-vcore/utils/Date";
 export default {
   name: "bvsale",
+  props:{
+    TITLE:''
+  },
   data() {
     return {
+      selected: '1'
     };
   },
   computed: {
       ...mapGetters(["ISSHOWSAVE","ISSHOWDELETE","DTSMESSAGE","SELECTEDTAB"]),
-      ...mapDateTable("MAIN",['BILLTYPEID','BILLDATE','BILLCODE','SNODEID.SNODECODE',"SNODEID.SNODENAME"]),
+      ...mapDateTable("MAIN",['SALEPLCID','SNODEID','BILLTYPEID','BILLDATE','BILLCODE','SNODEID.SNODECODE',"SNODEID.SNODENAME","AMT"]),
       ...mapDateTable("DTS",[])
   },
   methods: {
+    showDts:function(item){
+      if(this.selected==1){
+        return true;
+      }
+       if(this.selected==2){
+        return item["QTY"]>0;
+      }
+       if(this.selected==3){
+        return  item["QTY"]==0;;
+      }
+    },
     linkUrl: function(url) {
       this.$router.push({path:"/bvsale/add/"+url});
     },
     linkMat:function(item){
-        this.$router.push({path:"/bvsale/add/mat",params:{item}});
+        this.$router.push({name:"/bvsale/add/mat",params:{item}});
     },
     open(picker) {
       this.$refs[picker].open();
@@ -41,19 +132,19 @@ export default {
   filters:{
     getWeek(value){
       return value?(value+" "+getWeek(value)):"";
+    },
+    toFixed(value, cm) {
+      if(value=="0"||value!=""){
+          return parseFloat(value || 0).toFixed(cm);
+      }
     }
   }
 };
 </script>
 <style scoped>
-.rr-title{ padding: 5px 15px; font-size: 15px; border-bottom: 1px solid #bbb; background: #fff; margin-top: 5px;}
-.rr-list-input{ text-align: right;}
 .rs-listItem{ padding: 8px 15px;}
 .rs-list{padding-top:5px;}
-.rr-list-textarea{padding: 5px 15px; background: #fff;}
-.rr-list-textarea textarea{font-size: 15px; margin-bottom: 0;}
 .rr-line-24,.rr-line-24 .rr-justify{line-height: 24px;}
 .rr-line-24 .rr-justify{height:24px;}
-.rs-numInput-input{position: absolute; top: 0; width: 100%; border: none; height: 100%; padding: 0; text-align: right; font-size: 14px;margin: 0;}
-.rr-opacity{opacity: 0;}
+.rr-border{border: 1px solid #58cffa; display: inline-block;}
 </style>
