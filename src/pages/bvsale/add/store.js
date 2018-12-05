@@ -37,6 +37,14 @@ const state = {
 }
 
 const getters = {
+    ISSHOWSAVE() {
+        let MAIN = storeHelper.getTable(Constants.P_PATHS.MAIN);
+        return MAIN.getValue("STATE") != "9938" && MAIN.count() == 1
+    },
+    ISSHOWDELETE() {
+        let MAIN = storeHelper.getTable(Constants.P_PATHS.MAIN);
+        return MAIN.getValue("STATE") != "9938" && MAIN.count() == 1 && !MAIN.isAdd()
+    },
     DTSMESSAGE() {
         let MAIN = storeHelper.getTable(Constants.P_PATHS.MAIN);
         var SDATE = MAIN.getValue('SNODEID.SDATE');
