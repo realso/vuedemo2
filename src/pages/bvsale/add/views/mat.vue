@@ -142,7 +142,7 @@ export default {
         });
     },
     navClick(item) {
-      let v = this.MYQTY+"";
+      let v = this.MYQTY + "";
       if (item == "C") {
         v = v.substring(0, v.length - 1);
       } else {
@@ -159,8 +159,11 @@ export default {
     this.item = this.$route.params.item;
   },
   watch: {
-    item: function() {
-      this.MYQTY = this.QTY;
+    item: {
+      handler: function() {
+        this.MYQTY = this.QTY;
+      },
+      immediate: true
     }
   },
   filters: {

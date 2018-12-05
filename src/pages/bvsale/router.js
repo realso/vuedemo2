@@ -12,7 +12,7 @@ export default [{
         path: '/bvsale/add/mat',
         name: "/bvsale/add/mat",
         component: r => require.ensure([], () => r(require('@/pages/bvsale/add/views/mat')), "bvsale"),
-        props: { TITLE: '商品编辑' }
+        props: { TITLE: '物料' }
     }, {
         path: '/bvsale/add/jsnodesel',
         name: "/bvsale/add/jsnodesel",

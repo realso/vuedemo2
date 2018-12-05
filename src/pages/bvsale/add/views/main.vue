@@ -44,7 +44,7 @@
         @confirm="handleChangeD"
       >
     </rs-datetime> 
-    <rs-navbar v-model="selected">
+    <rs-navbar v-model="$store.state.bvsale.SELECTED">
       <rs-nav-item id="1">
         全部
       </rs-nav-item>
@@ -58,7 +58,7 @@
     <div class="mui-content">
       <rs-list class="rr-line-24" size="15" noborder>
         <!-- <rs-list-item v-for="(item,index) in DTS" :key="index" @click.native="linkMat(item)"> -->
-        <rs-list-item v-for="(item) in DTS" :key="item.ENTRYID" v-if="showDts(item)" @click.native="linkMat(item)">
+        <rs-list-item v-for="(item) in DTSITEMS" :key="item.ENTRYID"  @click.native="linkMat(item)">
           <div class="mui-clearfix">
             <span class="rr-right">{{item.SIZETYPE}}</span>
             {{item["MID.MNAME"]}}
@@ -77,7 +77,7 @@
   </div>
 </template>
 <script>
-import {mapGetters,mapDateTable,Constants} from "../store"
+import {mapState,mapGetters,mapDateTable,Constants} from "../store"
 import { getWeek } from "rs-vcore/utils/Date";
 export default {
   name: "bvsale",
@@ -86,26 +86,15 @@ export default {
   },
   data() {
     return {
-      selected: '1'
+     
     };
   },
   computed: {
-      ...mapGetters(["ISSHOWSAVE","ISSHOWDELETE","DTSMESSAGE","SELECTEDTAB"]),
+      ...mapGetters(["ISSHOWSAVE","ISSHOWDELETE","DTSMESSAGE","DTSITEMS"]),
       ...mapDateTable("MAIN",['SALEPLCID','SNODEID','BILLTYPEID','BILLDATE','BILLCODE','SNODEID.SNODECODE',"SNODEID.SNODENAME","AMT"]),
       ...mapDateTable("DTS",[])
   },
   methods: {
-    showDts:function(item){
-      if(this.selected==1){
-        return true;
-      }
-       if(this.selected==2){
-        return item["QTY"]>0;
-      }
-       if(this.selected==3){
-        return  item["QTY"]==0;;
-      }
-    },
     linkUrl: function(url) {
       this.$router.push({path:"/bvsale/add/"+url});
     },
@@ -119,7 +108,7 @@ export default {
       this.$callAction({action:`${Constants.STORE_NAME}/changeBillDate`});
     },
     save(){
-       this.$callAction({action:`${Constants.STORE_NAME}/save`,successText:"保存成功"});
+       this.$callAction({action:`${Constants.STORE_NAME}/save`,successText:"保存成功",isSuccessBack:true});
     },
     async del(){
        await this.$confirm("确认删除？");

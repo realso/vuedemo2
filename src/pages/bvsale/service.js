@@ -13,8 +13,8 @@ const SQLID = {
 }
 
 //查询当日是否订货
-const doCheckIsOrder = async function({ BILLDATE, SNODEID, BILLID }) {
-    return db.open({ sqlId: SQLID.杜阿姨_销货单_日是否订货, BILLDATE, SNODEID, BILLID })
+const doCheckIsOrder = async function({ BILLDATE, SNODEID, BILLID, BILLTYPEID, BUSTYPEID }) {
+    return db.open({ sqlId: SQLID.杜阿姨_销货单_日是否订货, BILLDATE, SNODEID, BILLID, BILLTYPEID, BUSTYPEID })
 }
 
 //查询订单状态
@@ -96,27 +96,25 @@ const doQueryMINQTY = async function({ SALEPLCID }) {
 }
 
 //保存接口
-const doSave = async function({ saveTables }) {
-    var param = { EXETYPE: "Delete" };
+const doSave = async function({ saveTables, BILLID }) {
+    var param = { EXETYPE: "Save" };
+    param["BILLID"] = BILLID;
     const api = { "namespace": "GJ.EBZ.SL", "class": "Sale", "method": "BVSaleExecute", params: [param, saveTables], ISCHECKREPEAT: true };
-    return db.call(api).then((ret) => {
-        debugger;
-    });
+    return db.call(api).then((ret) => {});
 }
 
 //删除接口
-const doDelete = async function({ saveTables }) {
-    var param = { EXETYPE: "Save" };
+const doDelete = async function({ saveTables, BILLID }) {
+    var param = { EXETYPE: "Delete" };
+    param["BILLID"] = BILLID;
     const api = { "namespace": "GJ.EBZ.SL", "class": "Sale", "method": "BVSaleExecute", params: [param, saveTables], ISCHECKREPEAT: true };
-    return db.call(api).then((ret) => {
-        debugger;
-    });
+    return db.call(api).then((ret) => {});
 }
 
 //查询接口
 const doOpen = async function({ MAIN, DTS, DID }) {
     return db.openTables([
-        { path: MAIN.path, scmName: MAIN.scmName, para: { where: `BILLID=${DID}` } }, { path: DTS.path, scmName: DTS.scmName, para: { where: `BILLID=${DID}` } }
+        { path: MAIN.path, para: { where: `[BILLID]=${DID}`, scmName: MAIN.scm } }, { path: DTS.path, para: { where: `[BILLID]=${DID}`, scmName: DTS.scm } }
     ]);
 }
 

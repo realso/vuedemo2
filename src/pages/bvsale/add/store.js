@@ -22,6 +22,8 @@ const Constants = Object.assign({}, SConstants, {
     M_SETDTSKEY: "setDtsKey",
     M_SETMAKEINFO: "setMakeInfo",
     M_SETDTSQTY: "setDtsQty",
+    M_SETSELECTED: "setSelected",
+    M_SETBILLCODE: "setBillCode",
     P_PATHS: {
         MAIN: "MAIN",
         DTS: "DTS",
@@ -33,11 +35,12 @@ const Constants = Object.assign({}, SConstants, {
 const { mapState, mapGetters } = createNamespacedHelpers(Constants.STORE_NAME);
 
 const storeHelper = new Store02({
-    paths: { "MAIN": "TSL_SALE_4MOBILE", "DTS": "TSL_SALEDTSPC", "MAT": "VSL_MATERIAL_SEL_4BVSALE", "AMTLMT": "" }
+    paths: { "MAIN": "TSL_SALE_4MOBILE", "DTS": "TSL_SALEDTSPC", "SALEDTS": "TSL_SALEDTS", "SALEDTSF": "TSL_SALEDTSF", "MAT": "VSL_MATERIAL_SEL_4BVSALE", "AMTLMT": "" }
 });
 
 const state = {
     params: { ACTION: "", BILLTYPEID: "" },
+    SELECTED: "1",
     OQTY: {},
     PLCMID: {},
     ...storeHelper.mixState()
@@ -75,6 +78,20 @@ const getters = {
             return "该网点,无订货政策，请与相关人员联系！"
         }
         return "";
+    },
+    DTSITEMS(state) {
+        let DTS = storeHelper.getTable(Constants.P_PATHS.DTS);
+        return DTS.data.filter((item) => {
+            if (state.SELECTED == "1") {
+                return true
+            }
+            if (state.SELECTED == "2") {
+                return item["QTY"] > 0;
+            }
+            if (state.SELECTED == "3") {
+                return item["QTY"] <= 0;
+            }
+        });
     }
 }
 const mutations = {
@@ -169,15 +186,15 @@ const mutations = {
             titem["MID.MNAME"] = item["MID.MNAME"];
             titem["MID.SIZETYPE"] = item["MID.SIZETYPE"];
             titem["UNITID"] = item["MID.SUNITID"];
-            titem["UNITID.UNITNAME"] = item["MID.SUNITNAME"];
-            titem["UNITID.UNITRATE"] = item["MID.SUNITRATE"];
-            titem["UNITID.SUNITRATE"] = item["MID.SUNITRATE"];
-            titem["UNITID.UUNITRATE"] = item["MID.UUNITRATE"];
-            titem["UNITID.SUNITNAME"] = item["MID.SUNITNAME"];
-            titem["UNITID.UUNITNAME"] = item["MID.UUNITNAME"];
-            titem["UNITID.MUNITNAME"] = item["MID.MUNITNAME"];
-            titem["UNITID.SQTYPREC"] = item["MID.SQTYPREC"];
-            titem["UNITID.MQTYPREC"] = item["MID.MQTYPREC"];
+            titem["MID.UNITNAME"] = item["MID.SUNITNAME"];
+            titem["MID.UNITRATE"] = item["MID.SUNITRATE"];
+            titem["MID.SUNITRATE"] = item["MID.SUNITRATE"];
+            titem["MID.UUNITRATE"] = item["MID.UUNITRATE"];
+            titem["MID.SUNITNAME"] = item["MID.SUNITNAME"];
+            titem["MID.UUNITNAME"] = item["MID.UUNITNAME"];
+            titem["MID.MUNITNAME"] = item["MID.MUNITNAME"];
+            titem["MID.SQTYPREC"] = item["MID.SQTYPREC"];
+            titem["MID.MQTYPREC"] = item["MID.MQTYPREC"];
             DTS.add(titem);
         });
     },
@@ -212,13 +229,13 @@ const mutations = {
     [Constants.M_SETDTSQTY]: function(state, { QTY, item }) {
         let MAIN = storeHelper.getTable(Constants.P_PATHS.MAIN);
         let DTS = storeHelper.getTable(Constants.P_PATHS.DTS);
-        var UNITRATE = item["UNITID.SUNITRATE"] /*单位转换率*/ ,
-            UUNITRATE = item["UNITID.UUNITRATE"] /*常用单位转换率*/ ,
-            UNITNAME = item["UNITID.SUNITNAME"] /*单位名称*/ ,
-            UUNITNAME = item["UNITID.UUNITNAME"] /*常用单位*/ ,
-            MUNITNAME = item["UNITID.MUNITNAME"] /*基本单位*/ ,
-            QTYPREC = ~~item["UNITID.SQTYPREC"] /*单位精度*/ ,
-            MQTYPREC = ~~item["UNITID.MQTYPREC"] /*基本单位精度*/ ,
+        var UNITRATE = item["MID.SUNITRATE"] /*单位转换率*/ ,
+            UUNITRATE = item["MID.UUNITRATE"] /*常用单位转换率*/ ,
+            UNITNAME = item["MID.SUNITNAME"] /*单位名称*/ ,
+            UUNITNAME = item["MID.UUNITNAME"] /*常用单位*/ ,
+            MUNITNAME = item["MID.MUNITNAME"] /*基本单位*/ ,
+            QTYPREC = ~~item["MID.SQTYPREC"] /*单位精度*/ ,
+            MQTYPREC = ~~item["MID.MQTYPREC"] /*基本单位精度*/ ,
             PRC = toNumber(item["PRC"]);
         QTY = toNumber(QTY);
         QTY = Math.round(QTY * Math.pow(10, QTYPREC)) / Math.pow(10, QTYPREC);
@@ -235,6 +252,13 @@ const mutations = {
             AMT += toNumber(item["AMT"]);
         })
         MAIN.setValue("AMT", AMT);
+    },
+    [Constants.M_SETSELECTED]: function(state, v) {
+        state.SELECTED = v;
+    },
+    [Constants.M_SETBILLCODE]: function(state, { data }) {
+        let MAIN = storeHelper.getTable(Constants.P_PATHS.MAIN);
+        MAIN.setValue("BILLCODE", data);
     }
 }
 
@@ -275,7 +299,7 @@ const checkNull = async function() {
     if (msg.length > 0) {
         throw new Error(msg.join('\n') + "，不可保存");
     }
-    if (DTS.count() == 0) {
+    if (DTS.data.filter((item) => { return item['QTY'] > 0 }) == 0) {
         msg.push("没有具体订货")
     }
 
@@ -309,18 +333,20 @@ const checkNull = async function() {
     if (msg.length > 0) {
         throw new Error(msg.join('\n') + "，不可保存");
     }
-    //已审核 ，不可保存！
-    let ret = await service.doQueryOrderStatus({ BILLID: MAIN.getValue("BILLID") })
-    if (ret.data.items.length == 0) {
-        msg.push("已删除")
-    } else if (ret.data.items[0]["ISTALLY"] == 1) {
-        msg.push("已审核")
-    }
-    if (msg.length > 0) {
-        throw new Error(msg.join('\n') + "，不可保存");
+    if (!MAIN.isAdd()) {
+        //已审核 ，不可保存！
+        let ret = await service.doQueryOrderStatus({ BILLID: MAIN.getValue("BILLID") })
+        if (ret.data.items.length == 0) {
+            msg.push("已删除")
+        } else if (ret.data.items[0]["ISTALLY"] == 1) {
+            msg.push("已审核")
+        }
+        if (msg.length > 0) {
+            throw new Error(msg.join('\n') + "，不可保存");
+        }
     }
     //对应日期,已有订货，不可保存！
-    ret = await service.doCheckIsOrder({ BILLID: MAIN.getValue("BILLID"), BILLDATE, SNODEID: MAIN.getValue("SNODEID") })
+    let ret = await service.doCheckIsOrder({ BILLID: MAIN.getValue("BILLID"), BILLTYPEID: MAIN.getValue("BILLTYPEID"), BUSTYPEID: MAIN.getValue("BUSTYPEID"), BILLDATE, SNODEID: MAIN.getValue("SNODEID") })
     if (ret.data.items.length > 0) {
         msg.push("对应日期,已有订货")
     }
@@ -333,6 +359,7 @@ const checkNull = async function() {
 const actions = {
     ...storeHelper.mixActions(),
     async add({ commit, state, dispatch }) {
+        commit(Constants.M_SETSELECTED, "1");
         //初始化
         commit(Constants.M_INITBYPATH, { paths: [Constants.P_PATHS.MAIN, Constants.P_PATHS.DTS] });
         //新增默认
@@ -342,7 +369,7 @@ const actions = {
         let SNODEID = MAIN.getValue("SNODEID");
         let BILLDATE = MAIN.getValue("BILLDATE");
         //判断当前是否已做销货单
-        let ret = await service.doCheckIsOrder({ SNODEID, BILLDATE });
+        let ret = await service.doCheckIsOrder({ SNODEID, BILLDATE, BILLTYPEID: MAIN.getValue("BILLTYPEID"), BUSTYPEID: MAIN.getValue("BUSTYPEID") });
         if (ret.data.items.length == 1) {
             dispatch("open", ret.data.items[0]["BILLID"]);
             return
@@ -386,6 +413,7 @@ const actions = {
             ret = await service.doGetPeriod({ PTYPE: "192", BILLDATE });
             commit(Constants.M_SETPERIOD, { PTYPE: 192, VALUE: (ret.data.VALUE || {}) })
         }
+
     },
     async changeSnode({ commit, dispatch }, { item }) {
         let MAIN = storeHelper.getTable(Constants.P_PATHS.MAIN);
@@ -394,7 +422,7 @@ const actions = {
         let SNODEID = MAIN.getValue("SNODEID");
         let BILLDATE = MAIN.getValue("BILLDATE");
         //判断当前是否已做销货单
-        let ret = await service.doCheckIsOrder({ SNODEID, BILLDATE });
+        let ret = await service.doCheckIsOrder({ SNODEID, BILLDATE, BILLTYPEID: MAIN.getValue("BILLTYPEID"), BUSTYPEID: MAIN.getValue("BUSTYPEID") });
         if (ret.data.items.length == 1) {
             dispatch("open", ret.data.items[0]["BILLID"]);
             return
@@ -423,7 +451,7 @@ const actions = {
         let BILLDATE = MAIN.getValue("BILLDATE");
         let OSALEPLCID = MAIN.getValue("SALEPLCID");
         //判断当前是否已做销货单
-        let ret = await service.doCheckIsOrder({ SNODEID, BILLDATE });
+        let ret = await service.doCheckIsOrder({ SNODEID, BILLDATE, BILLTYPEID: MAIN.getValue("BILLTYPEID"), BUSTYPEID: MAIN.getValue("BUSTYPEID") });
         if (ret.data.items.length == 1) {
             dispatch("open", ret.data.items[0]["BILLID"]);
             return
@@ -462,6 +490,7 @@ const actions = {
         commit(Constants.M_ADDDTS);
     },
     async open({ commit }, DID) {
+        commit(Constants.M_SETSELECTED, "2");
         let MAIN = storeHelper.getTable(Constants.P_PATHS.MAIN);
         let DTS = storeHelper.getTable(Constants.P_PATHS.DTS);
         let ret = await service.doOpen({ MAIN, DTS, DID });
@@ -472,59 +501,74 @@ const actions = {
         let DTS = storeHelper.getTable(Constants.P_PATHS.DTS);
         //检查空
         await getPromise(checkNull);
+        //debugger;
         //处理单据号
         if (!MAIN.getValue("BILLCODE")) {
-            let ret = service.doGetBillCode({ AID: this.getters.userInfo.AID, AUID: this.getters.userInfo.AUID, BILLTYPEID: MAIN.getValue("BILLTYPEID"), BUSTYPEID: MAIN.getValue("BUSTYPEID"), BILLDATE: MAIN.getValue("BILLDATE") })
-            commit(Constants.M_SETBILLCODE, { data: ret.data });
+            let ret = await service.doGetBillCode({ AID: this.getters.userInfo.AID, AUID: this.getters.userInfo.AUID, BILLTYPEID: MAIN.getValue("BILLTYPEID"), BUSTYPEID: MAIN.getValue("BUSTYPEID"), BILLDATE: MAIN.getValue("BILLDATE") })
+            if (!ret.data) {
+                throw new Error("单号获取失败！");
+            } else {
+                commit(Constants.M_SETBILLCODE, { data: ret.data });
+            }
+
         }
         //处理主外键
         if (!MAIN.getValue("BILLID")) {
-            let ret = await service.doGetNewID(MAIN.scmName, 1);
-            commit(Constants.M_SETMAINKEY, { data: ret.data });
+            let ret = await service.doGetNewID(MAIN.scm, 1);
+            commit(Constants.M_SETMAINKEY, { data: ret.did });
         } else {
             commit(Constants.M_SETMAINKEY, { data: MAIN.getValue("BILLID") });
         }
         //设置明细表主键
         let len = DTS.data.filter((item) => { return !item["ENTRYID"] }).length;
         if (len > 0) {
-            let ret = await service.doGetNewID(DTS.scmName, len);
-            commit(Constants.M_SETDTSKEY, { data: ret.data });
+            let ret = await service.doGetNewID(DTS.scm, len);
+            commit(Constants.M_SETDTSKEY, { data: ret.did });
         }
         //处理制单人制单时间
         let ret = await service.doGetDateTime();
         commit(Constants.M_SETMAKEINFO, { data: ret.data });
     },
-    async save({ commit }) {
-        await _beforeSave({ commit });
+    async save({ dispatch }) {
+        await dispatch("_beforeSave");
         let saveTables = {};
         let MAIN = storeHelper.getTable(Constants.P_PATHS.MAIN);
         let DTS = storeHelper.getTable(Constants.P_PATHS.DTS);
-        saveTables[Constants.P_PATHS.MAIN] = MAIN.getXML();
-        saveTables[Constants.P_PATHS.DTS] = DTS.getXML();
-        await service.doSave({ saveTables });
+        saveTables["SALE"] = MAIN.getXML();
+        saveTables["SALEDTSPC"] = DTS.getXML();
+        saveTables["SALEDTS"] = storeHelper.getTable("SALEDTS").getXML();
+        saveTables["SALEDTSF"] = storeHelper.getTable("SALEDTSF").getXML();
+        await service.doSave({ saveTables, BILLID: MAIN.getValue("BILLID") });
     },
     async delete() {
         let saveTables = {};
         let MAIN = storeHelper.getTable(Constants.P_PATHS.MAIN);
         let DTS = storeHelper.getTable(Constants.P_PATHS.DTS);
-        saveTables[Constants.P_PATHS.MAIN] = MAIN.getXML();
-        saveTables[Constants.P_PATHS.DTS] = DTS.getXML();
-        await service.doDelete({ saveTables });
+        let BILLID = MAIN.getValue("BILLID");
+        MAIN.clear();
+        DTS.clear();
+        saveTables["SALE"] = MAIN.getXML();
+        saveTables["SALEDTSPC"] = DTS.getXML();
+        saveTables["SALEDTS"] = storeHelper.getTable("SALEDTS").getXML();
+        saveTables["SALEDTSF"] = storeHelper.getTable("SALEDTSF").getXML();
+        await service.doDelete({ saveTables, BILLID });
     },
-    upMat({ commit }, item) {
+    upMat({ commit, state, getters }, item) {
         let DTS = storeHelper.getTable(Constants.P_PATHS.DTS);
         let cidx = -2;
-        DTS.data.forEach((titem, index) => {
+        let items = getters.DTSITEMS;
+        items.forEach((titem, index) => {
             if (titem["MID"] == item["MID"]) {
                 cidx = index;
             }
         });
-        return DTS.data[cidx - 1];
+        return items[cidx - 1];
     },
-    downMat({ commit }, item) {
+    downMat({ commit, getters }, item) {
         let DTS = storeHelper.getTable(Constants.P_PATHS.DTS);
         let cidx = -2;
-        DTS.data.forEach((titem, index) => {
+        let items = getters.DTSITEMS;
+        items.forEach((titem, index) => {
             if (titem["MID"] == item["MID"]) {
                 cidx = index;
             }
