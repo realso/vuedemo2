@@ -132,7 +132,6 @@ export default {
 </script>
 <style scoped>
 /* .rs-listItem{ padding: 8px 15px;} */
-.rs-list{padding-top:5px;}
 .rr-line-24,.rr-line-24 .rr-justify{line-height: 24px;}
 .rr-line-24 .rr-justify{height:24px;}
 .rr-border{border: 1px solid #58cffa; display: inline-block; vertical-align: middle}
