@@ -3,33 +3,33 @@
     <rs-header :title="TITLE" color="primary">
       <a slot="left" @click="$router.goBack()" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
     </rs-header>  
-    <rs-list class="rr-line-24 mb10" size="15" noborder>
-      <rs-list-item noborder isright @click.native="open('picker2')">
+    <rs-list class="rr-line-24" size="15" noborder>
+      <rs-list-item isright @click.native="open('picker2')">
         <div class="rs-flex-row">
           <span class="rr-justify rr-width-4em">开 始 日 期</span>
           <span>：</span>
-          <div class="rs-flex-item rr-line-b">
+          <div class="rs-flex-item">
               {{SDATE|getWeek}}
           </div>
         </div>
       </rs-list-item>
-      <rs-list-item noborder isright @click.native="open('picker3')">
+      <rs-list-item isright @click.native="open('picker3')">
         <div class="rs-flex-row">
           <span class="rr-justify rr-width-4em">结 束 日 期</span>
           <span>：</span>
-          <div class="rs-flex-item rr-line-b">
+          <div class="rs-flex-item">
               {{EDATE|getWeek}}
           </div>
         </div>
       </rs-list-item>
-      <rs-list-item noborder style="margin-top:-10px">
+      <rs-list-item noborder>
         <div class="rs-flex-row">
-          <span class="rr-justify rr-width-4em mt10">网 点 编 号</span>
-          <span class="mt10">：</span>
-          <div class="rs-flex-item rr-line-b">
-            <input type="text" class="rr-input-w100 mt10" v-model="wdbh"/>
+          <span class="rr-justify rr-width-4em">网 点 编 号</span>
+          <span class="">：</span>
+          <div class="rs-flex-item">
+            <input type="text" class="rr-input-w100" v-model="wdbh" placeholder="点击输入"/>
           </div>
-          <rs-button size="small" style="position:ab">查询</rs-button>
+          <rs-button size="small" class="rr-list-search">查询</rs-button>
         </div>
       </rs-list-item>
     </rs-list> 
@@ -49,7 +49,7 @@
         @confirm="handleChangeD"
       >
     </rs-datetime> 
-    <rs-navbar v-model="SELECTED">
+    <rs-navbar v-model="SELECTED" inverted>
       <rs-nav-item id="1">
         全部
       </rs-nav-item>
@@ -61,7 +61,7 @@
       <div v-if="list.length<=0" class="rs-list-nodata">
         <span>无对应数据！</span>
       </div>
-      <rs-loadmore :bottom-method="loadBottom" @bottom-status-change="handleBottomChange" :bottom-all-loaded="allLoaded" :top-method="loadTop" @translate-change="translateChange" @top-status-change="handleTopChange" ref="loadmore">
+      <rs-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :top-method="loadTop" ref="loadmore">
         <rs-list class="rr-line-24 rr-list-rili" size="14" noborder>
           <rs-list-item @click.native="linkMat(item)">
             <div class="rs-flex-row">
@@ -109,23 +109,11 @@ export default {
     handleChangeD:function(){
       this.$callAction({action:`${Constants.STORE_NAME}/changeBillDate`});
     },
-    handleTopChange(status) {
-      this.moveTranslate = 1;
-      this.topStatus = status;
-    },
-    translateChange(translate) {
-      const translateNum = +translate;
-      this.translate = translateNum.toFixed(2);
-      this.moveTranslate = (1 + translateNum / 70).toFixed(2);
-    },
     loadTop() {
       setTimeout(() => {
         this.doQuery()
         this.$refs.loadmore.onTopLoaded();
       }, 1500);
-    },
-    handleBottomChange(status) {
-      this.bottomStatus = status;
     },
     loadBottom() {
       setTimeout(() => {
@@ -184,6 +172,7 @@ export default {
 };
 </script>
 <style scoped>
+/* .rs-listItem{ padding: 8px 15px;} */
 .rr-line-24,.rr-line-24 .rr-justify{line-height: 24px;}
 .rr-line-24 .rr-justify{height:24px;}
 .rr-media-rili{ min-width: 60px; min-height: 60px; margin-right: 10px; text-align: center; color: #fff; border-radius: 5px;}
@@ -191,7 +180,7 @@ export default {
 .rr-media-rili p{ color: #fff;}
 .rr-list-rili li:nth-child(2n) .rr-media-rili{ background: #58cffa;}
 .rr-list-rili li:nth-child(2n-1) .rr-media-rili{ background: #26cce2;}
-.rr-input-w100{width: 100%; display: block; height: 24px; line-height: 24px; padding:10px 0; border: none; margin-bottom: 0}
-.rs-btn{padding: 0 10px;}
+.rr-input-w100{width: 100%; display: block; font-size: 15px; height: 24px; line-height: 24px; padding:10px 0; border: none; margin-bottom: 0}
+.rr-list-search{padding: 0 10px; position: absolute; right: 10px; margin-top: -4px;}
 </style>
 

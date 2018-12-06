@@ -8,20 +8,20 @@
       </div>
     </rs-header>
     <rs-list class="rr-line-24" size="15" noborder>
-      <rs-list-item noborder v-if="BILLCODE!=''">
+      <rs-list-item v-if="BILLCODE!=''">
         <div class="rs-flex-row">
           <span class="rr-justify rr-width-4em">订 货 单 号</span>
           <span>：</span>
-          <div class="rs-flex-item rr-line-b">
+          <div class="rs-flex-item">
               {{BILLCODE}}
           </div>
         </div>
       </rs-list-item>
-      <rs-list-item noborder isright @click.native="open('picker1')">
+      <rs-list-item isright @click.native="open('picker1')">
         <div class="rs-flex-row">
           <span class="rr-justify rr-width-4em">订 货 日 期</span>
           <span>：</span>
-          <div class="rs-flex-item rr-line-b">
+          <div class="rs-flex-item">
               {{BILLDATE|getWeek}}
           </div>
         </div>
@@ -44,7 +44,7 @@
         @confirm="handleChangeD"
       >
     </rs-datetime> 
-    <rs-navbar v-model="$store.state.bvsale.SELECTED">
+    <rs-navbar v-model="$store.state.bvsale.SELECTED" inverted>
       <rs-nav-item id="1">
         全部
       </rs-nav-item>
@@ -131,9 +131,9 @@ export default {
 };
 </script>
 <style scoped>
-.rs-listItem{ padding: 8px 15px;}
+/* .rs-listItem{ padding: 8px 15px;} */
 .rs-list{padding-top:5px;}
 .rr-line-24,.rr-line-24 .rr-justify{line-height: 24px;}
 .rr-line-24 .rr-justify{height:24px;}
-.rr-border{border: 1px solid #58cffa; display: inline-block;}
+.rr-border{border: 1px solid #58cffa; display: inline-block; vertical-align: middle}
 </style>
