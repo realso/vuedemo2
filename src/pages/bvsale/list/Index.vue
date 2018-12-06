@@ -14,7 +14,7 @@ export default {
       transitionName: "slide-right"
     };
   },
-  activated: function() {
+  unactivated: function() {
   }
 };
 </script>
