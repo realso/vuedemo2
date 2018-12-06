@@ -78,6 +78,14 @@
         "query": { "ACTION": "ADD" }
     },
     {
+        "path": "/bvsale/list1",
+        "name": "订货状况",
+        "icon": "rr-font rr-dinghuo c-icon-green",
+        "pcode": "my-score",
+        "isshow": true,
+        "isfixed": true
+    },
+    {
         "path": "/wenti",
         "name": "问题记录",
         "icon": "rr-font rr-wenti c-icon-red",

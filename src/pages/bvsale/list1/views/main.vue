@@ -49,6 +49,14 @@
         @confirm="handleChangeD"
       >
     </rs-datetime> 
+    <rs-navbar v-model="SELECTED">
+      <rs-nav-item id="1">
+        全部
+      </rs-nav-item>
+      <rs-nav-item id="2">
+        营业未定
+      </rs-nav-item>
+    </rs-navbar>
     <div class="mui-content"> 
       <rs-loadmore :bottom-method="loadBottom" @bottom-status-change="handleBottomChange" :bottom-all-loaded="allLoaded" :top-method="loadTop" @translate-change="translateChange" @top-status-change="handleTopChange" ref="loadmore">
         <rs-list class="rr-line-24 rr-list-rili" size="14" noborder>
@@ -59,10 +67,10 @@
                 <div>1月</div>
               </div>
               <div class="rs-flex-item f17">
-                  <span class="rr-right">产品</span>
-                  单号:Z1701-02214
+                  <span class="rr-right f14 c-icon-red">营业未定</span>
+                  60608
                 <div class="mt10 f15">
-                  金额:<span>380</span>(元)
+                  锦江老干部餐厅
                 </div>
               </div> 
             </div> 
@@ -85,6 +93,7 @@ export default {
   data() {
     return {
       list: [],
+      SELECTED: '1',
       topStatus: "",
       allLoaded: false,
       searchInput: "",
