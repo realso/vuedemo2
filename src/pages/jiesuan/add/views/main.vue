@@ -56,21 +56,21 @@
         <textarea v-if="!ISTIME" rows="3" placeholder="差异说明" v-model.lazy="DIFFREMARK"></textarea>
       </div>
       <rs-list class="rr-line-24 mt10" size="14" noborder>
-        <rs-list-item>
+        <rs-list-item v-if="BILLCODE!=''">
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">单 据 号</span>
             <span>：</span>
             <div class="rs-flex-item">{{BILLCODE}}</div>
           </div>
         </rs-list-item>
-        <rs-list-item>
+        <rs-list-item v-if="MAKER!=''">
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">制 单</span>
             <span>：</span>
             <div class="rs-flex-item">{{MAKER}} {{MAKEDATE}}</div>
           </div>
         </rs-list-item>
-        <rs-list-item noborder>
+        <rs-list-item noborder v-if="VERIFIER!=''">
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">审 核</span>
             <span>：</span>
