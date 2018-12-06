@@ -28,10 +28,26 @@ export default [{
         path: '/bvsale/list/main',
         name: "/bvsale/list/main",
         component: r => require.ensure([], () => r(require('@/pages/bvsale/list/views/main')), "bvsale"),
-        props: { TITLE: '销货单' }
+        props: { TITLE: '订货管理' }
     }, {
         path: '/bvsale/list/jsnodesel',
         name: "/bvsale/list/jsnodesel",
+        component: r => require.ensure([], () => r(require('@/pages/com/views/jsnode_sel')), "bvsale"),
+        props: { TITLE: '选择经营网点' }
+    }]
+}, {
+    path: '/bvsale/list1',
+    name: '/bvsale/list1',
+    component: r => require.ensure([], () => r(require('@/pages/bvsale/list1/index')), "bvsale"),
+    redirect: '/bvsale/list1/main',
+    children: [{
+        path: '/bvsale/list1/main',
+        name: "/bvsale/list1/main",
+        component: r => require.ensure([], () => r(require('@/pages/bvsale/list1/views/main')), "bvsale"),
+        props: { TITLE: '订货状况' }
+    }, {
+        path: '/bvsale/list1/jsnodesel',
+        name: "/bvsale/list1/jsnodesel",
         component: r => require.ensure([], () => r(require('@/pages/com/views/jsnode_sel')), "bvsale"),
         props: { TITLE: '选择经营网点' }
     }]
