@@ -47,13 +47,13 @@ const state = {
 }
 
 const getters = {
-    ISSHOWSAVE() {
+    ISSHOWSAVE(state, getters, rootState, rootGetters) {
         let MAIN = storeHelper.getTable(Constants.P_PATHS.MAIN);
-        return MAIN.getValue("ISTALLY") != "1" && MAIN.count() == 1
+        return MAIN.getValue("ISTALLY") != "1" && MAIN.count() == 1 && rootGetters.pcode["salemanage.add"]
     },
-    ISSHOWDELETE() {
+    ISSHOWDELETE(state, getters, rootState, rootGetters) {
         let MAIN = storeHelper.getTable(Constants.P_PATHS.MAIN);
-        return MAIN.getValue("ISTALLY") != "1" && MAIN.count() == 1 && !MAIN.isAdd()
+        return MAIN.getValue("ISTALLY") != "1" && MAIN.count() == 1 && !MAIN.isAdd() && rootGetters.pcode["salemanage.delete"]
     },
     DTSMESSAGE() {
         let MAIN = storeHelper.getTable(Constants.P_PATHS.MAIN);
