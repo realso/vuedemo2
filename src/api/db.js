@@ -93,7 +93,7 @@ const postData = function(param) {
                 if ("-201" == res.data.resulttype) {
                     $app.$router.replace("/loginout");
                 }
-                if ("-100" == res.data.resulttype) {
+                if ("-100" == res.data.resulttype || "-101" == res.data.resulttype) {
                     console.error(res)
                     reject(new Error(res.data.message));
                 } else if ("-105" == res.data.resulttype) {

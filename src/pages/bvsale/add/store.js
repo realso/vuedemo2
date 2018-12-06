@@ -242,14 +242,14 @@ const mutations = {
         let MQTY = QTY * UNITRATE;
         if (parseInt(MQTY, 10) != parseFloat(MQTY))
             QTY = 0;
-        DTS.setValue("QTY", QTY, item);
+        DTS.setValue("QTY", QTY || '', item);
         DTS.setValue("AMT", parseFloat((QTY * PRC).toFixed(2)), item);
         var UQTY = QTY2UQTY(QTY, UNITRATE, UUNITRATE, UUNITNAME, MUNITNAME, MQTYPREC);
         DTS.setValue("UQTY", UQTY, item);
 
         let AMT = 0;
         DTS.data.forEach((item) => {
-            AMT += toNumber(item["AMT"]);
+            AMT += toNumber(item["PRC"] * item["QTY"]);
         })
         MAIN.setValue("AMT", AMT);
     },

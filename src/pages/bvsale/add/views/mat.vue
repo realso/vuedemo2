@@ -63,7 +63,7 @@
             <div class="rs-flex-item">
               <span class="rr-justify rr-width-4em">金 额</span>
               <span>：</span>
-              {{AMT}}
+              {{QTY*PRC|toFixed(2)}}
             </div>
           </div>
         </rs-list-item>
@@ -166,9 +166,14 @@ export default {
       immediate: true
     }
   },
-  filters: {
-    getWeek(value) {
-      return value ? value + " " + getWeek(value) : "";
+  filters:{
+    getWeek(value){
+      return value?(value+" "+getWeek(value)):"";
+    },
+    toFixed(value, cm) {
+      if(value=="0"||value!=""){
+          return parseFloat(value || 0).toFixed(cm);
+      }
     }
   },
   created() {
