@@ -7,32 +7,32 @@
       </div>
     </rs-header>  
     <rs-list class="rr-line-24 mb10" size="15" noborder>
-      <rs-list-item noborder isright @click.native="open('picker2')">
+      <rs-list-item isright @click.native="open('picker2')">
         <div class="rs-flex-row">
           <span class="rr-justify rr-width-4em">开 始 日 期</span>
           <span>：</span>
-          <div class="rs-flex-item rr-line-b">
+          <div class="rs-flex-item">
               {{SDATE|getWeek}}
           </div>
         </div>
       </rs-list-item>
-      <rs-list-item noborder isright @click.native="open('picker3')">
+      <rs-list-item isright @click.native="open('picker3')">
         <div class="rs-flex-row">
           <span class="rr-justify rr-width-4em">结 束 日 期</span>
           <span>：</span>
-          <div class="rs-flex-item rr-line-b">
+          <div class="rs-flex-item">
               {{EDATE|getWeek}}
           </div>
         </div>
       </rs-list-item>
-      <rs-list-item noborder style="margin-top:-10px">
+      <rs-list-item noborder>
         <div class="rs-flex-row">
-          <span class="rr-justify rr-width-4em mt10">网 点 编 号</span>
-          <span class="mt10">：</span>
-          <div class="rs-flex-item rr-line-b">
-            <input type="text" class="rr-input-w100 mt10" v-model="SNODECODE"/>
+          <span class="rr-justify rr-width-4em">网 点 编 号</span>
+          <span>：</span>
+          <div class="rs-flex-item">
+            <input type="text" class="rr-input-w100" v-model="SNODECODE" placeholder="点击输入"/>
           </div>
-          <rs-button size="small" style="position:ab" @click="doQuery">查询</rs-button>
+          <rs-button size="small" class="rr-list-search" @click="doQuery">查询</rs-button>
         </div>
       </rs-list-item>
     </rs-list> 
@@ -195,7 +195,7 @@ export default {
 .rr-list-rili li:nth-child(2n-1) .rr-media-rili{ background: #26cce2;}
 .rr-list-rili .rs-flex-item{line-height: 20px}
 .rr-list-rili-b{ line-height: 1; position: absolute; bottom: 0;left: 0;}
-.rr-input-w100{width: 100%; display: block; height: 24px; line-height: 24px; padding:10px 0; border: none; margin-bottom: 0}
-.rs-btn{padding: 0 10px;}
+.rr-input-w100{width: 100%; display: block; font-size: 15px; height: 24px; line-height: 24px; padding:10px 0; border: none; margin-bottom: 0}
+.rr-list-search{padding: 0 10px; position: absolute; right: 10px; margin-top: -4px;}
 </style>
 
