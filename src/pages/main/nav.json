@@ -22,13 +22,13 @@
         "pcode": "my-score",
         "isshow": true,
         "isfixed": true,
-        "query": {"ACTION": "VIEW"}
+        "query": { "ACTION": "VIEW" }
     },
     {
         "path": "/jiesuan1",
         "name": "日结算测试",
         "icon": "rr-font rr-jiesuan c-icon-blue",
-        "pcode": "my-score",
+        "pcode": "my-score1",
         "isshow": true,
         "isfixed": true,
         "query": { "ACTION": "ADD", "BILLTYPEID": "109303", "STLTYPEID": "107066" }
@@ -37,7 +37,7 @@
         "path": "/jiesuan1",
         "name": "分时结算测试",
         "icon": "rr-font rr-jiesuan c-icon-blue",
-        "pcode": "my-score",
+        "pcode": "my-score1",
         "isshow": true,
         "isfixed": true,
         "query": { "ACTION": "ADD", "BILLTYPEID": "109304", "STLTYPEID": "107067" }
@@ -46,7 +46,7 @@
         "path": "/jiesuan1/detail/jiesuanribao",
         "name": "结算日报测试",
         "icon": "rr-font rr-jiesuan c-icon-blue",
-        "pcode": "my-score",
+        "pcode": "my-score1",
         "isshow": true,
         "isfixed": true,
         "query": { "BILLTYPEID": "109304", "STLTYPEID": "107067" }
@@ -59,12 +59,19 @@
         "isshow": true,
         "isfixed": true,
         "query": { "BILLTYPEID": "109304", "STLTYPEID": "107067" }
+    }, {
+        "path": "/bvsale/list1",
+        "name": "订货状况",
+        "icon": "rr-font rr-dinghuo c-icon-green",
+        "pcode": "saleprocess",
+        "isshow": true,
+        "isfixed": true
     },
     {
         "path": "/bvsale/list",
         "name": "订货管理",
         "icon": "rr-font rr-dinghuo c-icon-green",
-        "pcode": "my-score",
+        "pcode": "salemanage",
         "isshow": true,
         "isfixed": true
     },
@@ -72,18 +79,10 @@
         "path": "/bvsale",
         "name": "订货单",
         "icon": "rr-font rr-dinghuo c-icon-green",
-        "pcode": "my-score",
+        "pcode": "salemanage.add",
         "isshow": true,
         "isfixed": true,
         "query": { "ACTION": "ADD" }
-    },
-    {
-        "path": "/bvsale/list1",
-        "name": "订货状况",
-        "icon": "rr-font rr-dinghuo c-icon-green",
-        "pcode": "my-score",
-        "isshow": true,
-        "isfixed": true
     },
     {
         "path": "/wenti",
