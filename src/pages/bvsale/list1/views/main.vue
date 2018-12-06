@@ -58,6 +58,9 @@
       </rs-nav-item>
     </rs-navbar>
     <div class="mui-content"> 
+      <div v-if="list.length<=0" class="rs-list-nodata">
+        <span>无对应数据！</span>
+      </div>
       <rs-loadmore :bottom-method="loadBottom" @bottom-status-change="handleBottomChange" :bottom-all-loaded="allLoaded" :top-method="loadTop" @translate-change="translateChange" @top-status-change="handleTopChange" ref="loadmore">
         <rs-list class="rr-line-24 rr-list-rili" size="14" noborder>
           <rs-list-item @click.native="linkMat(item)">
@@ -183,12 +186,12 @@ export default {
 <style scoped>
 .rr-line-24,.rr-line-24 .rr-justify{line-height: 24px;}
 .rr-line-24 .rr-justify{height:24px;}
-.rr-media-rili{ min-width: 60px; margin-right: 10px; text-align: center; color: #fff; border-radius: 5px;}
-.rr-media-rili h3{ margin-bottom: 0;}
+.rr-media-rili{ min-width: 60px; min-height: 60px; margin-right: 10px; text-align: center; color: #fff; border-radius: 5px;}
+.rr-media-rili h3{ margin-bottom: 0; margin-top: 8px;}
 .rr-media-rili p{ color: #fff;}
 .rr-list-rili li:nth-child(2n) .rr-media-rili{ background: #58cffa;}
 .rr-list-rili li:nth-child(2n-1) .rr-media-rili{ background: #26cce2;}
-.rr-input-w100{width: 100%; display: block; height: 24px; line-height: 24px; border: none; margin-bottom: 0}
+.rr-input-w100{width: 100%; display: block; height: 24px; line-height: 24px; padding:10px 0; border: none; margin-bottom: 0}
 .rs-btn{padding: 0 10px;}
 </style>
 

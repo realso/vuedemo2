@@ -41,6 +41,9 @@
 .rs-padding-10{padding: 10px}
 .rs-padding-5{padding: 5px}
 .rs-padding-lr{padding-left: 10px;padding-right: 10px;}
+/* 定位 */
+.rr-position-re{position: relative;}
+.rr-position-ab{position: absolute;}
 /* 宽度 */
 .rr-width-4em{ width: 4em;}
 .rr-width-5em{ width: 5em;}

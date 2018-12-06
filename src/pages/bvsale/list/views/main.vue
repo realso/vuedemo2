@@ -47,7 +47,10 @@
       v-model.lazy="EDATE"
       >
     </rs-datetime> 
-    <div class="mui-content"> 
+    <div class="mui-content">
+      <div v-if="list.length<=0" class="rs-list-nodata">
+        <span>无对应数据！</span>
+      </div>
       <rs-loadmore :bottom-method="doQueryNext" @bottom-status-change="handleBottomChange" :bottom-all-loaded="allLoaded" :top-method="doQuery" @translate-change="translateChange" @top-status-change="handleTopChange" ref="loadmore">
         <rs-list class="rr-line-24 rr-list-rili" size="14" noborder>
           <rs-list-item v-for="item in list" :key="item.BILLID" @click.native="linkMat(item)">
@@ -56,11 +59,11 @@
                 <h3>{{item.BILLDATE|datePart("d")}}</h3>
                 <div>{{item.BILLDATE|datePart("m")}}月</div>
               </div>
-              <div class="rs-flex-item f17">
-                <div>{{item.SNODECODE+"("+item.SNODENAME+")"}}</div>
+              <div class="rs-flex-item f14 rr-position-re">
                 <span class="rr-right">{{item.MSTYPENAME}}</span>
-                  单号:{{item.BILLCODE}}
-                <div class="mt10 f15">
+                <div>{{item.SNODECODE+"("+item.SNODENAME+")"}}</div>
+                单号:{{item.BILLCODE}}
+                <div class="f12 rr-list-rili-b">
                   金额:<span>{{item.AMT|toFixed(2)}}</span>(元)
                 </div>
               </div> 
@@ -72,6 +75,7 @@
         </div>
       </rs-loadmore>
     </div>
+    <div class="f14 bk-fff rs-padding-5">金额合计：{{AMT|toFixed(2)}}(元)</div>
   </div>
 </template>
 <script>
@@ -165,12 +169,14 @@ export default {
 <style scoped>
 .rr-line-24,.rr-line-24 .rr-justify{line-height: 24px;}
 .rr-line-24 .rr-justify{height:24px;}
-.rr-media-rili{ min-width: 60px; margin-right: 10px; text-align: center; color: #fff; border-radius: 5px;}
-.rr-media-rili h3{ margin-bottom: 0;}
+.rr-media-rili{ min-width: 60px; min-height: 60px; margin-right: 10px; text-align: center; color: #fff; border-radius: 5px;}
+.rr-media-rili h3{ margin-bottom: 0; margin-top: 8px;}
 .rr-media-rili p{ color: #fff;}
 .rr-list-rili li:nth-child(2n) .rr-media-rili{ background: #58cffa;}
 .rr-list-rili li:nth-child(2n-1) .rr-media-rili{ background: #26cce2;}
-.rr-input-w100{width: 100%; display: block; height: 24px; line-height: 24px; border: none; margin-bottom: 0}
+.rr-list-rili .rs-flex-item{line-height: 20px}
+.rr-list-rili-b{ line-height: 1; position: absolute; bottom: 0;left: 0;}
+.rr-input-w100{width: 100%; display: block; height: 24px; line-height: 24px; padding:10px 0; border: none; margin-bottom: 0}
 .rs-btn{padding: 0 10px;}
 </style>
 
