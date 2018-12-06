@@ -11,27 +11,26 @@
     </rs-header>
     <div class="mui-content">
       <rs-list class="rr-line-24" size="15" noborder>
-        <rs-list-item noborder isright @click.native="linkUrl('snodesel')">
+        <rs-list-item isright @click.native="linkUrl('snodesel')">
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">经营门店</span>
             <span>：</span>
-            <div
-              class="rs-flex-item rr-line-b"
+            <div class="rs-flex-item"
             >{{this["SNODEID.SNODECODE"]}} {{this["SNODEID.SNODENAME"]}}</div>
           </div>
         </rs-list-item>
-        <rs-list-item noborder isright @click.native="linkUrl('empsel')">
+        <rs-list-item isright @click.native="linkUrl('empsel')">
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">店长</span>
             <span>：</span>
-            <div class="rs-flex-item rr-line-b">{{MANAGER}}</div>
+            <div class="rs-flex-item">{{MANAGER}}</div>
           </div>
         </rs-list-item>
-        <rs-list-item noborder isright @click.native="open('picker2')">
+        <rs-list-item :noborder="!ISTIME" isright @click.native="open('picker2')">
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">日 期</span>
             <span>：</span>
-            <div class="rs-flex-item" :class="ISTIME?'rr-line-b':''">{{BILLDATE|getWeek}}</div>
+            <div class="rs-flex-item">{{BILLDATE|getWeek}}</div>
           </div>
         </rs-list-item>
         <rs-list-item noborder isright v-if="ISTIME" @click.native="open('picker1')">
@@ -50,13 +49,36 @@
         <rs-button link @click.native="linkUrl('set')">设置项目</rs-button>
       </div>
       
-      <rs-list size="14" noborder>
+      <rs-list class="rr-line-24" size="14" noborder>
         <main_dts v-for="(item) in DTS" :item="item" :key="item.ENTRYID"/>
       </rs-list>
       <div class="rr-list-textarea">
         <textarea v-if="!ISTIME" rows="3" placeholder="差异说明" v-model.lazy="DIFFREMARK"></textarea>
       </div>
-      <div class="rr-bill-top">
+      <rs-list class="rr-line-24 mt10" size="14" noborder>
+        <rs-list-item>
+          <div class="rs-flex-row">
+            <span class="rr-justify rr-width-4em">单 据 号</span>
+            <span>：</span>
+            <div class="rs-flex-item">{{BILLCODE}}</div>
+          </div>
+        </rs-list-item>
+        <rs-list-item>
+          <div class="rs-flex-row">
+            <span class="rr-justify rr-width-4em">制 单</span>
+            <span>：</span>
+            <div class="rs-flex-item">{{MAKER}} {{MAKEDATE}}</div>
+          </div>
+        </rs-list-item>
+        <rs-list-item noborder>
+          <div class="rs-flex-row">
+            <span class="rr-justify rr-width-4em">审 核</span>
+            <span>：</span>
+            <div class="rs-flex-item">{{VERIFIER}} {{VERIFYDATE}}</div>
+          </div>
+        </rs-list-item>
+      </rs-list>  
+      <!-- <div class="rr-bill-top">
          <div class="rs-flex-row" style="height:33px" v-if="BILLCODE!=''">
           <span class="rr-justify rr-width-4em">单 据 号</span>
           <span>：</span>
@@ -72,7 +94,7 @@
           <span>：</span>
           <div class="rs-flex-item">{{VERIFIER}} {{VERIFYDATE}}</div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -177,12 +199,6 @@ export default {
 }
 .rr-list-input {
   text-align: right;
-}
-.rs-listItem {
-  padding: 8px 15px;
-}
-.rs-list {
-  padding-top: 5px;
 }
 .rr-list-textarea {
   padding: 5px 15px;
