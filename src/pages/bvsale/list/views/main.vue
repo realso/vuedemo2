@@ -2,6 +2,9 @@
   <div class="mui-layout mui-layout-top">
     <rs-header :title="TITLE" color="primary">
       <a slot="left" @click="$router.goBack()" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
+      <div slot="right">
+        <rs-button v-if="$store.getters.pcode['salemanage.add']" link @click="linkBVSale('ADD')">+订货</rs-button>
+      </div>
     </rs-header>  
     <rs-list class="rr-line-24 mb10" size="15" noborder>
       <rs-list-item noborder isright @click.native="open('picker2')">
@@ -51,9 +54,9 @@
       <div v-if="list.length<=0" class="rs-list-nodata">
         <span>无对应数据！</span>
       </div>
-      <rs-loadmore :bottom-method="doQueryNext" @bottom-status-change="handleBottomChange" :bottom-all-loaded="allLoaded" :top-method="doQuery" @translate-change="translateChange" @top-status-change="handleTopChange" ref="loadmore">
+      <rs-loadmore :bottom-method="doQueryNext"  :top-status.sync="topStatus" :bottom-all-loaded="allLoaded" :top-method="doQuery" :auto-fill=false  ref="loadmore">
         <rs-list class="rr-line-24 rr-list-rili" size="14" noborder>
-          <rs-list-item v-for="item in list" :key="item.BILLID" @click.native="linkMat(item)">
+          <rs-list-item v-for="item in list" :key="item.BILLID" @click.native="linkBVSale('VIEW',item)">
             <div class="rs-flex-row">
               <div class="rr-media-rili">
                 <h3>{{item.BILLDATE|datePart("d")}}</h3>
@@ -61,7 +64,7 @@
               </div>
               <div class="rs-flex-item f14 rr-position-re">
                 <span class="rr-right">{{item.MSTYPENAME}}</span>
-                <div>{{item.SNODECODE+"("+item.SNODENAME+")"}}</div>
+                <div >{{item.SNODECODE+"("+item.SNODENAME+")"}}</div>
                 单号:{{item.BILLCODE}}
                 <div class="f12 rr-list-rili-b">
                   金额:<span>{{item.AMT|toFixed(2)}}</span>(元)
@@ -75,7 +78,7 @@
         </div>
       </rs-loadmore>
     </div>
-    <div class="f14 bk-fff rs-padding-5">金额合计：{{AMT|toFixed(2)}}(元)</div>
+    <div v-if="list.length>0" class="f14 bk-fff rs-padding-5">金额合计：{{AMT|toFixed(2)}}(元)</div>
   </div>
 </template>
 <script>
@@ -91,11 +94,11 @@ export default {
       list: [],
       topStatus: "",
       allLoaded: false,
-      searchInput: "",
+      openParam: {},
       SDATE:dateToString(dateAdd(new Date(),"d",1)),
       EDATE:dateToString(dateAdd(new Date(),"d",1)),
-      SNODECODE:"%",
-      openParam: {}
+      SNODECODE:this.$store.getters.userInfo.SNODECODE,
+      AMT:0.0
     };
   },
   methods: {
@@ -114,13 +117,17 @@ export default {
     handleBottomChange(status) {
       this.bottomStatus = status;
     },
-    linkUrl: function(path,title) {
-      this.$router.push({path:path,query:{TITLE:title}})
+    linkBVSale: function(ACTION,item) {
+      let DID;
+      if(item){
+        DID = item["BILLID"];
+      }
+      this.$router.push({path:"/bvsale",query:{ACTION,DID}})
     },
     setOpenParam: function() {
       this.openParam = {
         modalName: "VSL_SALE_QRY_4MOBILE",
-        where: ` SNODECODE LIKE '${this.SNODECODE}%' AND AID=@AID AND BILLTYPEID = '232'  AND BUSTYPEID=100993 AND  MSTYPEID=10354  AND BILLDATE >= TO_DATE('${this.SDATE}','YYYY-MM-DD') AND BILLDATE <= TO_DATE('${this.EDATE}','YYYY-MM-DD') AND [SNODEID] IN(SELECT COLUMN_VALUE FROM TABLE(tss_getpowwhere('SNODE','@UID','@AID')) UNION ALL SELECT ${this.$store.state.user.userInfo.SNODEID||0} FROM DUAL)`,
+        where: ` SNODECODE = NVL('${this.SNODECODE}',SNODECODE) AND AID=@AID AND BILLTYPEID = '232'  AND BUSTYPEID=100993 AND  MSTYPEID=10354  AND BILLDATE >= TO_DATE('${this.SDATE}','YYYY-MM-DD') AND BILLDATE <= TO_DATE('${this.EDATE}','YYYY-MM-DD') AND [SNODEID] IN(SELECT COLUMN_VALUE FROM TABLE(tss_getpowwhere('SNODE','@UID','@AID')) UNION ALL SELECT ${this.$store.state.user.userInfo.SNODEID||0} FROM DUAL)`,
         orderBy: "BILLDATE,BILLCODE",
         pageSize: 25,
         pageIndex: 1
@@ -135,6 +142,9 @@ export default {
         this.topStatus = "";
         this.$refs.loadmore.onTopLoaded();
       });
+      db.open({sqlId:"51515",SNODECODE:this.SNODECODE,SNODEID:this.$store.state.user.userInfo.SNODEID||0,SDATE:this.SDATE,EDATE:this.EDATE}).then(data=>{
+        this.AMT = data.data.items[0]["AMT"];
+      })
     },
     doQueryNext: async function() {
       this.openParam.pageIndex++;
@@ -163,6 +173,9 @@ export default {
     datePart(value,c){
       return datePart(value,c)
     }
+  },
+  created(){
+    this.doQuery();
   }
 };
 </script>
