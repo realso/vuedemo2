@@ -102,6 +102,7 @@ export default {
       TYPE: '0',
       topStatus: "",
       allLoaded: false,
+      openParam:{},
       SDATE:dateToString(dateAdd(new Date(),"d",1)),
       EDATE:dateToString(dateAdd(new Date(),"d",1)),
       SNODECODE:this.$store.getters.userInfo.SNODECODE
@@ -119,20 +120,28 @@ export default {
         this.$router.push({path:"/bvsale/list",query:{SNODECODE:item["SNODECODE"],SDATE:item["SLDATE"],EDATE:item["SLDATE"]}})
       }
     },
+    setOpenParam: function() {
+      this.openParam =  {sqlId:"51517",pageSize:20,SNODECODE:this.SNODECODE,SNODEID:this.$store.state.user.userInfo.SNODEID||0,SDATE:this.SDATE,EDATE:this.EDATE,TYPE:this.TYPE}
+    },
     doQuery: function(){
       this.topStatus = "loading";
       this.allLoaded = false;
-      db.open({sqlId:"51517",SNODECODE:this.SNODECODE,SNODEID:this.$store.state.user.userInfo.SNODEID||0,SDATE:this.SDATE,EDATE:this.EDATE,TYPE:this.TYPE}).then(data=>{
-        this.list = data.data.items;
+      this.setOpenParam();
+      this.$busy();
+      this.$callAsync({method:db.open,params:[this.openParam]}).then((data)=>{
+         this.list = data.data.items;
          this.topStatus = "";
          this.$refs.loadmore.onTopLoaded();
-      })
+      });
     },
     doQueryNext: async function() {
-      this.openParam.pageIndex++;
+      let items = this.list.map((item)=>{
+        return item["SNODEID"]+"-"+item["SLDATE"];
+      })
+      this.openParam.NOTIN = ("'"+items.join("','")+"'");
       this.topStatus = "loading";
-      db.open(this.openParam).then(data => {
-        this.topStatus = "";
+      this.$callAsync({method:db.open,params:[this.openParam]}).then((data)=>{
+         this.topStatus = "";
         data.data.items.forEach(item => {
           this.list.push(item);
         });
@@ -143,29 +152,15 @@ export default {
       });
     }
   },
-  filters:{
-    getWeek(value){
-      return value?(value+" "+getWeek(value)):"";
-    },
-    toFixed(value, cm) {
-      if(value=="0"||value!=""){
-          return parseFloat(value || 0).toFixed(cm);
-      }
-    },
-    datePart(value,c){
-      return datePart(value,c)
-    }
-  },
   created(){
     this.doQuery();
   },
   watch:{
     SDATE(){
+      this.changeDate(this.SDATE,this.EDATE)
     },
     EDATE(){
-    },
-    TYPE(){
-      this.doQuery();
+      this.changeDate(this.SDATE,this.EDATE)
     }
   }
 };

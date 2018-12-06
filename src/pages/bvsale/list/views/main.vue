@@ -130,23 +130,23 @@ export default {
         pageIndex: 1
       };
     },
-    doQuery: function(){
+    doQuery: async function(){
       this.topStatus = "loading";
       this.allLoaded = false;
       this.setOpenParam();
-      db.open(this.openParam).then(data => {
+      await this.$callAsync({method:db.open,params:[this.openParam]}).then((data)=>{
         this.list = data.data.items;
         this.topStatus = "";
         this.$refs.loadmore.onTopLoaded();
       });
-      db.open({sqlId:"51515",SNODECODE:this.SNODECODE,SNODEID:this.$store.state.user.userInfo.SNODEID||0,SDATE:this.SDATE,EDATE:this.EDATE}).then(data=>{
+      await this.$callAsync({method:db.open,params:[{sqlId:"51515",SNODECODE:this.SNODECODE,SNODEID:this.$store.state.user.userInfo.SNODEID||0,SDATE:this.SDATE,EDATE:this.EDATE}]}).then((data)=>{
         this.AMT = data.data.items[0]["AMT"];
-      })
+      });
     },
     doQueryNext: async function() {
       this.openParam.pageIndex++;
       this.topStatus = "loading";
-      db.open(this.openParam).then(data => {
+      await this.$callAsync({method:db.open,params:[this.openParam]}).then((data)=>{
         this.topStatus = "";
         data.data.items.forEach(item => {
           this.list.push(item);
@@ -156,19 +156,6 @@ export default {
           this.allLoaded = true;
         }
       });
-    }
-  },
-  filters:{
-    getWeek(value){
-      return value?(value+" "+getWeek(value)):"";
-    },
-    toFixed(value, cm) {
-      if(value=="0"||value!=""){
-          return parseFloat(value || 0).toFixed(cm);
-      }
-    },
-    datePart(value,c){
-      return datePart(value,c)
     }
   },
   activated(){
