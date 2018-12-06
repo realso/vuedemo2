@@ -41,7 +41,7 @@
                 <br>占比%
               </td>
               <td class="rr-table-w4em">差异
-                <br>差异%
+                <br>差异‰
               </td>
             </tr>
           </thead>
@@ -52,28 +52,28 @@
                 <br>
                 {{item.SNODENAME}}
               </td>
-              <td class="rr-text-right">{{item.FACTAMT}}</td>
-              <td class="rr-text-right">{{item.ONLINEAMT}}
-                <br>{{item.ONLINERATE}}%
+              <td class="rr-text-right">{{item.FACTAMT|toFixed(2)}}</td>
+              <td class="rr-text-right">{{item.ONLINEAMT|toFixed(2)}}
+                <br>{{item.ONLINERATE}}<span v-if="item.ONLINERATE">%</span>
               </td>
-              <td class="rr-text-right">{{item.OFFLINEAMT}}
-                <br>{{item.OFFLINERATE}}%
+              <td class="rr-text-right">{{item.OFFLINEAMT|toFixed(2)}}
+                <br>{{item.OFFLINERATE}}<span v-if="item.OFFLINERATE">%</span>
               </td>
-              <td class="rr-text-right">{{item.DIFFAMT}}
-                <br>{{item.DIFFRATE}}%
+              <td class="rr-text-right">{{item.DIFFAMT|toFixed(2)}}
+                <br>{{item.DIFFRATE}}<span v-if="item.DIFFRATE">‰</span>
               </td>
             </tr>
             <tr class="rr-table-heji">
               <td class="rr-text-right rr-weight">合计:</td>
-              <td class="rr-text-right">{{FACTAMTALL}}</td>
-              <td class="rr-text-right">{{ONLINEAMTALL}}
-                <br>{{ONLINERATEALL}}%
+              <td class="rr-text-right">{{FACTAMTALL|toFixed(2)}}</td>
+              <td class="rr-text-right">{{ONLINEAMTALL|toFixed(2)}}
+                <br>{{ONLINERATEALL}}<span v-if="ONLINERATEALL">%</span>
               </td>
-              <td class="rr-text-right">{{OFFLINEAMTALL}}
-                <br>{{OFFLINERATEALL}}%
+              <td class="rr-text-right">{{OFFLINEAMTALL|toFixed(2)}}
+                <br>{{OFFLINERATEALL}}<span v-if="OFFLINERATEALL">%</span>
               </td>
-              <td class="rr-text-right">{{DIFFAMTALL}}
-                <br>{{DIFFRATEALL}}%
+              <td class="rr-text-right">{{DIFFAMTALL|toFixed(2)}}
+                <br>{{DIFFRATEALL}}<span v-if="DIFFRATEALL">‰</span>
               </td>
             </tr>
           </tbody>
@@ -145,6 +145,11 @@ export default {
   filters: {
     getWeek(value) {
       return value ? value + " " + getWeek(value) : "";
+    },
+    toFixed(value, cm) {
+      if(value=="0"||value!=""){
+          return parseFloat(value || 0).toFixed(cm);
+      }
     }
   }
 };
