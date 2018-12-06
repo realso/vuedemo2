@@ -248,7 +248,6 @@ const mutations = {
         DTS.setValue("UQTY", UQTY, item);
 
         let AMT = 0;
-        debugger;
         DTS.data.forEach((item) => {
             AMT += toNumber(item["PRC"] * item["QTY"]);
         })
