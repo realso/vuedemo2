@@ -64,7 +64,7 @@
             {{item["MID.MNAME"]}}
           </div>
           <div class="">
-            <span class="rr-right" v-if="item['QTY']>0"> {{(item["PRC"]*item["QTY"])|toFixed(2)}}(元)</span>
+            <span class="rr-right" v-if="item['QTY']>=0"> {{(item["PRC"]*item["QTY"])|toFixed(2)}}(元)</span>
             数量:<span class="rr-border rr-width-4em rr-text-center ml5" style="height:24px;">{{item["QTY"]}}</span> <span class="ml5 mr5">袋</span> × <span class="ml5 mr5">{{item["PRC"]}}</span>= 
           </div>
         </rs-list-item>
@@ -73,7 +73,7 @@
        </div>  
        </rs-list>
     </div>
-    <div class="f14 bk-fff rs-padding-5">订货金额：{{AMT|toFixed(2)}}</div>
+    <div class="f14 bk-fff rs-padding-5">订货金额：{{AMT|toFixed(2)}}(元)</div>
   </div>
 </template>
 <script>
