@@ -176,6 +176,12 @@ export default {
   },
   created(){
     this.doQuery();
+  },
+  watch:{
+    SDATE(){
+    },
+    EDATE(){
+    }
   }
 };
 </script>
