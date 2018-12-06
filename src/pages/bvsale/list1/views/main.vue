@@ -161,6 +161,9 @@ export default {
     },
     EDATE(){
       this.changeDate(this.SDATE,this.EDATE)
+    },
+    TYPE(){
+      this.doQuery();
     }
   }
 };
