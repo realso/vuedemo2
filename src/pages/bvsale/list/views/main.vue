@@ -105,17 +105,14 @@ export default {
     open(picker) {
       this.$refs[picker].open();
     },
-    handleTopChange(status) {
-      this.moveTranslate = 1;
-      this.topStatus = status;
-    },
-    translateChange(translate) {
-      const translateNum = +translate;
-      this.translate = translateNum.toFixed(2);
-      this.moveTranslate = (1 + translateNum / 70).toFixed(2);
-    },
-    handleBottomChange(status) {
-      this.bottomStatus = status;
+    changeDate(value1,value2){
+      let SDATE1 = parseInt(value1.replace(/\-/g, ""))
+      let EDATE1 = parseInt(value2.replace(/\-/g, ""))
+      if(SDATE1>EDATE1){
+        this.EDATE = this.SDATE
+      }else if(EDATE1>SDATE1+31){
+        this.EDATE = dateToString(dateAdd(new Date(value1),"d",31))
+      }
     },
     linkBVSale: function(ACTION,item) {
       let DID;
@@ -182,8 +179,10 @@ export default {
   },
   watch:{
     SDATE(){
+      this.changeDate(this.SDATE,this.EDATE)
     },
     EDATE(){
+      this.changeDate(this.SDATE,this.EDATE)
     }
   }
 };
