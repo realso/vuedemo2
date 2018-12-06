@@ -51,7 +51,7 @@ const getters = {
         let MAIN = storeHelper.getTable(Constants.P_PATHS.MAIN);
         return MAIN.getValue("ISTALLY") != "1" && MAIN.count() == 1 && rootGetters.pcode["salemanage.add"]
     },
-    ISSHOWDELETE() {
+    ISSHOWDELETE(state, getters, rootState, rootGetters) {
         let MAIN = storeHelper.getTable(Constants.P_PATHS.MAIN);
         return MAIN.getValue("ISTALLY") != "1" && MAIN.count() == 1 && !MAIN.isAdd() && rootGetters.pcode["salemanage.delete"]
     },
