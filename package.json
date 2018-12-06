@@ -14,8 +14,8 @@
     "dependencies": {
         "animate.css": "^3.7.0",
         "axios": "^0.18.0",
-        "rs-ui1": ">1.0.30",
-        "rs-vcore": ">0.0.20",
+        "rs-ui1": "^1.0.49",
+        "rs-vcore": "^0.0.41",
         "swiper": "^4.4.2",
         "vue": "^2.5.2",
         "vue-router": "^3.0.1",
