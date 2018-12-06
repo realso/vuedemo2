@@ -174,8 +174,11 @@ export default {
       return datePart(value,c)
     }
   },
-  created(){
-    this.doQuery();
+  activated(){
+     this.SDATE =this.$route.query.SDATE|| dateToString(dateAdd(new Date(),"d",1));
+     this.EDATE =this.$route.query.EDATE|| dateToString(dateAdd(new Date(),"d",1));
+     this.SNODECODE  =this.$route.query.SNODECODE|| this.$store.getters.userInfo.SNODECODE;
+     this.doQuery();
   },
   watch:{
     SDATE(){

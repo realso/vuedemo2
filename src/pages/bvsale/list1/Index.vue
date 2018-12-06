@@ -15,6 +15,9 @@ export default {
     };
   },
   activated: function() {
+  },
+  deactivated(){
+  
   }
 };
 </script>

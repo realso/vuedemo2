@@ -27,9 +27,9 @@
           <span class="rr-justify rr-width-4em">网 点 编 号</span>
           <span class="">：</span>
           <div class="rs-flex-item">
-            <input type="text" class="rr-input-w100" v-model="wdbh" placeholder="点击输入"/>
+            <input type="text" class="rr-input-w100" v-model="SNODECODE" placeholder="点击输入"/>
           </div>
-          <rs-button size="small" class="rr-list-search">查询</rs-button>
+          <rs-button size="small" class="rr-list-search" @click="doQuery()">查询</rs-button>
         </div>
       </rs-list-item>
     </rs-list> 
@@ -38,7 +38,6 @@
       ref="picker2"
       type="date"
       v-model.lazy="SDATE"
-        @confirm="handleChangeD"
       >
     </rs-datetime> 
     <rs-datetime
@@ -46,14 +45,13 @@
       ref="picker3"
       type="date"
       v-model.lazy="EDATE"
-        @confirm="handleChangeD"
       >
     </rs-datetime> 
-    <rs-navbar v-model="SELECTED" inverted>
-      <rs-nav-item id="1">
+    <rs-navbar v-model="TYPE" inverted>
+      <rs-nav-item id="0">
         全部
       </rs-nav-item>
-      <rs-nav-item id="2">
+      <rs-nav-item id="1">
         营业未定
       </rs-nav-item>
     </rs-navbar>
@@ -61,20 +59,24 @@
       <div v-if="list.length<=0" class="rs-list-nodata">
         <span>无对应数据！</span>
       </div>
-      <rs-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :top-method="loadTop" ref="loadmore">
+     <rs-loadmore :bottom-method="doQueryNext"  :top-status.sync="topStatus" :bottom-all-loaded="allLoaded" :top-method="doQuery" :auto-fill=false  ref="loadmore">
         <rs-list class="rr-line-24 rr-list-rili" size="14" noborder>
-          <rs-list-item @click.native="linkMat(item)">
+         <rs-list-item v-for="item in list" :key="item.BILLID" @click.native="linkBVSale(item)">
             <div class="rs-flex-row">
               <div class="rr-media-rili">
-                <h3>19</h3>
-                <div>1月</div>
+               <h3>{{item.SLDATE|datePart("d")}}</h3>
+                <div>{{item.SLDATE|datePart("m")}}月</div>
               </div>
               <div class="rs-flex-item f17">
-                  <span class="rr-right f14 c-icon-red">营业未定</span>
-                  60608
+                  <span :class="['rr-right f14',{'c-icon-red':(['营业未订','息业已订'].indexOf(item.SLSTATENAME)>-1)},{'c-icon-gray':(['息业未订','期外未订'].indexOf(item.SLSTATENAME)>-1)}]">{{item.SLSTATENAME}}</span>
+                  {{item.SNODECODE}}
                 <div class="mt10 f15">
-                  锦江老干部餐厅
+                  {{item.SNODENAME}}
+                  <div class="rr-right f14">
+                  <span v-if="item.AMT>0">{{item.AMT|toFixed(2)}}(元)</span>
                 </div>
+                </div>
+                
               </div> 
             </div> 
           </rs-list-item>
@@ -88,6 +90,7 @@
 </template>
 <script>
 import db from "@/api/db";
+import { dateToString,getWeek,datePart,dateAdd} from "rs-vcore/utils/Date";
 export default {
   name: "list",
   props: {
@@ -96,77 +99,73 @@ export default {
   data() {
     return {
       list: [],
-      SELECTED: '1',
+      TYPE: '0',
       topStatus: "",
       allLoaded: false,
-      searchInput: "",
+      SDATE:dateToString(dateAdd(new Date(),"d",1)),
+      EDATE:dateToString(dateAdd(new Date(),"d",1)),
+      SNODECODE:this.$store.getters.userInfo.SNODECODE
     };
   },
   methods: {
     open(picker) {
       this.$refs[picker].open();
     },
-    handleChangeD:function(){
-      this.$callAction({action:`${Constants.STORE_NAME}/changeBillDate`});
-    },
-    loadTop() {
-      setTimeout(() => {
-        this.doQuery()
-        this.$refs.loadmore.onTopLoaded();
-      }, 1500);
-    },
-    loadBottom() {
-      setTimeout(() => {
-        let lastValue = this.list[this.list.length - 1];
-        let item = {
-          path: '/zhishiku',
-          title: '第一个标题',
-          text: '能和心爱的人一起睡觉，是件幸福的事情；可是，打呼噜怎么办？',
-          list: [
-            {src: require("@/assets/img/yuantiao.jpg")},
-            {src: require("@/assets/img/yuantiao.jpg")},
-            {src: require("@/assets/img/yuantiao.jpg")}
-          ]
-        }
-        if (this.list.length < 20) {
-          this.list.push(item);
-        } else {
-          this.allLoaded = true;
-        }
-        this.$refs.loadmore.onBottomLoaded();
-      }, 1500);
-    },
-    linkUrl: function(path,title) {
-      this.$router.push({path:path,query:{TITLE:title}})
+    linkBVSale:function(item){
+      if("营业未订" == item["SLSTATENAME"]){
+        this.$router.push({path:"/bvsale",query:{ACTION:"ADD",SNODEID:item["SNODEID"],BILLDATE:item["SLDATE"]}})
+      }
+      if(["营业已订","息业已订","期外已订"].indexOf(item["SLSTATENAME"])>=0){
+        this.$router.push({path:"/bvsale/list",query:{SNODECODE:item["SNODECODE"],SDATE:item["SLDATE"],EDATE:item["SLDATE"]}})
+      }
     },
     doQuery: function(){
-      let list=[
-        {
-          path: '/zhishiku',
-          title: '第一个标题',
-          text: '能和心爱的人一起睡觉，是件幸福的事情；可是，打呼噜怎么办？',
-          list: [
-            {src: require("@/assets/img/yuantiao.jpg")},
-            {src: require("@/assets/img/yuantiao.jpg")},
-            {src: require("@/assets/img/yuantiao.jpg")}
-          ]
-        },
-        {
-          path: '/zhishiku',
-          title: '第二个标题',
-          text: '能和心爱的人一起睡觉，是件幸福的事情；可是，打呼噜怎么办？',
-          list: [
-            {src: require("@/assets/img/yuantiao.jpg")}
-          ]
-        },
-        {
-          path: '/zhishiku',
-          title: '第二个标题',
-          text: '能和心爱的人一起睡觉，是件幸福的事情；可是，打呼噜怎么办？',
-          list: []
+      this.topStatus = "loading";
+      this.allLoaded = false;
+      db.open({sqlId:"51517",SNODECODE:this.SNODECODE,SNODEID:this.$store.state.user.userInfo.SNODEID||0,SDATE:this.SDATE,EDATE:this.EDATE,TYPE:this.TYPE}).then(data=>{
+        this.list = data.data.items;
+         this.topStatus = "";
+         this.$refs.loadmore.onTopLoaded();
+      })
+    },
+    doQueryNext: async function() {
+      this.openParam.pageIndex++;
+      this.topStatus = "loading";
+      db.open(this.openParam).then(data => {
+        this.topStatus = "";
+        data.data.items.forEach(item => {
+          this.list.push(item);
+        });
+        this.$refs.loadmore.onBottomLoaded();
+        if (data.data.items.length == 0) {
+          this.allLoaded = true;
         }
-      ]
-      this.list.push(list);
+      });
+    }
+  },
+  filters:{
+    getWeek(value){
+      return value?(value+" "+getWeek(value)):"";
+    },
+    toFixed(value, cm) {
+      if(value=="0"||value!=""){
+          return parseFloat(value || 0).toFixed(cm);
+      }
+    },
+    datePart(value,c){
+      return datePart(value,c)
+    }
+  },
+  created(){
+    this.doQuery();
+  },
+  watch:{
+    SDATE(){
+    },
+    EDATE(){
+    },
+    TYPE(){
+      this.doQuery();
     }
   }
 };
