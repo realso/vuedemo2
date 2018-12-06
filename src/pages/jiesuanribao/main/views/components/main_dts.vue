@@ -1,5 +1,6 @@
 <template>
-<rs-list-item v-if="ISSHOW==1" noborder :class="{'rr-border':STLITEMID_LBUNDERLINE=='LongBlack'}">
+<rs-list-item v-if="ISSHOW==1&&STLITEMID_ISLBSHOW==1&&ITEMID_PARANAME!='实际收入'&&ITEMID_PARANAME!='线上'&&ITEMID_PARANAME!='线下'&&ITEMID_PARANAME!='差异'" 
+              noborder :class="{'rr-border':STLITEMID_LBUNDERLINE=='LongBlack'}">
     <div class="rs-flex-row">
       <div v-if="STLITEMID_ISLBSHOW==1" class="rr-width-5em" 
       :style="{'color':STLITEMID_LBCOLOR}"
