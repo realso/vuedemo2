@@ -63,7 +63,7 @@
             <div class="rs-flex-item">
               <span class="rr-justify rr-width-4em">金 额</span>
               <span>：</span>
-              {{AMT}}
+              {{QTY*PRC|toFixed(2)}}
             </div>
           </div>
         </rs-list-item>
@@ -142,7 +142,7 @@ export default {
         });
     },
     navClick(item) {
-      let v = this.MYQTY+"";
+      let v = this.MYQTY + "";
       if (item == "C") {
         v = v.substring(0, v.length - 1);
       } else {
@@ -159,13 +159,21 @@ export default {
     this.item = this.$route.params.item;
   },
   watch: {
-    item: function() {
-      this.MYQTY = this.QTY;
+    item: {
+      handler: function() {
+        this.MYQTY = this.QTY;
+      },
+      immediate: true
     }
   },
-  filters: {
-    getWeek(value) {
-      return value ? value + " " + getWeek(value) : "";
+  filters:{
+    getWeek(value){
+      return value?(value+" "+getWeek(value)):"";
+    },
+    toFixed(value, cm) {
+      if(value=="0"||value!=""){
+          return parseFloat(value || 0).toFixed(cm);
+      }
     }
   },
   created() {
