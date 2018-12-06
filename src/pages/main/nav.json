@@ -25,6 +25,15 @@
         "query": {"ACTION": "VIEW"}
     },
     {
+        "path": "/jiesuandongtai",
+        "name": "结算动态表",
+        "icon": "rr-font rr-jiesuan c-icon-blue",
+        "pcode": "my-score",
+        "isshow": true,
+        "isfixed": true,
+        "query": {"ACTION": "VIEW"}
+    },
+    {
         "path": "/jiesuan1",
         "name": "日结算测试",
         "icon": "rr-font rr-jiesuan c-icon-blue",
@@ -53,7 +62,7 @@
     },
     {
         "path": "/dongtai",
-        "name": "结算动态表",
+        "name": "结算动态表测试",
         "icon": "rr-font rr-jiesuan c-icon-blue",
         "pcode": "my-score",
         "isshow": true,
