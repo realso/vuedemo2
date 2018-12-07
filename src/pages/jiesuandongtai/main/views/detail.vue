@@ -50,50 +50,6 @@
             <div class="rs-flex-item rr-line-b">{{BILLDATE|getWeek}}</div>
           </div>
         </rs-list-item>
-        <rs-list-item noborder>
-          <div class="rs-flex-row">
-            <span class="rr-justify rr-width-4em">实 际 收 入</span>
-            <span>：</span>
-            <div class="rs-flex-item rr-text-center rr-line-b">{{FACTAMT}}</div>
-          </div>
-        </rs-list-item>
-        <rs-list-item noborder>
-          <div class="rs-flex-row">
-            <span class="rr-justify rr-width-4em">线 下</span>
-            <span>：</span>
-            <div class="rs-flex-item rr-text-center rr-line-b">
-              <span class="rr-right">{{ONLINERATE}}%</span>
-              {{ONLINEAMT}}
-            </div>
-          </div>
-        </rs-list-item>
-        <rs-list-item noborder>
-          <div class="rs-flex-row">
-            <span class="rr-justify rr-width-4em">线 上</span>
-            <span>：</span>
-            <div class="rs-flex-item rr-text-center rr-line-b">
-              <span class="rr-right">{{OFFLINERATE}}%</span>
-              {{OFFLINEAMT}}
-            </div>
-          </div>
-        </rs-list-item>
-        <rs-list-item noborder>
-          <div class="rs-flex-row">
-            <span class="rr-justify rr-width-4em">差 异</span>
-            <span>：</span>
-            <div class="rs-flex-item rr-text-center rr-line-b">
-              <span class="rr-right">{{DIFFRATE}}‰</span>
-              {{DIFFAMT}}
-            </div>
-          </div>
-        </rs-list-item>
-        <rs-list-item noborder>
-          <div class="rs-flex-row">
-            <span class="rr-justify rr-width-4em">差 异 说 明</span>
-            <span>：</span>
-            <div class="rs-flex-item">{{DIFFREMARK}}</div>
-          </div>
-        </rs-list-item>
       </rs-list>
       <div style="height: 7px; background: #eee;"></div>
       <rs-list size="14" noborder>
