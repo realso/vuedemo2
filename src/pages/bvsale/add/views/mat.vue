@@ -191,4 +191,5 @@ export default {
 .rr-number-key .rs-gridItem {
   padding: 20px 10px !important;
 }
+.rs-grid .rs-gridItem.mui-col-sm-3{width:33.33333333% !important;}
 </style>
