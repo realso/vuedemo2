@@ -289,8 +289,10 @@ const mutations = {
     [Constants.M_SETTIME]: function (date) {
         const MAIN = storeHelper.getTable("MAIN");
         let DEADLINE = MAIN.getValue("DEADLINE");
-        MAIN.setValue("FHOUR", DEADLINE.split(':')[0]);
-        MAIN.setValue("FMINUTE", DEADLINE.split(':')[1]);
+        if (DEADLINE) {
+            MAIN.setValue("FHOUR", DEADLINE.split(':')[0]);
+            MAIN.setValue("FMINUTE", DEADLINE.split(':')[1]);
+        }
     },
     [Constants.M_SETSETDTS]: function (state) {
         let DTS = storeHelper.getTable("DTS");
