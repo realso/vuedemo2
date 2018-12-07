@@ -3,16 +3,15 @@
     <rs-header :title="TITLE" color="primary">
       <a slot="left" @click="$router.goBack()" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
     </rs-header>
-    <div class="mui-content bk-fff">
-      <rs-list class="rr-line-24" size="15" noborder>
-        <rs-list-item noborder isright @click.native="open('picker1')">
+    <rs-list class="rr-line-24" size="15" noborder>
+        <rs-list-item isright @click.native="open('picker1')">
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">日 期</span>
             <span>：</span>
-            <div class="rs-flex-item rr-line-b">{{BILLDATE|getWeek}}</div>
+            <div class="rs-flex-item">{{BILLDATE|getWeek}}</div>
           </div>
         </rs-list-item>
-        <rs-list-item noborder isright @click.native="linkUrl('snodesel')">
+        <rs-list-item isright @click.native="linkUrl('snodesel')">
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">经营门店</span>
             <span>：</span>
@@ -28,6 +27,7 @@
         type="date"
         v-model.lazy="BILLDATE"
       ></rs-datetime>
+    <div class="mui-content bk-fff">
       <div class="mui-content-padded">
         <table class="rr-table">
           <thead class="rr-table-header">
@@ -52,28 +52,38 @@
                 <br>
                 {{item.SNODENAME}}
               </td>
-              <td class="rr-text-right">{{item.FACTAMT|toFixed(2)}}</td>
-              <td class="rr-text-right">{{item.ONLINEAMT|toFixed(2)}}
-                <br>{{item.ONLINERATE}}<span v-if="item.ONLINERATE">%</span>
+              <td class="rr-text-right" 
+              :class="item.FACTAMT | color">
+              {{item.FACTAMT|toFixed(2)}}
               </td>
-              <td class="rr-text-right">{{item.OFFLINEAMT|toFixed(2)}}
-                <br>{{item.OFFLINERATE}}<span v-if="item.OFFLINERATE">%</span>
+              <td class="rr-text-right" 
+              :class="item.ONLINEAMT | color">
+                {{item.ONLINEAMT|toFixed(2)}}
+                <div v-if="item.ONLINERATE" :class="item.ONLINERATE | color1">{{item.ONLINERATE|toFixed(1)}}%</div>
               </td>
-              <td class="rr-text-right">{{item.DIFFAMT|toFixed(2)}}
-                <br>{{item.DIFFRATE}}<span v-if="item.DIFFRATE">‰</span>
+              <td class="rr-text-right"
+              :class="item.OFFLINEAMT | color">
+              {{item.OFFLINEAMT|toFixed(2)}}
+                <div v-if="item.OFFLINERATE" :class="item.OFFLINERATE | color1">{{item.OFFLINERATE|toFixed(1)}}%</div>
+              </td>
+              <td class="rr-text-right" :class="parseFloat(DIFFRATEALL)==0?'c-999':'c-icon-red'">{{item.DIFFAMT|toFixed(2)}}
+                <div v-if="item.DIFFRATE" :class="item.DIFFRATE | color1">{{item.DIFFRATE|toFixed(1)}}‰</div>
               </td>
             </tr>
             <tr class="rr-table-heji">
               <td class="rr-text-right rr-weight">合计:</td>
-              <td class="rr-text-right">{{FACTAMTALL|toFixed(2)}}</td>
-              <td class="rr-text-right">{{ONLINEAMTALL|toFixed(2)}}
-                <br>{{ONLINERATEALL}}<span v-if="ONLINERATEALL">%</span>
+              <td class="rr-text-right" 
+              :class="FACTAMTALL | color(FACTAMTALL)">
+              {{FACTAMTALL|toFixed(2)}}
               </td>
-              <td class="rr-text-right">{{OFFLINEAMTALL|toFixed(2)}}
-                <br>{{OFFLINERATEALL}}<span v-if="OFFLINERATEALL">%</span>
+              <td class="rr-text-right" :class="ONLINERATEALL | color">{{ONLINEAMTALL|toFixed(2)}}
+                <div v-if="ONLINERATEALL" :class="ONLINERATEALL | color1">{{ONLINERATEALL|toFixed(1)}}%</div>
               </td>
-              <td class="rr-text-right">{{DIFFAMTALL|toFixed(2)}}
-                <br>{{DIFFRATEALL}}<span v-if="DIFFRATEALL">‰</span>
+              <td class="rr-text-right" :class="OFFLINERATEALL | color">{{OFFLINEAMTALL|toFixed(2)}}
+                <div v-if="OFFLINERATEALL" :class="OFFLINERATEALL | color1">{{OFFLINERATEALL|toFixed(1)}}%</div>
+              </td>
+              <td class="rr-text-right" :class="parseFloat(DIFFRATEALL)==0?'c-999':'c-icon-red'">{{DIFFAMTALL|toFixed(2)}}
+                <div v-if="DIFFRATEALL" :class="DIFFRATEALL | color1">{{DIFFRATEALL|toFixed(1)}}‰</div>
               </td>
             </tr>
           </tbody>
@@ -112,9 +122,7 @@ export default {
       "OFFLINERATEALL",
       "DIFFAMTALL",
       "DIFFRATEALL"
-    ]),
-    length() {
-    }
+    ])
   },
   methods: {
     linkUrl: function(url) {
@@ -150,14 +158,25 @@ export default {
       if(value=="0"||value!=""){
           return parseFloat(value || 0).toFixed(cm);
       }
+    },
+    color(value) {
+      let value1 = parseFloat(value)
+      if(value1<0){
+        return 'c-icon-red'
+      }else if(value1==0){
+        return 'c-999'
+      }
+    },
+    color1(value) {
+      return parseFloat(value)==0?'c-999':''
     }
   }
 };
 </script>
 <style scoped lang="postcss">
-.rs-listItem {
+/* .rs-listItem {
   padding: 8px 15px;
-}
+} */
 .rr-line-24,
 .rr-line-24 .rr-justify {
   line-height: 24px;

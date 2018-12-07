@@ -4,6 +4,8 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store'
+import filters from './utils/filters'
+import extends2 from './utils/extends'
 import Rui from 'rs-ui1'
 import animated from 'animate.css'
 import 'rs-ui1/dist/css/mui.css'
@@ -18,59 +20,9 @@ Vue.use(Rui);
 Vue.use(animated);
 Vue.config.productionTip = false
 
-Vue.prototype.isPower = function(code) {
-    return !!this.$store.getters.pcode[code];
-}
-
-Vue.prototype.$alert = async function(message, title) {
-    return Rui.MessageBox.alert(message, title);
-}
-
-Vue.prototype.$confirm = async function(message, title) {
-    return Rui.MessageBox.confirm(message, title);
-}
-
-Vue.prototype.$busy = function(options) {
-    return this.$indicator.open(options);
-}
-
-Vue.prototype.$free = function() {
-    return this.$indicator.close();
-}
-
-Vue.prototype.$callAction = function({ action, param, successText, errorText, successCall, errorCall, isBusy, isSuccessBack, isErrorBack, timeOut }) {
-    setTimeout(async() => {
-        this.$indicator.open();
-        this.$store
-            .dispatch(action, param)
-            .then(() => {
-                this.$indicator.close();
-                if (successText) {
-                    this.$toast({
-                        message: successText,
-                        position: "bottom"
-                    });
-                }
-                if (successCall) {
-                    successCall();
-                }
-                if (isSuccessBack)
-                    this.$router.goBack();
-            })
-            .catch(e => {
-                this.$indicator.close();
-                this.$toast({
-                    message: errorText || e.message || "加载失败",
-                    position: "bottom"
-                });
-                if (errorCall) {
-                    errorCall();
-                }
-                if (isErrorBack)
-                    this.$router.goBack();
-            });
-    }, timeOut || 0);
-}
+Object.keys(filters).forEach(key => {
+    Vue.filter(key, filters[key]);
+})
 window.$app = new Vue({
     el: '#app',
     router,

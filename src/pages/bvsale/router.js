@@ -7,7 +7,7 @@ export default [{
         path: '/bvsale/add/main',
         name: "/bvsale/add/main",
         component: r => require.ensure([], () => r(require('@/pages/bvsale/add/views/main')), "bvsale"),
-        props: { TITLE: '销货单' }
+        props: { TITLE: '订货单' }
     }, {
         path: '/bvsale/add/mat',
         name: "/bvsale/add/mat",

@@ -197,6 +197,7 @@ export default {
 .rr-border {
   border: 1px solid #58cffa;
   display: inline-block;
+  font-size: 15px;
 }
 .rr-number-key .rs-gridItem {
   padding: 20px 10px !important;
