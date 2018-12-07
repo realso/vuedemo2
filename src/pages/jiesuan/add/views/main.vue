@@ -104,7 +104,6 @@ import { getWeek } from "rs-vcore/utils/Date";
 import main_dts from "./components/main_dts";
 export default {
   props: {
-    TITLE: ""
   },
   name: "jiesuan",
   data() {
