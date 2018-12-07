@@ -8,7 +8,7 @@ export default {
             path: '/jiesuandongtai/main/jiesuandongtai',
             name: "/jiesuandongtai/main/jiesuandongtai",
             component: r => require.ensure([], () => r(require('@/pages/jiesuandongtai/main/views/jiesuandongtai')), "jiesuandongtai"),
-            props: { TITLE: '结算日报' },
+            props: { TITLE: '结算动态表' },
             meta: {
                 keepAlive: true
             }

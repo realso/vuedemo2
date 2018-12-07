@@ -61,14 +61,11 @@ const actions = {
         para["BILLID"] = "";
         para["BILLDATE"] = QRYADV.getValue("BILLDATE");
         para["SNODEID"] = QRYADV.getValue("SNODEID");;
-        para.sqlId = "51485";
+        para.sqlId = "51487";
         para.pageSize = "10";
         para.keyFields = "BILLID";
         let ret = await service.doQuery(para);
         commit(Constants.M_INITDATA, { path: "QRY", data: (ret.data || {}).items });
-        para.sqlId = "51486";
-        let ret2 = await service.doQuery(para);
-        commit(Constants.M_INITDATA, { path: "QRYALL", data: (ret2.data || {}).items });
     }
 }
 

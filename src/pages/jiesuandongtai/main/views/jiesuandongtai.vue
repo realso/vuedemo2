@@ -35,7 +35,7 @@
               <td>经营门店</td>
                <td class="rr-table-w4em">截止时间</td>
               <td class="rr-table-w4em">计算收入</td>
-              <td class="rr-table-w4em">食堂
+              <td class="rr-table-w4em">堂食
               </td>
               <td class="rr-table-w4em">饿了么
               </td>
@@ -50,24 +50,13 @@
                 <br>
                 {{item.SNODENAME}}
               </td>
-                 <td class="rr-text-right">{{item.BILLDATE}}</td>
-              <td class="rr-text-right">{{item.FACTAMT}}</td>
-              <td class="rr-text-right">{{item.ONLINEAMT}}
+                 <td class="rr-text-right">{{item.DEADLINE}}</td>
+              <td class="rr-text-right">{{item.FACTAMT-item.DIFFAMT}}</td>
+              <td class="rr-text-right">{{item.TSCNT}}
               </td>
-              <td class="rr-text-right">{{item.OFFLINEAMT}}
+              <td class="rr-text-right">{{item.ELMCNT}}
               </td>
-              <td class="rr-text-right">{{item.DIFFAMT}}
-              </td>
-            </tr>
-            <tr class="rr-table-heji">
-              <td class="rr-text-right rr-weight">合计:</td>
-               <td class="rr-text-right">{{BILLDATE}}</td>
-              <td class="rr-text-right">{{FACTAMTALL}}</td>
-              <td class="rr-text-right">{{ONLINEAMTALL}}
-              </td>
-              <td class="rr-text-right">{{OFFLINEAMTALL}}
-              </td>
-              <td class="rr-text-right">{{DIFFAMTALL}}
+              <td class="rr-text-right">{{item.MTCNT}}
               </td>
             </tr>
           </tbody>
@@ -83,7 +72,7 @@ export default {
   props: {
     TITLE: ""
   },
-  name: "jiesuan",
+  name: "jiesuandongtai",
   data() {
     return {
       ISINPUTSHOW: false
@@ -98,15 +87,6 @@ export default {
       "SNODEID.SNODENAME",
     ]),
     ...mapDateTable("QRY", []),
-    ...mapDateTable("QRYALL", [
-      "FACTAMTALL",
-      "ONLINEAMTALL",
-      "ONLINERATEALL",
-      "OFFLINEAMTALL",
-      "OFFLINERATEALL",
-      "DIFFAMTALL",
-      "DIFFRATEALL"
-    ]),
     length() {
     }
   },
