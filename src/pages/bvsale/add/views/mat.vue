@@ -97,7 +97,6 @@
 </template>
 <script>
 import { mapGetters, mapDateTable, Constants } from "../store";
-import { getWeek } from "rs-vcore/utils/Date";
 export default {
   name: "bvsale_mat",
   props: {
@@ -164,16 +163,6 @@ export default {
         this.MYQTY = this.QTY;
       },
       immediate: true
-    }
-  },
-  filters:{
-    getWeek(value){
-      return value?(value+" "+getWeek(value)):"";
-    },
-    toFixed(value, cm) {
-      if(value=="0"||value!=""){
-          return parseFloat(value || 0).toFixed(cm);
-      }
     }
   },
   created() {
