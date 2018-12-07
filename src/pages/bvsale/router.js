@@ -3,21 +3,25 @@ export default [{
     name: 'bvsale',
     component: r => require.ensure([], () => r(require('@/pages/bvsale/add/index')), "bvsale"),
     redirect: '/bvsale/add/main',
+    meta: { level: 0 },
     children: [{
         path: '/bvsale/add/main',
         name: "/bvsale/add/main",
         component: r => require.ensure([], () => r(require('@/pages/bvsale/add/views/main')), "bvsale"),
-        props: { TITLE: '订货单' }
+        props: { TITLE: '订货单' },
+        meta: { level: 1 }
     }, {
         path: '/bvsale/add/mat',
         name: "/bvsale/add/mat",
         component: r => require.ensure([], () => r(require('@/pages/bvsale/add/views/mat')), "bvsale"),
-        props: { TITLE: '物料' }
+        props: { TITLE: '物料' },
+        meta: { level: 2 }
     }, {
         path: '/bvsale/add/jsnodesel',
         name: "/bvsale/add/jsnodesel",
         component: r => require.ensure([], () => r(require('@/pages/com/views/jsnode_sel')), "bvsale"),
-        props: { TITLE: '选择经营网点', refStore: { action: "bvsale/changeSnode", path: "MAIN" } }
+        props: { TITLE: '选择经营网点', refStore: { action: "bvsale/changeSnode", path: "MAIN" } },
+        meta: { level: 2 }
     }]
 }, {
     path: '/bvsale/list',

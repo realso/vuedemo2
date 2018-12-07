@@ -90,7 +90,7 @@
 </template>
 <script>
 import db from "@/api/db";
-import { dateToString,getWeek,datePart,dateAdd} from "rs-vcore/utils/Date";
+import { dateToString,dateAdd} from "rs-vcore/utils/Date";
 export default {
   name: "list",
   props: {

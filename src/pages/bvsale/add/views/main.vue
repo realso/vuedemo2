@@ -78,7 +78,6 @@
 </template>
 <script>
 import {mapState,mapGetters,mapDateTable,Constants} from "../store"
-import { getWeek } from "rs-vcore/utils/Date";
 export default {
   name: "bvsale",
   props:{
@@ -117,16 +116,6 @@ export default {
   },
   activated: function() {
       console.log("%c"+this.$route.path,"color:red");
-  },
-  filters:{
-    getWeek(value){
-      return value?(value+" "+getWeek(value)):"";
-    },
-    toFixed(value, cm) {
-      if(value=="0"||value!=""){
-          return parseFloat(value || 0).toFixed(cm);
-      }
-    }
   }
 };
 </script>

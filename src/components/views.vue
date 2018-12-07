@@ -8,32 +8,23 @@
   </div>
 </template>
 <script>
-import store from "./store";
-import { debug } from "util";
 export default {
+  name: "rs-views",
   data() {
     return {
       transitionName: "slide-right"
     };
   },
-  activated: function() {
-    console.log(this.$route.path, "color:red");
-    setTimeout(async () => {
-      this.$store.commit("jiesuan/setParams", this.$route.query);
-      if ("ADD" == this.$route.query.ACTION) {
-        this.$store
-          .dispatch("jiesuan/add", this.$route.query)
-          .then(() => {
-            //alert("执行成功");
-          })
-          .catch(e => {
-            alert(e.message);
-          });
+  watch: {
+    $route(to, from) {
+      let isBack = this.$router.isBack;
+      if (isBack||to.meta.level<from.meta.level) {
+        this.transitionName = "slide-right";
+      } else {
+        this.transitionName = "slide-left";
       }
-      if ("VIEW" == this.$route.query.ACTION) {
-        this.$store.dispatch("jiesuan/open", this.$route.query);
-      }
-    }, 600);
+      this.$router.isBack = false;
+    }
   }
 };
 </script>

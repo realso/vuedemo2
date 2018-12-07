@@ -23,7 +23,7 @@ let removePending = (config) => {
             pending.splice(p, 1); //把这条记录从数组中移除
         }
     }
-    console.log(config);
+    //console.log(config);
 }
 
 let isReatCalling = (config) => {

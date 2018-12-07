@@ -97,7 +97,6 @@
 </template>
 <script>
 import { mapGetters, mapDateTable, Constants } from "../store";
-import { getWeek } from "rs-vcore/utils/Date";
 export default {
   name: "bvsale_mat",
   props: {
@@ -166,16 +165,6 @@ export default {
       immediate: true
     }
   },
-  filters:{
-    getWeek(value){
-      return value?(value+" "+getWeek(value)):"";
-    },
-    toFixed(value, cm) {
-      if(value=="0"||value!=""){
-          return parseFloat(value || 0).toFixed(cm);
-      }
-    }
-  },
   created() {
     for (let i = 1; i < 10; i++) {
       this.number.push(i);
@@ -202,4 +191,5 @@ export default {
 .rr-number-key .rs-gridItem {
   padding: 20px 10px !important;
 }
+.rs-grid .rs-gridItem.mui-col-sm-3{width:33.33333333% !important;}
 </style>
