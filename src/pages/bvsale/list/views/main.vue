@@ -87,7 +87,7 @@ import { dateToString,getWeek,datePart,dateAdd} from "rs-vcore/utils/Date";
 export default {
   name: "list",
   props: {
-    TITLE: { type: String }
+    TITLE: { type: String,default:'订货管理' }
   },
   data() {
     return {
