@@ -12,13 +12,24 @@ export default {
   name: "rs-views",
   data() {
     return {
-      transitionName: "slide-right"
+      transitionName: "slide-left"
     };
   },
   watch: {
     $route(to, from) {
       let isBack = this.$router.isBack;
-      if (isBack||to.meta.level<from.meta.level) {
+      if (isBack) {
+        //顶级触发
+        if(this.$parent.$parent==this.$root){
+          if(to.matched[0].instances.default==from.matched[0].instances.default){
+              return;
+          }
+        }else{
+          //如果子类中触发
+          if(this.$parent !== to.matched[0].instances.default&&to.matched[0].instances.default){
+            return;
+          }
+        }
         this.transitionName = "slide-right";
       } else {
         this.transitionName = "slide-left";

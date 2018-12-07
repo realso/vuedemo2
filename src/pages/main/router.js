@@ -4,7 +4,7 @@ export default {
     component: r => require.ensure([], () => r(require('@/pages/main/index')), "main"),
     redirect: '/main1',
     meta: {
-        keepAlive: true
+        isMain: 1
     },
     children: [{
             path: '/main1',

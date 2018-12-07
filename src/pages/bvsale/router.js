@@ -26,13 +26,15 @@ export default [{
 }, {
     path: '/bvsale/list',
     name: '/bvsale/list',
+    meta: { level: 0 },
     component: r => require.ensure([], () => r(require('@/pages/bvsale/list/index')), "bvsale"),
     redirect: '/bvsale/list/main',
     children: [{
         path: '/bvsale/list/main',
         name: "/bvsale/list/main",
         component: r => require.ensure([], () => r(require('@/pages/bvsale/list/views/main')), "bvsale"),
-        props: { TITLE: '订货管理' }
+        params: { TITLE: '订货管理' },
+        props: true
     }, {
         path: '/bvsale/list/jsnodesel',
         name: "/bvsale/list/jsnodesel",
@@ -42,6 +44,7 @@ export default [{
 }, {
     path: '/bvsale/list1',
     name: '/bvsale/list1',
+    meta: { level: 0 },
     component: r => require.ensure([], () => r(require('@/pages/bvsale/list1/index')), "bvsale"),
     redirect: '/bvsale/list1/main',
     children: [{
