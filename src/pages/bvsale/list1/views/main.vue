@@ -123,12 +123,12 @@ export default {
     setOpenParam: function() {
       this.openParam =  {sqlId:"51517",pageSize:20,SNODECODE:this.SNODECODE,SNODEID:this.$store.state.user.userInfo.SNODEID||0,SDATE:this.SDATE,EDATE:this.EDATE,TYPE:this.TYPE}
     },
-    doQuery: function(){
+    doQuery: async function(){
       this.topStatus = "loading";
       this.allLoaded = false;
       this.setOpenParam();
       this.$busy();
-      this.$callAsync({method:db.open,params:[this.openParam]}).then((data)=>{
+      await this.$callAsync({method:db.open,params:[this.openParam]}).then((data)=>{
          this.list = data.data.items;
          this.topStatus = "";
          this.$refs.loadmore.onTopLoaded();
@@ -153,7 +153,7 @@ export default {
     }
   },
   created(){
-    this.doQuery();
+    this.$callAsync({method:this.doQuery,params:[],timeOut:600})
   },
   watch:{
     SDATE(){

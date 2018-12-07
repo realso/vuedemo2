@@ -162,7 +162,7 @@ export default {
      this.SDATE =this.$route.query.SDATE|| dateToString(dateAdd(new Date(),"d",1));
      this.EDATE =this.$route.query.EDATE|| dateToString(dateAdd(new Date(),"d",1));
      this.SNODECODE  =this.$route.query.SNODECODE|| this.$store.getters.userInfo.SNODECODE;
-     this.doQuery();
+     this.$callAsync({method:this.doQuery,params:[],timeOut:600})
   },
   watch:{
     SDATE(){

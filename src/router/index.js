@@ -32,9 +32,13 @@ router.beforeEach((to, from, next) => {
         next({ path: "/404" });
         return;
     }
-
     if (["login", "404", "503"].indexOf(to.name) != -1 || Store.getters["user/isLogin"]) {
-        next();
+        if (!from.name && to.name != "main1") {
+            next({ name: 'main1', replace: true });
+        } else {
+            next();
+        }
+
     } else {
         next({
             path: '/login',

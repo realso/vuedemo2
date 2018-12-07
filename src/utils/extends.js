@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import Rui from 'rs-ui1'
 Vue.prototype.$isPower = function(code) {
     return !!this.$store.getters.pcode[code];
 }

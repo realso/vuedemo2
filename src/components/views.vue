@@ -17,21 +17,32 @@ export default {
   },
   watch: {
     $route(to, from) {
-      let isBack = this.$router.isBack;
+      let isBack = false;
+      if (to.meta.time&&to.meta.time < from.meta.time) {
+        isBack = true;
+      }
       if (isBack) {
         //顶级触发
-        if(this.$parent.$parent==this.$root){
-          if(to.matched[0].instances.default==from.matched[0].instances.default){
-              return;
+        if (this.$parent.$parent == this.$root) {
+          if (
+            to.matched[0].instances.default == from.matched[0].instances.default
+          ) {
+            return;
           }
-        }else{
+        } else {
           //如果子类中触发
-          if(this.$parent !== to.matched[0].instances.default&&to.matched[0].instances.default){
+          if (
+            this.$parent !== to.matched[0].instances.default &&
+            to.matched[0].instances.default
+          ) {
             return;
           }
         }
         this.transitionName = "slide-right";
+        to.meta.time = new Date().getTime();
+        from.meta.time = 0;
       } else {
+        to.meta.time = new Date().getTime();
         this.transitionName = "slide-left";
       }
       this.$router.isBack = false;

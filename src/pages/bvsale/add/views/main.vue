@@ -116,6 +116,9 @@ export default {
   },
   activated: function() {
       console.log("%c"+this.$route.path,"color:red");
+  },
+  async beforeRouteLeave (to, from, next) {
+     next();
   }
 };
 </script>
