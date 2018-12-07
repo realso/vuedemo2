@@ -1,5 +1,5 @@
 <template>
-  <div style="height:100%">
+  <div style="height:100%;width: 100%;">
     <transition :name="transitionName">
       <keep-alive>
         <router-view></router-view>

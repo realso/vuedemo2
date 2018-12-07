@@ -2,6 +2,7 @@
 .rs-flex-col{display:flex;display:-webkit-flex;margin:0 auto; flex-direction:column; width: 100%;height: 100%; overflow: hidden;}
 .rs-flex-row{display:flex;display:-webkit-flex;margin:0 auto; flex-direction:row; width: 100%; overflow: hidden;}
 .rs-flex-item{flex:1;}
+.mui-layout{width: 100%;}
 /*颜色*/
 .c-icon-orange{ color: #ffb359}
 .c-icon-blue{ color: #29b1e8}
