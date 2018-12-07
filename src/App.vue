@@ -22,7 +22,7 @@ export default {
   },
   watch: {
     $route(to, from) {
-       let isBack = this.$router.isBack;
+    let isBack = this.$router.isBack;
     if (isBack) {
       this.transitionName = "slide-right";
     } else {

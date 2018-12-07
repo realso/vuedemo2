@@ -8,9 +8,8 @@
   </div>
 </template>
 <script>
-
 export default {
-  name:"rs-views",
+  name: "rs-views",
   data() {
     return {
       transitionName: "slide-right"
@@ -18,14 +17,13 @@ export default {
   },
   watch: {
     $route(to, from) {
-    let isBack = this.$router.isBack;
-    console.log(isBack)
-    if (isBack) {
-      this.transitionName = "slide-right";
-    } else {
-      this.transitionName = "slide-left";
-    }
-    this.$router.isBack = false;
+      let isBack = this.$router.isBack;
+      if (isBack||to.meta.level<from.meta.level) {
+        this.transitionName = "slide-right";
+      } else {
+        this.transitionName = "slide-left";
+      }
+      this.$router.isBack = false;
     }
   }
 };
