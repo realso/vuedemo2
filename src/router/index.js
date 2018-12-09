@@ -49,8 +49,10 @@ router.beforeEach((to, from, next) => {
     }
 });
 //返回
-Router.prototype.goBack = function() {　　
+Router.prototype.goBack = function(isforce) {　
+    //isfroce：true 强制返回，不检查是否修改　
     this.isBack = true;
+    this.isForce = isforce || false;
     this.go(-1)
 }
 export default router;
