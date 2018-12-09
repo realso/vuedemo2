@@ -89,7 +89,7 @@ export default {
     };
   },
   computed: {
-      ...mapGetters(["ISSHOWSAVE","ISSHOWDELETE","DTSMESSAGE","DTSITEMS"]),
+      ...mapGetters(["ISSHOWSAVE","ISSHOWDELETE","DTSMESSAGE","DTSITEMS","ISMODIFY"]),
       ...mapDateTable("MAIN",['SALEPLCID','SNODEID','BILLTYPEID','BILLDATE','BILLCODE','SNODEID.SNODECODE',"SNODEID.SNODENAME","AMT"]),
       ...mapDateTable("DTS",[])
   },
@@ -112,13 +112,24 @@ export default {
     async del(){
        await this.$confirm("确认删除？");
        this.$callAction({action:`${Constants.STORE_NAME}/delete`,successText:"删除成功",isSuccessBack:true});
+      
     }
   },
   activated: function() {
       console.log("%c"+this.$route.path,"color:red");
   },
   async beforeRouteLeave (to, from, next) {
-     next();
+      if(to.matched[0] === from.matched[0]||!this.ISMODIFY||this.$router.isForce){
+        this.$router.isForce= false;
+        next();
+        return;
+      }
+
+      this.$confirm("确认不保存修改直接离开么？").then(()=>{
+        next();
+      }).catch(e=>{
+        next(false);
+      })
   }
 };
 </script>

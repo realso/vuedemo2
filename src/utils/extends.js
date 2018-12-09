@@ -53,7 +53,7 @@ Vue.prototype.$callAction = function({ action, param, successText, errorText, su
                     successCall();
                 }
                 if (isSuccessBack)
-                    this.$router.goBack();
+                    this.$router.goBack(true);
             })
             .catch(e => {
                 this.$indicator.close();
@@ -65,7 +65,7 @@ Vue.prototype.$callAction = function({ action, param, successText, errorText, su
                     errorCall();
                 }
                 if (isErrorBack)
-                    this.$router.goBack();
+                    this.$router.goBack(true);
             });
     }, timeOut || 0);
 }
