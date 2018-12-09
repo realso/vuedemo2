@@ -92,6 +92,11 @@ const getters = {
                 return item["QTY"] <= 0;
             }
         });
+    },
+    ISMODIFY(state) {
+        let MAIN = storeHelper.getTable(Constants.P_PATHS.DTS);
+        let DTS = storeHelper.getTable(Constants.P_PATHS.DTS);
+        return MAIN.isModify() || DTS.isModify();
     }
 }
 const mutations = {
@@ -306,7 +311,7 @@ const checkNull = async function() {
     if (DTS.data.find((item) => { return toNumber(item["MINQTY"]) > toNumber(item["QTY"]) })) {
         msg.push("最小订量,未满足")
     }
-    if (toNumber(DTS.getValue("AMT")) < toNumber(MAIN.getValue("MINAMT"))) {
+    if (toNumber(MAIN.getValue("AMT")) < toNumber(MAIN.getValue("MINAMT"))) {
         msg.push("订货金额<最小金额")
     }
 
