@@ -14,7 +14,7 @@ const Constants = Object.assign({}, SConstants, {
 const { mapState, mapGetters } = createNamespacedHelpers(Constants.STORE_NAME);
 const storeHelper = new Store01({
     service: service,
-    paths: { "QRY":"TBS_PARAMETER_REF", "QRYALL":"TBS_PARAMETER_REF", "QRYADV":"TBS_PARAMETER_REF","MAIN": "TBV_SNSTL_M", "DTS": "TBV_SNSTLDTS_M",  "STLFMITEM": "TBV_STLFMITEM", "SNODE": "TBV_CHAINSND_SEL" },
+    paths: { "QRY":"TBS_PARAMETER_REF", "QRYALL":"TBS_PARAMETER_REF", "QRYADV":"TBS_PARAMETER_REF","MAIN": "VBV_STLTRENDS_M", "DTS": "TBV_SNSTLDTS_M",  "STLFMITEM": "TBV_STLFMITEM", "SNODE": "TBV_CHAINSND_SEL" },
     MAINPATH: "MAIN",
     SUBPATH: ["DTS"],
 });
