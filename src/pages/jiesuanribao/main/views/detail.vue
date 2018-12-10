@@ -54,7 +54,10 @@
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">实 际 收 入</span>
             <span>：</span>
-            <div class="rs-flex-item rr-text-center rr-line-b">{{FACTAMT}}</div>
+            <div class="rs-flex-item rr-text-center rr-line-b">
+              <span class="rr-right rr-opacity0 rr-width-5em">{{ONLINERATE}}%</span>
+              {{FACTAMT}}
+              </div>
           </div>
         </rs-list-item>
         <rs-list-item noborder>
@@ -62,7 +65,7 @@
             <span class="rr-justify rr-width-4em">线 下</span>
             <span>：</span>
             <div class="rs-flex-item rr-text-center rr-line-b">
-              <span class="rr-right">{{ONLINERATE}}%</span>
+              <span class="rr-right rr-width-5em rr-text-right">{{ONLINERATE}}%</span>
               {{ONLINEAMT}}
             </div>
           </div>
@@ -72,7 +75,7 @@
             <span class="rr-justify rr-width-4em">线 上</span>
             <span>：</span>
             <div class="rs-flex-item rr-text-center rr-line-b">
-              <span class="rr-right">{{OFFLINERATE}}%</span>
+              <span class="rr-right rr-width-5em rr-text-right">{{OFFLINERATE}}%</span>
               {{OFFLINEAMT}}
             </div>
           </div>
@@ -82,7 +85,7 @@
             <span class="rr-justify rr-width-4em">差 异</span>
             <span>：</span>
             <div class="rs-flex-item rr-text-center rr-line-b">
-              <span class="rr-right">{{DIFFRATE}}‰</span>
+              <span class="rr-right rr-width-5em rr-text-right">{{DIFFRATE}}‰</span>
               {{DIFFAMT}}
             </div>
           </div>
