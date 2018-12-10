@@ -1,7 +1,7 @@
 <template>
   <div class="mui-layout mui-layout-top">
     <rs-header :title="TITLE" color="primary">
-      <a slot="left" @click="$router.goBack()" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
+      <a slot="left" @click="$router.push('/jiesuandongtai')" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
     </rs-header>
     <div class="rs-nex-prev">
       <span
@@ -25,52 +25,91 @@
         @click="more_next"
       ></span>
     </div>
-    <div class="mui-content">
-      <rs-list class="rr-line-24" size="15" noborder>
-        <rs-list-item noborder>
-          <div class="rs-flex-row">
-            <span class="rr-justify rr-width-4em">经 营 门 店</span>
-            <span>：</span>
-            <div
-              class="rs-flex-item rr-line-b"
-            >{{this["SNODEID.SNODECODE"]}} {{this["SNODEID.SNODENAME"]}}</div>
-          </div>
-        </rs-list-item>
-        <rs-list-item noborder>
-          <div class="rs-flex-row">
-            <span class="rr-justify rr-width-4em">店 长</span>
-            <span>：</span>
-            <div class="rs-flex-item rr-line-b">{{MANAGER}}</div>
-          </div>
-        </rs-list-item>
-        <rs-list-item noborder>
-          <div class="rs-flex-row">
-            <span class="rr-justify rr-width-4em">日 期</span>
-            <span>：</span>
-            <div class="rs-flex-item rr-line-b">{{BILLDATE|getWeek}}</div>
-          </div>
-        </rs-list-item>
-      </rs-list>
-      <div style="height: 7px; background: #eee;"></div>
-      <rs-list size="14" noborder>
-        <main_dts v-for="(item) in DTS" :item="item" :key="item.ENTRYID"/>
-      </rs-list>
-      <div style="height: 7px; background: #eee;"></div>
-      <div class="rr-bill-top">
-        <div class="rs-flex-row" style="height:33px" v-if="BILLCODE!=''">
-          <span class="rr-justify rr-width-4em">单 据 号</span>
+    <rs-list class="rr-line-24" size="15" noborder>
+      <rs-list-item>
+        <div class="rs-flex-row">
+          <span class="rr-justify rr-width-4em">经 营 门 店</span>
           <span>：</span>
-          <div class="rs-flex-item">{{BILLCODE}}</div>
+          <div
+            class="rs-flex-item"
+          >{{this["SNODEID.SNODECODE"]}} {{this["SNODEID.SNODENAME"]}}</div>
         </div>
-        <div class="rs-flex-row" style="height:33px" v-if="MAKER!=''">
-          <span class="rr-justify rr-width-4em">填 报</span>
+      </rs-list-item>
+      <rs-list-item noborder>
+        <div class="rs-flex-row">
+          <span class="rr-justify rr-width-4em">日 期</span>
           <span>：</span>
-          <div class="rs-flex-item">{{MAKER}} {{MAKEDATE}}</div>
+          <div class="rs-flex-item">{{BILLDATE|getWeek}}</div>
         </div>
-        <div class="rs-flex-row" style="height:33px;" v-if="VERIFIER!=''">
-          <span class="rr-justify rr-width-4em">审 核</span>
-          <span>：</span>
-          <div class="rs-flex-item">{{VERIFIER}} {{VERIFYDATE}}</div>
+      </rs-list-item>
+    </rs-list>
+    <div class="mui-content bk-fff">
+      <div class="mui-content-padded">
+        <div class="rs-flex-row rr-table-div">
+          <div class="rr-width-5em">
+            <div class="rr-table-divH">项目</div>
+            <div class="rr-table-divd">实际收入</div>
+            <div class="rr-table-divd">线下</div>
+            <div class="rr-table-divd">线下%</div>
+            <div class="rr-table-divd">线上</div>
+            <div class="rr-table-divd">线上%</div> 
+            <div class="rr-table-divd">差异</div>
+            <div class="rr-table-divd">差异‰</div> 
+            <div style="height: 4px; background: #eee;"></div>
+            <div class="rr-table-divd rr-weight c-icon-blue">堂食</div>
+            <div class="rr-table-divd">现金卡值</div>
+            <div class="rr-table-divd">微信</div>
+            <div class="rr-table-divd">支付宝</div>
+            <div class="rr-table-divd">老系统</div> 
+            <div class="rr-table-divd">堂食退款</div>
+            <div class="rr-table-divd rr-weight c-icon-blue">饿了么</div>
+            <div class="rr-table-divd">在线支付</div>
+            <div class="rr-table-divd">手续费</div>
+            <div class="rr-table-divd">承担补贴</div>
+            <div class="rr-table-divd rr-weight c-icon-blue">美团</div> 
+            <div class="rr-table-divd">在线支付</div>
+            <div class="rr-table-divd">手续费</div>
+            <div class="rr-table-divd">承担补贴</div>
+            <div style="height: 4px; background: #eee;"></div>
+            <div class="rr-table-divd">店长</div>
+            <div class="rr-table-divd">单据号</div> 
+            <div class="rr-table-divd">填报人</div>
+            <div class="rr-table-divd rr-table-div2h">填报时间</div>
+            <div class="rr-table-divd">审核人</div>
+            <div class="rr-table-divd rr-table-div2h">审核时间</div>
+          </div>
+          <div class="rs-flex-item" :style="{'borderRight':(index==MAIN.length-1?'1px solid #eee': '')}" v-for="(item,index) in MAIN" :key="index">
+            <div class="rr-table-divH">{{item.DEADLINE}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.FACTAMT}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.ONLINEAMT}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.ONLINERATE}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.OFFLINEAMT}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.OFFLINERATE}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.DIFFAMT}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.DIFFRATE}}</div>
+            <div style="height: 4px; background: #eee;"></div>
+            <div class="rr-table-divd rr-text-right">{{item.TSCNT}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.XJKZ}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.WX}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.ZFB}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.LXT}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.TSTJ}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.ELMCNT}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.EZXZF}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.ESXF}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.ECDBT}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.MTCNT}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.MZXZF}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.MSXF}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.MCDBT}}</div>
+            <div style="height: 4px; background: #eee;"></div>
+            <div class="rr-table-divd">{{item.MANAGER}}</div>
+            <div class="rr-table-divd">{{item.BILLCODE}}</div>
+            <div class="rr-table-divd">{{item.MAKER}}</div>
+            <div class="rr-table-divd rr-table-div2h">{{item.MAKEDATE}}</div>
+            <div class="rr-table-divd">{{item.VERIFIER}}</div>
+            <div class="rr-table-divd rr-table-div2h">{{item.VERIFYDATE}}</div>
+          </div>
         </div>
       </div>
     </div>
@@ -189,51 +228,37 @@ export default {
   }
 };
 </script>
-<style scoped>
-.rr-title {
-  padding: 5px 15px;
-  font-size: 15px;
-  border-bottom: 1px solid #bbb;
-  background: #fff;
-  margin-top: 5px;
-}
-.rr-list-input {
-  text-align: right;
-}
-.rs-listItem {
-  padding: 7px 15px;
-}
-.rs-list {
-  padding-top: 5px;
-}
-.rr-list-textarea {
-  padding: 5px 15px;
-  background: #fff;
-}
-.rr-list-textarea textarea {
-  font-size: 15px;
-  margin-bottom: 0;
-}
-.rr-line-24,
-.rr-line-24 .rr-justify {
-  line-height: 24px;
-}
-.rr-line-24 .rr-justify {
-  height: 24px;
-}
-.rs-numInput-input {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  border: none;
-  height: 100%;
-  padding: 0;
-  text-align: right;
-  font-size: 14px;
-  margin: 0;
-}
-.rr-opacity {
-  opacity: 0;
-}
+<style scoped lang="postcss">
+.rr-line-24,.rr-line-24 .rr-justify{line-height: 24px;}
+.rr-line-24 .rr-justify{height:24px;}
+.rr-table-div{font-size: 14px; background: #fff}
+.rr-table-divH{background: rgb(204,232,255);text-align: center; padding: 3px;border: 1px solid rgb(204,217,255); border-right: none}
+.rr-table-div .rr-table-divd{padding: 3px; min-height:28px;border-bottom: 1px solid #eee; border-left:1px solid #eee}
+.rr-table-div2h{height: 49px;}
+@component-namespace rr {
+  @component table {
+    font-size: 14px;
+    width: 100%;
+    @descendent w4em {
+      width: 5em;
+    }
+    td{
+      padding: 3px;
+      word-break:break-word;
+    }
+    @descendent header {
+      background: rgb(204,232,255);
+      text-align: center;
+      td{
+        border: 1px solid rgb(204,217,255);
+      }  
+    }
+    @descendent body {
+      background: #fff;
+      td{
+        border: 1px solid #eee;
+      }  
+    }
+  }
+}      
 </style>
-
