@@ -24,6 +24,7 @@ const Constants = Object.assign({}, SConstants, {
     M_SETDTSQTY: "setDtsQty",
     M_SETSELECTED: "setSelected",
     M_SETBILLCODE: "setBillCode",
+    M_SETSTATE: "setState",
     P_PATHS: {
         MAIN: "MAIN",
         DTS: "DTS",
@@ -43,17 +44,18 @@ const state = {
     SELECTED: "1",
     OQTY: {},
     PLCMID: {},
+    STATE: "",
     ...storeHelper.mixState()
 }
 
 const getters = {
     ISSHOWSAVE(state, getters, rootState, rootGetters) {
         let MAIN = storeHelper.getTable(Constants.P_PATHS.MAIN);
-        return MAIN.getValue("ISTALLY") != "1" && MAIN.count() == 1 && rootGetters.pcode["salemanage.add"]
+        return MAIN.getValue("ISTALLY") != "1" && MAIN.count() == 1 && MAIN.getValue("BUSTYPEID") == 100993 && rootGetters.pcode["salemanage.add"]
     },
     ISSHOWDELETE(state, getters, rootState, rootGetters) {
         let MAIN = storeHelper.getTable(Constants.P_PATHS.MAIN);
-        return MAIN.getValue("ISTALLY") != "1" && MAIN.count() == 1 && !MAIN.isAdd() && rootGetters.pcode["salemanage.delete"]
+        return MAIN.getValue("ISTALLY") != "1" && MAIN.count() == 1 && MAIN.getValue("BUSTYPEID") == 100993 && !MAIN.isAdd() && rootGetters.pcode["salemanage.delete"]
     },
     DTSMESSAGE() {
         let MAIN = storeHelper.getTable(Constants.P_PATHS.MAIN);
@@ -62,6 +64,9 @@ const getters = {
         var ISXY = MAIN.getValue('SNODEID.ISXY');
         var BILLDATE = MAIN.getValue('BILLDATE');
         var SNODEID = MAIN.getValue('SNODEID');
+        if (state.STATE == "Loading") {
+            return "";
+        }
         if (!SNODEID) {
             return "请选择经营网点！"
         }
@@ -264,6 +269,9 @@ const mutations = {
     [Constants.M_SETBILLCODE]: function(state, { data }) {
         let MAIN = storeHelper.getTable(Constants.P_PATHS.MAIN);
         MAIN.setValue("BILLCODE", data);
+    },
+    [Constants.M_SETSTATE]: function(state, v) {
+        state.STATE = v;
     }
 }
 
@@ -364,6 +372,7 @@ const checkNull = async function() {
 const actions = {
     ...storeHelper.mixActions(),
     async add({ commit, state, dispatch }) {
+        commit(Constants.M_SETSTATE, "Loading");
         commit(Constants.M_SETSELECTED, "1");
         //初始化
         commit(Constants.M_INITBYPATH, { paths: [Constants.P_PATHS.MAIN, Constants.P_PATHS.DTS] });
@@ -418,7 +427,7 @@ const actions = {
             ret = await service.doGetPeriod({ PTYPE: "192", BILLDATE });
             commit(Constants.M_SETPERIOD, { PTYPE: 192, VALUE: (ret.data.VALUE || {}) })
         }
-
+        commit(Constants.M_SETSTATE, "Add");
     },
     async changeSnode({ commit, dispatch }, { item }) {
         let MAIN = storeHelper.getTable(Constants.P_PATHS.MAIN);
@@ -495,11 +504,13 @@ const actions = {
         commit(Constants.M_ADDDTS);
     },
     async open({ commit }, DID) {
+        commit(Constants.M_SETSTATE, "Loading");
         commit(Constants.M_SETSELECTED, "2");
         let MAIN = storeHelper.getTable(Constants.P_PATHS.MAIN);
         let DTS = storeHelper.getTable(Constants.P_PATHS.DTS);
         let ret = await service.doOpen({ MAIN, DTS, DID });
         commit(Constants.M_BATCHSETDATA, { data: ret.data || {} });
+        commit(Constants.M_SETSTATE, "VIEW");
     },
     async _beforeSave({ commit }) {
         let MAIN = storeHelper.getTable(Constants.P_PATHS.MAIN);

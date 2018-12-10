@@ -33,7 +33,7 @@ router.beforeEach((to, from, next) => {
         return;
     }
     if (["login", "404", "503"].indexOf(to.name) != -1 || Store.getters["user/isLogin"]) {
-        if (!from.name && to.name != "main1") {
+        if (!from.name && to.name != "main1" && Store.getters["user/isLogin"]) {
             next({ name: 'main1', replace: true });
         } else {
             next();
