@@ -3,10 +3,10 @@ import { setDB, doOpen, doDelete, doSave, doCheck, doReCheck } from "rs-vcore/se
 setDB(db);
 
 
-const _getMAIN = function(BILLID) {
+const _getMAIN = function(SNODEID,BILLDATE) {
     return {
-        modalName: "TBV_SNSTL_M",
-        where: `[BILLID] ='${BILLID}'`,
+        modalName: "VBV_STLTRENDS_M",
+        where: `[SNODEID] ='${SNODEID}' AND [BILLDATE] =TO_DATE('${BILLDATE}','YYYY-MM-DD') AND NVL(ISDEL,0)=0`,
         orderBy: "",
         pageSize: 1,
         pageIndex: 1
@@ -23,8 +23,9 @@ const _getDTS = function(BILLID) {
     }
 }
 
-const doLoadMAIN = async function({ BILLID }) {
-    return db.open(_getMAIN(BILLID))
+const doLoadMAIN = async function({SNODEID,BILLDATE}) {
+    debugger;
+    return db.open(_getMAIN(SNODEID,BILLDATE))
 }
 const doLoadDTS = async function({ BILLID }) {
     return db.open(_getDTS(BILLID))

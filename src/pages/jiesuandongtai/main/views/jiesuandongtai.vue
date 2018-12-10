@@ -44,7 +44,7 @@
             </tr>
           </thead>
           <tbody class="rr-table-body">
-            <tr v-for="(item,index) in QRY" :key="index" @click="linkDetail(item.BILLID,item.SNODEID,index)">
+            <tr v-for="(item,index) in QRY" :key="index" @click="linkDetail(item.BILLID,item.SNODEID,item.BILLDATE,index)">
               <td>
                 {{item.SNODECODE}}
                 <br>
@@ -94,10 +94,10 @@ export default {
     linkUrl: function(url) {
       this.$router.push({ path: "/jiesuandongtai/main/" + url });
     },
-    linkDetail: function(BILLID,SNODEID, index) {
+    linkDetail: function(BILLID,SNODEID,BILLDATE, index) {
       this.$router.push({
         path: "/jiesuandongtai/main/detail",
-        query: { BILLID:BILLID,SNODEID: SNODEID, index: index, length: this.length }
+        query: { BILLID:BILLID,SNODEID:SNODEID, BILLDATE:BILLDATE,index: index, length: this.length }
       });
     },
     open(picker) {

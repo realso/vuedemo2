@@ -176,7 +176,9 @@ export default {
   },
   activated: function() {
     this.$store.dispatch(`${Constants.STORE_NAME}/loadDTS`, {
-      BILLID: this.$route.query.BILLID
+      BILLID: this.$route.query.BILLID,
+      SNODEID: this.$route.query.SNODEID,
+      BILLDATE: this.$route.query.BILLDATE,
     });
     console.log("%c" + this.$route.path, "color:red");
   },

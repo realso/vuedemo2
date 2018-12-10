@@ -49,8 +49,9 @@ const mutations = {
 
 const actions = {
     ...storeHelper.mixActions(),
-    loadDTS:async function ({ commit },{BILLID}) {
-        let ret = await service.doLoadMAIN({ BILLID:BILLID });
+    loadDTS:async function ({ commit },{SNODEID,BILLDATE}) {
+        debugger;
+        let ret = await service.doLoadMAIN({ SNODEID:SNODEID, BILLDATE:BILLDATE});
         commit(Constants.M_INITDATA, { path: "MAIN", data: (ret.data || {}).items });
         let ret2 = await service.doLoadDTS({ BILLID:BILLID });
         commit(Constants.M_INITDATA, { path: "DTS", data: (ret2.data || {}).items });
