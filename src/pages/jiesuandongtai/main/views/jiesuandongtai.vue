@@ -3,24 +3,25 @@
     <rs-header :title="TITLE" color="primary">
       <a slot="left" @click="$router.goBack()" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
     </rs-header>
-    <div class="mui-content bk-fff">
-      <rs-list class="rr-line-24" size="15" noborder>
-        <rs-list-item noborder isright @click.native="open('picker1')">
+    <rs-list class="rr-line-24" size="15" noborder>
+        <rs-list-item isright @click.native="open('picker1')">
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">日 期</span>
             <span>：</span>
-            <div class="rs-flex-item rr-line-b">{{BILLDATE|getWeek}}</div>
+            <div class="rs-flex-item">{{BILLDATE|getWeek}}</div>
           </div>
         </rs-list-item>
-        <rs-list-item noborder isright @click.native="linkUrl('snodesel')">
+        <rs-list-item noborder isright @click.native="linkUrl('snodesel')" style="margin-right:50px;">
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">经营门店</span>
             <span>：</span>
             <div
               class="rs-flex-item"
             >{{this["SNODEID.SNODECODE"]}} {{this["SNODEID.SNODENAME"]}}</div>
+            
           </div>
         </rs-list-item>
+        <rs-button size="small" class="rr-list-search" @click="doQuery()">查询</rs-button>
       </rs-list>
       <rs-datetime
         key="jiesuandongtai.1"
@@ -28,6 +29,7 @@
         type="date"
         v-model.lazy="BILLDATE"
       ></rs-datetime>
+    <div class="mui-content bk-fff">
       <div class="mui-content-padded">
         <table class="rr-table">
           <thead class="rr-table-header">
@@ -88,6 +90,7 @@ export default {
     ]),
     ...mapDateTable("QRY", []),
     length() {
+      return this.QRY.length
     }
   },
   methods: {
@@ -105,6 +108,9 @@ export default {
     },
     handleChangeD: function() {
       this.$callAction({ action: `${Constants.STORE_NAME}/loadSTLFMITE` });
+    },
+    doQuery: function(){
+
     }
   },
   watch: {
@@ -124,9 +130,6 @@ export default {
 };
 </script>
 <style scoped lang="postcss">
-.rs-listItem {
-  padding: 8px 15px;
-}
 .rr-line-24,
 .rr-line-24 .rr-justify {
   line-height: 24px;
@@ -134,6 +137,7 @@ export default {
 .rr-line-24 .rr-justify {
   height: 24px;
 }
+.rr-list-search{padding: 0 10px; position: absolute; right: 10px; bottom: 6px}
 @component-namespace rr {
   @component table {
     font-size: 14px;
