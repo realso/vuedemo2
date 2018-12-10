@@ -11,7 +11,7 @@
             <div class="rs-flex-item">{{BILLDATE|getWeek}}</div>
           </div>
         </rs-list-item>
-        <rs-list-item isright @click.native="linkUrl('snodesel')">
+        <rs-list-item noborder isright @click.native="linkUrl('snodesel')" style="margin-right:50px;">
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">经营门店</span>
             <span>：</span>
@@ -20,6 +20,7 @@
             >{{this["SNODEID.SNODECODE"]}} {{this["SNODEID.SNODENAME"]}}</div>
           </div>
         </rs-list-item>
+        <rs-button size="small" class="rr-list-search" @click="doQuery()">查询</rs-button>
       </rs-list>
       <rs-datetime
         key="jiesuanribao.1"
@@ -122,7 +123,10 @@ export default {
       "OFFLINERATEALL",
       "DIFFAMTALL",
       "DIFFRATEALL"
-    ])
+    ]),
+    length() {
+      return this.QRY.length
+    }
   },
   methods: {
     linkUrl: function(url) {
@@ -139,6 +143,9 @@ export default {
     },
     handleChangeD: function() {
       this.$callAction({ action: `${Constants.STORE_NAME}/loadSTLFMITE` });
+    },
+    doQuery: function(){
+
     }
   },
   watch: {
@@ -174,9 +181,6 @@ export default {
 };
 </script>
 <style scoped lang="postcss">
-/* .rs-listItem {
-  padding: 8px 15px;
-} */
 .rr-line-24,
 .rr-line-24 .rr-justify {
   line-height: 24px;
@@ -184,6 +188,7 @@ export default {
 .rr-line-24 .rr-justify {
   height: 24px;
 }
+.rr-list-search{padding: 0 10px; position: absolute; right: 10px; bottom: 6px}
 @component-namespace rr {
   @component table {
     font-size: 14px;
