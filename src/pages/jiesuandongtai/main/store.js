@@ -50,7 +50,6 @@ const mutations = {
 const actions = {
     ...storeHelper.mixActions(),
     loadDTS:async function ({ commit },{SNODEID,BILLDATE}) {
-        debugger;
         let ret = await service.doLoadMAIN({ SNODEID:SNODEID, BILLDATE:BILLDATE});
         commit(Constants.M_INITDATA, { path: "MAIN", data: (ret.data || {}).items });
     },

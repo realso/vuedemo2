@@ -76,7 +76,6 @@ const mutations = {
         para.pageSize = "10";
         para.keyFields = "BILLID";
         db.open(para).then(ret => {
-            debugger;
             commit(Constants.M_INITDATA, { path: "QRY", data: (ret.data || {}).items });
         });
     },
@@ -409,7 +408,6 @@ const actions = {
         para.pageSize = "10";
         para.keyFields = "BILLID";
         db.open(para).then(ret => {
-            debugger;
             commit(Constants.M_INITDATA, { path: "QRY", data: (ret.data || {}).items });
         });
     }

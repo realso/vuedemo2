@@ -298,7 +298,6 @@ const mutations = {
         let DTS = storeHelper.getTable("DTS");
         let SETDTS = storeHelper.getTable("SETDTS");
         SETDTS.initData();
-        debugger;
         DTS.data.forEach(item => {
             let titme = {};
             let ITEMPROPERTY = item["STLITEMID.ITEMPROPERTY"];

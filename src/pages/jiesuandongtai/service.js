@@ -24,7 +24,6 @@ const _getDTS = function(BILLID) {
 }
 
 const doLoadMAIN = async function({SNODEID,BILLDATE}) {
-    debugger;
     return db.open(_getMAIN(SNODEID,BILLDATE))
 }
 const doLoadDTS = async function({ BILLID }) {

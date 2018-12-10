@@ -32,7 +32,7 @@
           <span>：</span>
           <div
             class="rs-flex-item"
-          >{{this["SNODEID.SNODECODE"]}} {{this["SNODEID.SNODENAME"]}}</div>
+          >{{this["SNODECODE"]}} {{this["SNODENAME"]}}</div>
         </div>
       </rs-list-item>
       <rs-list-item noborder>
@@ -137,30 +137,9 @@ export default {
   computed: {
     ...mapGetters(["ISSHOWSAVE", "ISSHOWDELETE", "ISTIME"]),
     ...mapDateTable("MAIN", [
-      "BILLTYPEID",
       "BILLDATE",
-      "BILLCODE",
-      "SNODEID.SNODECODE",
-      "SNODEID.SNODENAME",
-      "MANAGER",
-      "DIFFREMARK",
-      "MAKER",
-      "VERIFIER",
-      "MAKEDATE",
-      "VERIFYDATE",
-      "TALLIER",
-      "TALLYDATE",
-      "FHOUR",
-      "FMINUTE",
-      "DEADLINE",
-      "FACTAMT",
-      "ONLINEAMT",
-      "ONLINERATE",
-      "OFFLINEAMT",
-      "OFFLINERATE",
-      "DIFFAMT",
-      "DIFFRATE",
-      "DIFFREMARK"
+      "SNODECODE",
+      "SNODENAME",
     ]),
     ...mapDateTable("DTS", []),
     firstIndex() {
