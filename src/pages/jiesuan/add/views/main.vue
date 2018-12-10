@@ -85,7 +85,7 @@
           <div class="rs-flex-item">{{BILLCODE}}</div>
         </div>
         <div class="rs-flex-row" style="height:33px" v-if="MAKER!=''">
-          <span class="rr-justify rr-width-4em">制 单</span>
+          <span class="rr-justify rr-width-4em">填 报</span>
           <span>：</span>
           <div class="rs-flex-item">{{MAKER}} {{MAKEDATE}}</div>
         </div>
@@ -93,6 +93,11 @@
           <span class="rr-justify rr-width-4em">审 核</span>
           <span>：</span>
           <div class="rs-flex-item">{{VERIFIER}} {{VERIFYDATE}}</div>
+        </div>
+        <div class="rs-flex-row" style="height:33px;" v-if="TALLIER!=''">
+          <span class="rr-justify rr-width-4em">记 账</span>
+          <span>：</span>
+          <div class="rs-flex-item">{{TALLIER}} {{TALLYDATE}}</div>
         </div>
       </div> -->
     </div>

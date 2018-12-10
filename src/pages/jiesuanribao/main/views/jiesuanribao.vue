@@ -145,7 +145,7 @@ export default {
       this.$callAction({ action: `${Constants.STORE_NAME}/loadSTLFMITE` });
     },
     doQuery: function(){
-
+      this.$store.dispatch(`${Constants.STORE_NAME}/openReport`);
     }
   },
   watch: {
@@ -155,7 +155,6 @@ export default {
   },
   activated: function() {
     console.log("%c" + this.$route.path, "color:red");
-    this.$store.dispatch(`${Constants.STORE_NAME}/setForm`);
   },
   filters: {
     getWeek(value) {

@@ -210,10 +210,9 @@ export default {
       }
     },
     doquery: function(index) {
-      this.$router.push({
-        path: "/jiesuanribao/main/detail",
-        query: { index: this.index }
-      });
+       this.$store.dispatch(`${Constants.STORE_NAME}/loadIndexDTS`, {
+       idx: this.index
+    });
     }
   },
   watch: {
