@@ -18,13 +18,16 @@ export default {
         timeOut: 600
       });
     }
-    if ("VIEW" == this.$route.query.ACTION) {
+    else if ("VIEW" == this.$route.query.ACTION) {
       this.$callAction({
         action: `${Constants.STORE_NAME}/open`,
         param: this.$route.query.DID,
         isErrorBack: true,
         timeOut: 600
       });
+    }else{
+      this.$alert("参数不合法！");
+      this.$router.goBack(true);
     }
   },
   deactivated() {
