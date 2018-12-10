@@ -14,7 +14,7 @@ const Constants = Object.assign({}, SConstants, {
 const { mapState, mapGetters } = createNamespacedHelpers(Constants.STORE_NAME);
 const storeHelper = new Store01({
     service: service,
-    paths: { "QRY":"TBS_PARAMETER_REF", "QRYALL":"TBS_PARAMETER_REF", "QRYADV":"TBS_PARAMETER_REF","MAIN": "VBV_STLTRENDS_M", "DTS": "TBV_SNSTLDTS_M",  "STLFMITEM": "TBV_STLFMITEM", "SNODE": "TBV_CHAINSND_SEL" },
+    paths: { "QRY":"TBS_PARAMETER_REF", "QRYALL":"TBS_PARAMETER_REF", "QRYADV":"TBS_PARAMETER_REF","MAIN": "VBV_STLTRENDS_M", "DTS": "TBV_SNSTLDTS_M", "SNODE": "TBV_CHAINSND_SEL" },
     MAINPATH: "MAIN",
     SUBPATH: ["DTS"],
 });
@@ -51,6 +51,13 @@ const actions = {
     ...storeHelper.mixActions(),
     loadDTS:async function ({ commit },{SNODEID,BILLDATE}) {
         debugger;
+        let ret = await service.doLoadMAIN({ SNODEID:SNODEID, BILLDATE:BILLDATE});
+        commit(Constants.M_INITDATA, { path: "MAIN", data: (ret.data || {}).items });
+    },
+    loadIndexDTS:async function ({ commit },{idx}) {
+        let QRY = storeHelper.getTable("QRY");
+        let SNODEID = QRY.getValue("SNODEID",idx);
+        let BILLDATE = QRY.getValue("BILLDATE",idx);
         let ret = await service.doLoadMAIN({ SNODEID:SNODEID, BILLDATE:BILLDATE});
         commit(Constants.M_INITDATA, { path: "MAIN", data: (ret.data || {}).items });
     },
