@@ -84,6 +84,8 @@
 .rr-line-b:after{position: absolute; content: " ";height: 1px;width:100%; left:0; bottom: 0;transform: scaleY(.5);background-color: #c8c7cc;}
 /* 列表输入框 */
 .rr-list-input{ border: none; border-bottom: 1px solid #eee}
+/* 列表右侧选择箭头变成右侧清除 */
+.rr-list-clear{position: absolute;right: 0;top: 50%;margin-top: -19px;color: #999;padding: 11px 15px;}
 /* 列表上拉刷新完无数据显示提示词 */
 .rs-list-nodata{position: relative; font-size: 12px; text-align: center; padding: 8px;}
 .rs-list-nodata span{ padding: 0 10px; background: #efeff4;position: relative;z-index: 99;}

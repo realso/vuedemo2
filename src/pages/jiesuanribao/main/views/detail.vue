@@ -40,7 +40,7 @@
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">日 期</span>
             <span>：</span>
-            <div class="rs-flex-item">{{BILLDATE|getWeek}}</div>
+            <div class="rs-flex-item">{{BILLDATE}} <span :class="BILLDATE|isWeek">{{BILLDATE|getWeek}}</span></div>
           </div>
         </rs-list-item>        
         <rs-list-item v-if="MANAGER!=''">
@@ -251,7 +251,12 @@ export default {
   },
   filters: {
     getWeek(value) {
-      return value ? value + " " + getWeek(value) : "";
+      return value ? getWeek(value) : "";
+    },
+    isWeek(value) {
+      if(getWeek(value)=='周六'||getWeek(value)=='周日'){
+        return 'c-icon-red';
+      }
     }
   }
 };
