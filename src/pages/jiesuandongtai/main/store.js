@@ -71,6 +71,9 @@ const actions = {
         para.keyFields = "BILLID";
         let ret = await service.doQuery(para);
         commit(Constants.M_INITDATA, { path: "QRY", data: (ret.data || {}).items });
+        para.sqlId = "51488";
+        let ret2 = await service.doQuery(para);
+        commit(Constants.M_INITDATA, { path: "QRYALL", data: (ret2.data || {}).items });
     }
 }
 

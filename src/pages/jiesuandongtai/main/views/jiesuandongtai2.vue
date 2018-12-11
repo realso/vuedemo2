@@ -18,12 +18,13 @@
             <div
               class="rs-flex-item"
             >{{this["SNODEID.SNODECODE"]}} {{this["SNODEID.SNODENAME"]}}</div>
+            
           </div>
         </rs-list-item>
         <rs-button size="small" class="rr-list-search" @click="doQuery()">查询</rs-button>
       </rs-list>
       <rs-datetime
-        key="jiesuanribao.1"
+        key="jiesuandongtai.1"
         ref="picker1"
         type="date"
         v-model.lazy="BILLDATE"
@@ -34,15 +35,13 @@
           <thead class="rr-table-header">
             <tr>
               <td>经营门店</td>
-              <td class="rr-table-w4em">实际收入</td>
-              <td class="rr-table-w4em">线下
-                <br>占比%
+               <td class="rr-table-w4em">截止时间</td>
+              <td class="rr-table-w4em">计算收入</td>
+              <td class="rr-table-w4em">堂食
               </td>
-              <td class="rr-table-w4em">线上
-                <br>占比%
+              <td class="rr-table-w4em">饿了么
               </td>
-              <td class="rr-table-w4em">差异
-                <br>差异‰
+              <td class="rr-table-w4em">美团
               </td>
             </tr>
           </thead>
@@ -53,38 +52,13 @@
                 <br>
                 {{item.SNODENAME}}
               </td>
-              <td class="rr-text-right" 
-              :class="item.FACTAMT | color">
-              {{item.FACTAMT|toFixed(2)}}
+                 <td class="rr-text-right">{{item.DEADLINE}}</td>
+              <td class="rr-text-right">{{item.FACTAMT-item.DIFFAMT}}</td>
+              <td class="rr-text-right">{{item.TSCNT}}
               </td>
-              <td class="rr-text-right" 
-              :class="item.ONLINEAMT | color">
-                {{item.ONLINEAMT|toFixed(2)}}
-                <div v-if="item.ONLINERATE" :class="item.ONLINERATE | color1">{{item.ONLINERATE|toFixed(1)}}%</div>
+              <td class="rr-text-right">{{item.ELMCNT}}
               </td>
-              <td class="rr-text-right"
-              :class="item.OFFLINEAMT | color">
-              {{item.OFFLINEAMT|toFixed(2)}}
-                <div v-if="item.OFFLINERATE" :class="item.OFFLINERATE | color1">{{item.OFFLINERATE|toFixed(1)}}%</div>
-              </td>
-              <td class="rr-text-right" :class="parseFloat(DIFFRATEALL)==0?'c-999':'c-icon-red'">{{item.DIFFAMT|toFixed(2)}}
-                <div v-if="item.DIFFRATE" :class="item.DIFFRATE | color1">{{item.DIFFRATE|toFixed(1)}}‰</div>
-              </td>
-            </tr>
-            <tr class="rr-table-heji">
-              <td class="rr-text-right rr-weight">合计:</td>
-              <td class="rr-text-right" 
-              :class="FACTAMTALL | color(FACTAMTALL)">
-              {{FACTAMTALL|toFixed(2)}}
-              </td>
-              <td class="rr-text-right" :class="ONLINERATEALL | color">{{ONLINEAMTALL|toFixed(2)}}
-                <div v-if="ONLINERATEALL" :class="ONLINERATEALL | color1">{{ONLINERATEALL|toFixed(1)}}%</div>
-              </td>
-              <td class="rr-text-right" :class="OFFLINERATEALL | color">{{OFFLINEAMTALL|toFixed(2)}}
-                <div v-if="OFFLINERATEALL" :class="OFFLINERATEALL | color1">{{OFFLINERATEALL|toFixed(1)}}%</div>
-              </td>
-              <td class="rr-text-right" :class="parseFloat(DIFFRATEALL)==0?'c-999':'c-icon-red'">{{DIFFAMTALL|toFixed(2)}}
-                <div v-if="DIFFRATEALL" :class="DIFFRATEALL | color1">{{DIFFRATEALL|toFixed(1)}}‰</div>
+              <td class="rr-text-right">{{item.MTCNT}}
               </td>
             </tr>
           </tbody>
@@ -115,15 +89,6 @@ export default {
       "SNODEID.SNODENAME",
     ]),
     ...mapDateTable("QRY", []),
-    ...mapDateTable("QRYALL", [
-      "FACTAMTALL",
-      "ONLINEAMTALL",
-      "ONLINERATEALL",
-      "OFFLINEAMTALL",
-      "OFFLINERATEALL",
-      "DIFFAMTALL",
-      "DIFFRATEALL"
-    ]),
     length() {
       return this.QRY.length
     }
