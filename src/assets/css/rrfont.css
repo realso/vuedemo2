@@ -20,6 +20,7 @@
 .rr-list-style:before { content: "\e604"; }
 .rr-shoucangA:before { content: "\e605"; }
 .rr-shoucang:before { content: "\e606"; }
+.rr-quxiao:before { content: "\e607"; }
 .rr-jiaokuan:before { content: "\e608"; }
 .rr-zhishiku:before { content: "\e60a"; }
 

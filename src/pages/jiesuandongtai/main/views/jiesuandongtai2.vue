@@ -18,7 +18,7 @@
             <div
               class="rs-flex-item"
             >{{this["SNODEID.SNODECODE"]}} {{this["SNODEID.SNODENAME"]}}</div>
-            
+
           </div>
         </rs-list-item>
         <rs-button size="small" class="rr-list-search" @click="doQuery()">查询</rs-button>
