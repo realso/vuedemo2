@@ -11,7 +11,7 @@
             <div class="rs-flex-item">{{BILLDATE|getWeek}}</div>
           </div>
         </rs-list-item>
-        <rs-list-item noborder isright @click.native="linkUrl('snodesel')" style="margin-right:50px;">
+        <rs-list-item noborder isright @click.native="linkUrl('snodesel')">
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">经营门店</span>
             <span>：</span>
@@ -20,7 +20,6 @@
             >{{this["SNODEID.SNODECODE"]}} {{this["SNODEID.SNODENAME"]}}</div>
           </div>
         </rs-list-item>
-        <rs-button size="small" class="rr-list-search" @click="doQuery()">查询</rs-button>
       </rs-list>
       <rs-datetime
         key="jiesuanribao.1"
@@ -141,16 +140,16 @@ export default {
     open(picker) {
       this.$refs[picker].open();
     },
-    handleChangeD: function() {
-      this.$callAction({ action: `${Constants.STORE_NAME}/loadSTLFMITE` });
-    },
     doQuery: function(){
       this.$store.dispatch(`${Constants.STORE_NAME}/openReport`);
     }
   },
   watch: {
-    DEADLINE() {
-      this.$store.commit(`${Constants.STORE_NAME}/${Constants.M_SETDEADLINE}`);
+    "BILLDATE":function(){
+       this.$store.dispatch(`${Constants.STORE_NAME}/openReport`);
+    },
+    "SNODEID":function(){
+       this.$store.dispatch(`${Constants.STORE_NAME}/openReport`);
     }
   },
   activated: function() {

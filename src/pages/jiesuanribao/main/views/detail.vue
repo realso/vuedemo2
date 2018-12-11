@@ -36,13 +36,6 @@
             >{{this["SNODEID.SNODECODE"]}} {{this["SNODEID.SNODENAME"]}}</div>
           </div>
         </rs-list-item>
-        <rs-list-item noborder v-if="MANAGER!=''">
-          <div class="rs-flex-row">
-            <span class="rr-justify rr-width-4em">店 长</span>
-            <span>：</span>
-            <div class="rs-flex-item rr-line-b">{{MANAGER}}</div>
-          </div>
-        </rs-list-item>
         <rs-list-item noborder v-if="BILLDATE!=''">
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">日 期</span>
@@ -50,6 +43,14 @@
             <div class="rs-flex-item rr-line-b">{{BILLDATE|getWeek}}</div>
           </div>
         </rs-list-item>
+        <rs-list-item noborder v-if="MANAGER!=''">
+          <div class="rs-flex-row">
+            <span class="rr-justify rr-width-4em">店 长</span>
+            <span>：</span>
+            <div class="rs-flex-item rr-line-b">{{MANAGER}}</div>
+          </div>
+        </rs-list-item>
+
         <rs-list-item noborder v-if="FACTAMT!=''">
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">实 际 收 入</span>
