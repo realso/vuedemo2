@@ -1,67 +1,34 @@
 <template>
-  <div style="height:100%;width: 100%;">
-    <transition :name="transitionName">
-      <keep-alive>
-        <router-view></router-view>
-      </keep-alive>
-    </transition>
-  </div>
+  <rs-views></rs-views>
 </template>
 <script>
-import store from "./store";
-import { debug } from "util";
+import {Constants} from "./store";
 export default {
-  data() {
-    return {
-      transitionName: "slide-right"
-    };
-  },
+  data() {},
   activated: function() {
-    console.log(this.$route.path, "color:red");
-    setTimeout(async () => {
-      this.$store.commit("jiesuan/setParams", this.$route.query);
-      if ("ADD" == this.$route.query.ACTION) {
-        this.$store
-          .dispatch("jiesuan/add", this.$route.query)
-          .then(() => {
-            //alert("执行成功");
-          })
-          .catch(e => {
-            alert(e.message);
-          });
-      }
-      if ("VIEW" == this.$route.query.ACTION) {
-        this.$store.dispatch("jiesuan/open", this.$route.query);
-      }
-    }, 600);
+    this.$store.commit(`${Constants.STORE_NAME}/setParams`, this.$route.query);
+    if ("ADD" == this.$route.query.ACTION) {
+      this.$callAction({
+        action: `${Constants.STORE_NAME}/add`,
+        param: this.$route.query,
+        isErrorBack: true,
+        timeOut: 600
+      });
+    }
+    else if ("VIEW" == this.$route.query.ACTION) {
+      this.$callAction({
+        action: `${Constants.STORE_NAME}/open`,
+        param: this.$route.query.DID,
+        isErrorBack: true,
+        timeOut: 600
+      });
+    }else{
+      this.$alert("参数不合法！");
+      this.$router.goBack(true);
+    }
+  },
+  deactivated() {
+    this.$destroy();
   }
-};
+}
 </script>
-<style>
-.slide-right-enter-active,
-.slide-right-leave-active,
-.slide-left-enter-active,
-.slide-left-leave-active {
-  will-change: transform;
-  transition: all 500ms;
-  position: absolute;
-}
-.slide-right-enter {
-  opacity: 0;
-  transform: translate3d(-100%, 0, 0);
-}
-.slide-right-leave-active {
-  opacity: 0;
-  transform: translate3d(100%, 0, 0);
-}
-.slide-left-enter {
-  opacity: 0;
-  transform: translate3d(100%, 0, 0);
-}
-.slide-left-leave-active {
-  opacity: 0;
-  transform: translate3d(-100%, 0, 0);
-}
-</style>
-
-
