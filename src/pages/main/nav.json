@@ -64,7 +64,7 @@
         "path": "/dongtai",
         "name": "结算动态表测试",
         "icon": "rr-font rr-jiesuan c-icon-blue",
-        "pcode": "my-score",
+        "pcode": "my-score1",
         "isshow": true,
         "isfixed": true,
         "query": { "BILLTYPEID": "109304", "STLTYPEID": "107067" }
