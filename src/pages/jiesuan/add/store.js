@@ -69,7 +69,7 @@ const mutations = {
             storeHelper.setConfig({ XULID: "0000051437", OPRTFLOWID: "30307" });
         }
         if (state.params.BILLTYPEID == "109304") {
-            storeHelper.setConfig({ XULID: "0000051465", OPRTFLOWID: "30307" });
+            storeHelper.setConfig({ XULID: "0000051465", OPRTFLOWID: "30244" });
         }
     },
     [Constants.M_ADDDEFAULT]: function (state) {
@@ -257,9 +257,9 @@ const mutations = {
         let OFFLINEAMT = MAIN.getValue("OFFLINEAMT");
         let ONLINEAMT = MAIN.getValue("ONLINEAMT");
         let DIFFAMT = MAIN.getValue("DIFFAMT");
-        let OFFLINERATE = parseFloat((parseFloat(OFFLINEAMT) / (parseFloat(OFFLINEAMT) + parseFloat(ONLINEAMT)) * 100).toFixed("1"));
-        let ONLINERATE = parseFloat((parseFloat(ONLINEAMT) / (parseFloat(OFFLINEAMT) + parseFloat(ONLINEAMT)) * 100).toFixed("1"));
-        let DIFFRATE = parseFloat((parseFloat(DIFFAMT) / (parseFloat(OFFLINEAMT) + parseFloat(ONLINEAMT)) * 1000).toFixed("1"));
+        let OFFLINERATE = parseFloat((parseFloat(OFFLINEAMT) / (parseFloat(OFFLINEAMT||0) + parseFloat(ONLINEAMT||0)) * 100).toFixed("1"));
+        let ONLINERATE = parseFloat((parseFloat(ONLINEAMT) / (parseFloat(OFFLINEAMT||0) + parseFloat(ONLINEAMT||0)) * 100).toFixed("1"));
+        let DIFFRATE = parseFloat((parseFloat(DIFFAMT) / (parseFloat(OFFLINEAMT||0) + parseFloat(ONLINEAMT||0)) * 1000).toFixed("1"));
         MAIN.setValue("OFFLINERATE", OFFLINERATE);
         MAIN.setValue("ONLINERATE", ONLINERATE);
         MAIN.setValue("DIFFRATE", DIFFRATE);

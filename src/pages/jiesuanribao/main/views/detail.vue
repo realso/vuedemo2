@@ -1,11 +1,7 @@
 <template>
   <div class="mui-layout mui-layout-top">
     <rs-header :title="TITLE" color="primary">
-      <a
-        slot="left"
-        @click="$router.push('/jiesuanribao')"
-        class="mui-icon mui-icon-left-nav mui-pull-left"
-      ></a>
+      <a slot="left" @click="$router.push('/jiesuanribao')" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
     </rs-header>
     <div class="rs-nex-prev">
       <span
@@ -35,32 +31,33 @@
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">经 营 门 店</span>
             <span>：</span>
-            <div class="rs-flex-item">{{this["SNODEID.SNODECODE"]}} {{this["SNODEID.SNODENAME"]}}</div>
+            <div
+              class="rs-flex-item"
+            >{{this["SNODEID.SNODECODE"]}} {{this["SNODEID.SNODENAME"]}}</div>
           </div>
         </rs-list-item>
-        <rs-list-item noborder v-if="BILLDATE!=''">
+        <rs-list-item v-if="BILLDATE!=''">
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">日 期</span>
             <span>：</span>
-            <div class="rs-flex-item rr-line-b">{{BILLDATE|getWeek}}</div>
+            <div class="rs-flex-item">{{BILLDATE|getWeek}}</div>
           </div>
-        </rs-list-item>
-        <rs-list-item noborder v-if="MANAGER!=''">
+        </rs-list-item>        
+        <rs-list-item v-if="MANAGER!=''">
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">店 长</span>
             <span>：</span>
-            <div class="rs-flex-item rr-line-b">{{MANAGER}}</div>
+            <div class="rs-flex-item">{{MANAGER}}</div>
           </div>
         </rs-list-item>
-
-        <rs-list-item noborder v-if="FACTAMT!=''">
+        <rs-list-item v-if="FACTAMT!=''">
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">实 际 收 入</span>
             <span>：</span>
             <div class="rs-flex-item rr-text-center">
               <span class="rr-right rr-opacity0 rr-width-5em">{{ONLINERATE}}%</span>
               {{FACTAMT}}
-            </div>
+              </div>
           </div>
         </rs-list-item>
         <rs-list-item v-if="ONLINEAMT!=''||ONLINERATE!=''">
@@ -128,7 +125,7 @@
             <div class="rs-flex-item">{{VERIFIER}} {{VERIFYDATE}}</div>
           </div>
         </rs-list-item>
-      </rs-list>
+      </rs-list>  
       <!-- <div class="rr-bill-top">
         <div class="rs-flex-row" style="height:33px" v-if="BILLCODE!=''">
           <span class="rr-justify rr-width-4em">单 据 号</span>
@@ -145,7 +142,7 @@
           <span>：</span>
           <div class="rs-flex-item">{{VERIFIER}} {{VERIFYDATE}}</div>
         </div>
-      </div>-->
+      </div> -->
     </div>
   </div>
 </template>
@@ -236,9 +233,9 @@ export default {
       }
     },
     doquery: function(index) {
-      this.$store.dispatch(`${Constants.STORE_NAME}/loadIndexDTS`, {
-        idx: this.index
-      });
+       this.$store.dispatch(`${Constants.STORE_NAME}/loadIndexDTS`, {
+       idx: this.index
+    });
     }
   },
   watch: {
