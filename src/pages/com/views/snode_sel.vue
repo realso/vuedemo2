@@ -12,11 +12,7 @@
       ></a>
     </rs-header>
     <div class="mui-input-row mui-search r-search">
-      <rs-button
-        link="true"
-        @click="doQuery"
-        class="mui-pull-right"
-      >查询</rs-button>
+      <rs-button link @click="doQuery" class="mui-pull-right">查询</rs-button>
       <input
         type="search"
         class="mui-input-clear"

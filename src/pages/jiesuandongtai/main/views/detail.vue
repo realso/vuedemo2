@@ -25,25 +25,25 @@
         @click="more_next"
       ></span>
     </div>
-    <rs-list class="rr-line-24" size="15" noborder>
-      <rs-list-item>
-        <div class="rs-flex-row">
-          <span class="rr-justify rr-width-4em">经 营 门 店</span>
-          <span>：</span>
-          <div
-            class="rs-flex-item"
-          >{{this["SNODECODE"]}} {{this["SNODENAME"]}}</div>
-        </div>
-      </rs-list-item>
-      <rs-list-item noborder>
-        <div class="rs-flex-row">
-          <span class="rr-justify rr-width-4em">日 期</span>
-          <span>：</span>
-          <div class="rs-flex-item">{{BILLDATE|getWeek}}</div>
-        </div>
-      </rs-list-item>
-    </rs-list>
     <div class="mui-content bk-fff">
+      <rs-list class="rr-line-24" size="15" noborder>
+        <rs-list-item>
+          <div class="rs-flex-row">
+            <span class="rr-justify rr-width-4em">经 营 门 店</span>
+            <span>：</span>
+            <div
+              class="rs-flex-item"
+            >{{this["SNODECODE"]}} {{this["SNODENAME"]}}</div>
+          </div>
+        </rs-list-item>
+        <rs-list-item noborder>
+          <div class="rs-flex-row">
+            <span class="rr-justify rr-width-4em">日 期</span>
+            <span>：</span>
+            <div class="rs-flex-item">{{BILLDATE|getWeek}}</div>
+          </div>
+        </rs-list-item>
+      </rs-list>
       <div class="mui-content-padded">
         <div class="rs-flex-row rr-table-div">
           <div class="rr-width-5em">
@@ -210,9 +210,9 @@ export default {
 .rr-line-24,.rr-line-24 .rr-justify{line-height: 24px;}
 .rr-line-24 .rr-justify{height:24px;}
 .rr-table-div{font-size: 14px; background: #fff}
-.rr-table-divH{background: rgb(204,232,255);text-align: center; padding: 3px;border: 1px solid rgb(204,217,255); border-right: none}
-.rr-table-div .rr-table-divd{padding: 3px; min-height:28px;border-bottom: 1px solid #eee; border-left:1px solid #eee}
-.rr-table-div2h{height: 49px;}
+.rr-table-divH{background: rgb(204,232,255);text-align: center; padding:5px 3px;border: 1px solid rgb(204,217,255); border-right: none}
+.rr-table-div .rr-table-divd{padding:5px 3px; min-height:32px;border-bottom: 1px solid #eee; border-left:1px solid #eee}
+.rr-table-div2h{height: 53px;}
 @component-namespace rr {
   @component table {
     font-size: 14px;

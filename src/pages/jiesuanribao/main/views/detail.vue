@@ -1,7 +1,11 @@
 <template>
   <div class="mui-layout mui-layout-top">
     <rs-header :title="TITLE" color="primary">
-      <a slot="left" @click="$router.push('/jiesuanribao')" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
+      <a
+        slot="left"
+        @click="$router.push('/jiesuanribao')"
+        class="mui-icon mui-icon-left-nav mui-pull-left"
+      ></a>
     </rs-header>
     <div class="rs-nex-prev">
       <span
@@ -27,13 +31,11 @@
     </div>
     <div class="mui-content">
       <rs-list class="rr-line-24" size="15" noborder>
-        <rs-list-item noborder>
+        <rs-list-item>
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">经 营 门 店</span>
             <span>：</span>
-            <div
-              class="rs-flex-item rr-line-b"
-            >{{this["SNODEID.SNODECODE"]}} {{this["SNODEID.SNODENAME"]}}</div>
+            <div class="rs-flex-item">{{this["SNODEID.SNODECODE"]}} {{this["SNODEID.SNODENAME"]}}</div>
           </div>
         </rs-list-item>
         <rs-list-item noborder v-if="BILLDATE!=''">
@@ -55,37 +57,37 @@
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">实 际 收 入</span>
             <span>：</span>
-            <div class="rs-flex-item rr-text-center rr-line-b">
+            <div class="rs-flex-item rr-text-center">
               <span class="rr-right rr-opacity0 rr-width-5em">{{ONLINERATE}}%</span>
               {{FACTAMT}}
-              </div>
+            </div>
           </div>
         </rs-list-item>
-        <rs-list-item noborder v-if="ONLINEAMT!=''||ONLINERATE!=''">
+        <rs-list-item v-if="ONLINEAMT!=''||ONLINERATE!=''">
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">线 下</span>
             <span>：</span>
-            <div class="rs-flex-item rr-text-center rr-line-b">
+            <div class="rs-flex-item rr-text-center">
               <span class="rr-right rr-width-5em rr-text-right">{{ONLINERATE}}%</span>
               {{ONLINEAMT}}
             </div>
           </div>
         </rs-list-item>
-        <rs-list-item noborder v-if="OFFLINEAMT!=''||OFFLINERATE!=''">
+        <rs-list-item v-if="OFFLINEAMT!=''||OFFLINERATE!=''">
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">线 上</span>
             <span>：</span>
-            <div class="rs-flex-item rr-text-center rr-line-b">
+            <div class="rs-flex-item rr-text-center">
               <span class="rr-right rr-width-5em rr-text-right">{{OFFLINERATE}}%</span>
               {{OFFLINEAMT}}
             </div>
           </div>
         </rs-list-item>
-        <rs-list-item noborder v-if="DIFFAMT!=''||DIFFRATE!=''">
+        <rs-list-item v-if="DIFFAMT!=''||DIFFRATE!=''">
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">差 异</span>
             <span>：</span>
-            <div class="rs-flex-item rr-text-center rr-line-b">
+            <div class="rs-flex-item rr-text-center">
               <span class="rr-right rr-width-5em rr-text-right">{{DIFFRATE}}‰</span>
               {{DIFFAMT}}
             </div>
@@ -104,7 +106,30 @@
         <main_dts v-for="(item) in DTS" :item="item" :key="item.ENTRYID"/>
       </rs-list>
       <div style="height: 7px; background: #eee;"></div>
-      <div class="rr-bill-top">
+      <rs-list class="rr-line-24" size="14" noborder>
+        <rs-list-item v-if="BILLCODE!=''">
+          <div class="rs-flex-row">
+            <span class="rr-justify rr-width-4em">单 据 号</span>
+            <span>：</span>
+            <div class="rs-flex-item">{{BILLCODE}}</div>
+          </div>
+        </rs-list-item>
+        <rs-list-item v-if="MAKER!=''">
+          <div class="rs-flex-row">
+            <span class="rr-justify rr-width-4em">填 报</span>
+            <span>：</span>
+            <div class="rs-flex-item">{{MAKER}} {{MAKEDATE}}</div>
+          </div>
+        </rs-list-item>
+        <rs-list-item noborder v-if="VERIFIER!=''">
+          <div class="rs-flex-row">
+            <span class="rr-justify rr-width-4em">审 核</span>
+            <span>：</span>
+            <div class="rs-flex-item">{{VERIFIER}} {{VERIFYDATE}}</div>
+          </div>
+        </rs-list-item>
+      </rs-list>
+      <!-- <div class="rr-bill-top">
         <div class="rs-flex-row" style="height:33px" v-if="BILLCODE!=''">
           <span class="rr-justify rr-width-4em">单 据 号</span>
           <span>：</span>
@@ -120,7 +145,7 @@
           <span>：</span>
           <div class="rs-flex-item">{{VERIFIER}} {{VERIFYDATE}}</div>
         </div>
-      </div>
+      </div>-->
     </div>
   </div>
 </template>
@@ -211,9 +236,9 @@ export default {
       }
     },
     doquery: function(index) {
-       this.$store.dispatch(`${Constants.STORE_NAME}/loadIndexDTS`, {
-       idx: this.index
-    });
+      this.$store.dispatch(`${Constants.STORE_NAME}/loadIndexDTS`, {
+        idx: this.index
+      });
     }
   },
   watch: {
@@ -245,12 +270,12 @@ export default {
 .rr-list-input {
   text-align: right;
 }
-.rs-listItem {
+/* .rs-listItem {
   padding: 7px 15px;
-}
-.rs-list {
+} */
+/* .rs-list {
   padding-top: 5px;
-}
+} */
 .rr-list-textarea {
   padding: 5px 15px;
   background: #fff;

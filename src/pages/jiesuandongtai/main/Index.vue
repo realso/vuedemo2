@@ -1,6 +1,6 @@
 <template>
   <div style="height:100%">
-    <transition :name="transitionName" @enter="enter">
+    <transition :name="transitionName">
       <keep-alive>
         <router-view></router-view>
       </keep-alive>
