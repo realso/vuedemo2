@@ -31,6 +31,7 @@
           </div>
           <rs-button size="small" class="rr-list-search" @click="doQuery()">查询</rs-button>
         </div>
+        <span v-if="SNODECODE!=''" class="rr-list-clear rr-font rr-quxiao" @click.stop="SNODECODE=''"></span>
       </rs-list-item>
     </rs-list> 
     <rs-datetime
@@ -169,7 +170,7 @@ export default {
 };
 </script>
 <style scoped>
-/* .rs-listItem{ padding: 8px 15px;} */
+.rr-list-clear{right: 56px;}
 .rr-line-24,.rr-line-24 .rr-justify{line-height: 24px;}
 .rr-line-24 .rr-justify{height:24px;}
 .rr-media-rili{ min-width: 60px; min-height: 60px; margin-right: 10px; text-align: center; color: #fff; border-radius: 5px;}

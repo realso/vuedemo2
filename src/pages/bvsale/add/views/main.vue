@@ -56,6 +56,9 @@
       </rs-nav-item>
     </rs-navbar>
     <div class="mui-content">
+      <div class="mui-content-padded f14 rr-text-center" v-if="DTSMESSAGE">
+        {{DTSMESSAGE}}
+      </div>
       <rs-list class="rr-line-24" size="15" noborder>
         <!-- <rs-list-item v-for="(item,index) in DTS" :key="index" @click.native="linkMat(item)"> -->
         <rs-list-item v-for="(item) in DTSITEMS" :key="item.ENTRYID"  @click.native="linkMat(item)">
@@ -68,9 +71,6 @@
             数量:<span class="rr-border rr-width-4em rr-text-center ml5" style="height:24px;">{{item["QTY"]}}</span> <span class="ml5 mr5">袋</span> × <span class="ml5 mr5">{{item["PRC"]}}</span>= 
           </div>
         </rs-list-item>
-        <div v-if="DTSMESSAGE">
-         {{DTSMESSAGE}}
-       </div>  
        </rs-list>
     </div>
     <div class="f14 bk-fff rs-padding-5">订货金额：{{AMT|toFixed(2)}}(元)</div>

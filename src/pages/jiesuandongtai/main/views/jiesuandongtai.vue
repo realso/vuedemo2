@@ -4,13 +4,12 @@
       <a slot="left" @click="$router.push('/main1')" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
     </rs-header>
     <rs-list class="rr-line-24" size="15" noborder>
-        <rs-list-item :isright="BILLDATE==''" @click.native="open('picker1')">
+        <rs-list-item isright @click.native="open('picker1')">
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">日 期</span>
             <span>：</span>
             <div class="rs-flex-item">{{BILLDATE}} <span :class="BILLDATE|isWeek">{{BILLDATE|getWeek}}</span></div>
           </div>
-          <span v-if="BILLDATE!=''" class="rr-list-clear rr-font rr-quxiao" @click.stop="BILLDATE=''"></span>
         </rs-list-item>
         <rs-list-item noborder :isright="SNODEID==''" @click.native="linkUrl('snodesel')">
           <div class="rs-flex-row">
