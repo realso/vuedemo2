@@ -184,6 +184,7 @@ export default {
       text-align: center;
       td {
         padding: 3px;
+        vertical-align: top;
         border: 1px solid rgb(204, 217, 255);
       }
     }
@@ -191,6 +192,7 @@ export default {
       background: #fff;
       td {
         padding: 3px;
+        vertical-align: top;
         border-bottom: 1px solid #eee;
       }
     }
@@ -198,6 +200,7 @@ export default {
       background: #eee;
       td {
         padding: 3px;
+        vertical-align: top;
         border-top: 1px solid #aaa;
         border-bottom: 1px solid #aaa;
       }
