@@ -56,7 +56,7 @@
             <span>：</span>
             <div class="rs-flex-item rr-text-center">
               <span class="rr-right rr-opacity0 rr-width-5em">{{ONLINERATE}}%</span>
-              {{FACTAMT}}
+              {{FACTAMT|toFixed(2)}}
               </div>
           </div>
         </rs-list-item>
@@ -65,8 +65,8 @@
             <span class="rr-justify rr-width-4em">线 下</span>
             <span>：</span>
             <div class="rs-flex-item rr-text-center">
-              <span class="rr-right rr-width-5em rr-text-right">{{ONLINERATE}}%</span>
-              {{ONLINEAMT}}
+              <span class="rr-right rr-width-5em rr-text-right">{{ONLINERATE|toFixed(1)}}%</span>
+              {{ONLINEAMT|toFixed(2)}}
             </div>
           </div>
         </rs-list-item>
@@ -75,8 +75,8 @@
             <span class="rr-justify rr-width-4em">线 上</span>
             <span>：</span>
             <div class="rs-flex-item rr-text-center">
-              <span class="rr-right rr-width-5em rr-text-right">{{OFFLINERATE}}%</span>
-              {{OFFLINEAMT}}
+              <span class="rr-right rr-width-5em rr-text-right">{{OFFLINERATE|toFixed(1)}}%</span>
+              {{OFFLINEAMT|toFixed(2)}}
             </div>
           </div>
         </rs-list-item>
@@ -252,6 +252,11 @@ export default {
   filters: {
     getWeek(value) {
       return value ? value + " " + getWeek(value) : "";
+    },
+    toFixed(value, cm) {
+      if(value=="0"||value!=""){
+          return parseFloat(value || 0).toFixed(cm);
+      }
     }
   }
 };
