@@ -44,7 +44,8 @@ export default {
         to.meta.time = new Date().getTime();
         from.meta.time = 0;
         setTimeout(()=>{
-          from.matched[0].instances.default.destroy=true;
+          if(to.matched[0].instances.default!=from.matched[0].instances.default)
+            from.matched[0].instances.default.destroy=true;
         },600);
       } else {
         to.meta.time = new Date().getTime();
