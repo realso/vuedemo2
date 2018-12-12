@@ -197,7 +197,9 @@ export default {
       SNODEID: this.$route.query.SNODEID,
       BILLDATE: this.$route.query.BILLDATE,
     });
-    console.log("%c" + this.$route.path, "color:red");
+  },
+  deactivated() {
+    this.$destroy();
   },
   filters: {
     getWeek(value) {

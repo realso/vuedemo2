@@ -159,7 +159,7 @@ export default {
     }
   },
   activated: function() {
-    console.log("%c" + this.$route.path, "color:red");
+    // console.log("%c" + this.$route.path, "color:red");
   },
   filters: {
     getWeek(value) {
