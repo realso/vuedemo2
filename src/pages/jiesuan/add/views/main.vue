@@ -1,7 +1,7 @@
 <template>
   <div class="mui-layout mui-layout-top">
     <rs-header :title="TITLE" color="primary">
-      <router-link to="/" slot="left" class="mui-icon mui-icon-left-nav mui-pull-left"></router-link>
+      <a slot="left" @click="$router.goBack()" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
       <div slot="right">
         <rs-button v-if="ISSHOWCHECK" link @click="check">审核</rs-button>
         <rs-button v-if="ISSHOWRECHECK" link @click="reCheck">撤销审核</rs-button>

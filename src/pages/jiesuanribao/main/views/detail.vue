@@ -1,7 +1,7 @@
 <template>
   <div class="mui-layout mui-layout-top">
     <rs-header :title="TITLE" color="primary">
-      <a slot="left" @click="$router.push('/jiesuanribao')" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
+      <a slot="left" @click="$router.goBack()" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
     </rs-header>
     <div class="rs-nex-prev">
       <span
