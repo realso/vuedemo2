@@ -141,13 +141,20 @@ export default {
       "VERIFIER",
       "MAKEDATE",
       "VERIFYDATE",
-      "DEADLINE",
       "FHOUR",
       "FMINUTE"
     ]),
     ...mapDateTable("DTS", []),
     ISSHOWWD: function() {
       return this["EMPID"] != "";
+    },
+    DEADLINE:{
+      get(){
+        return (this.FHOUR.length!=2&&this.FHOUR<10?"0"+this.FHOUR:this.FHOUR) + ":" + (this.FMINUTE.length!=2&&this.FMINUTE<10?"0"+this.FMINUTE:this.FMINUTE);
+      },
+      set(value){
+         this.$store.commit(`${Constants.STORE_NAME}/setTime`,{value});
+      }
     }
   },
   methods: {
@@ -182,9 +189,7 @@ export default {
     console.log("%c" + this.$route.path, "color:red");
   },
   watch:{
-    "DEADLINE":function(){
-       this.$store.commit(`${Constants.STORE_NAME}/setTime`);
-    }
+    
   },
   filters: {
     getWeek(value) {
