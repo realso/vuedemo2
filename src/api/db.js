@@ -91,6 +91,7 @@ const postData = function(param) {
                     reject(new Error("请求异常"));
                 }
                 if ("-201" == res.data.resulttype) {
+                    reject(new Error("登陆超时"));
                     $app.$router.replace("/loginout");
                 }
                 if ("-100" == res.data.resulttype || "-101" == res.data.resulttype) {
