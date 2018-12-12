@@ -1,61 +1,30 @@
 <template>
-  <div style="height:100%">
-    <transition :name="transitionName">
-      <keep-alive>
-        <router-view></router-view>
-      </keep-alive>
-    </transition>
-  </div>
+  <rs-views></rs-views>
 </template>
 <script>
-import store from "./store";
-import { debug } from "util";
+import {Constants} from "./store";
 export default {
-  data() {
-    return {
-      transitionName: "slide-right"
-    };
-  },
+  data() {return {}},
   activated: function() {
-    console.log(this.$route.path, "color:red");
-    setTimeout(async () => {
-      this.$store.commit("jiesuanribao/setParams", this.$route.query);
-      if ("ADD" == this.$route.query.ACTION) {
-        
-      }
-      if ("VIEW" == this.$route.query.ACTION) {
-        this.$store.commit("jiesuanribao/addDefault");
-        this.$store.dispatch("jiesuanribao/openReport", this.$route.query);
-      }
-    }, 600);
+    this.$store.commit(`${Constants.STORE_NAME}/setParams`, this.$route.query);
+    if ("ADD" == this.$route.query.ACTION) {
+      
+    }
+    else if ("VIEW" == this.$route.query.ACTION) {
+      this.$store.commit("jiesuanribao/addDefault");
+      this.$callAction({
+        action: `${Constants.STORE_NAME}/openReport`,
+        param: this.$route.query.DID,
+        isErrorBack: true,
+        timeOut: 600
+      });
+    }else{
+      this.$alert("参数不合法！");
+      this.$router.goBack(true);
+    }
+  },
+  deactivated() {
+    this.$destroy();
   }
 };
 </script>
-<style>
-.slide-right-enter-active,
-.slide-right-leave-active,
-.slide-left-enter-active,
-.slide-left-leave-active {
-  will-change: transform;
-  transition: all 500ms;
-  position: absolute;
-}
-.slide-right-enter {
-  opacity: 0;
-  transform: translate3d(-100%, 0, 0);
-}
-.slide-right-leave-active {
-  opacity: 0;
-  transform: translate3d(100%, 0, 0);
-}
-.slide-left-enter {
-  opacity: 0;
-  transform: translate3d(100%, 0, 0);
-}
-.slide-left-leave-active {
-  opacity: 0;
-  transform: translate3d(-100%, 0, 0);
-}
-</style>
-
-

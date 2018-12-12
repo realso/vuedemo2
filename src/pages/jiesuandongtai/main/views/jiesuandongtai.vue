@@ -1,7 +1,7 @@
 <template>
   <div class="mui-layout mui-layout-top">
     <rs-header :title="TITLE" color="primary">
-      <a slot="left" @click="$router.push('/main1')" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
+      <a slot="left" @click="$router.goBack()" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
     </rs-header>
     <rs-list class="rr-line-24" size="15" noborder>
         <rs-list-item isright @click.native="open('picker1')">
@@ -159,7 +159,7 @@ export default {
     }
   },
   activated: function() {
-    console.log("%c" + this.$route.path, "color:red");
+    // console.log("%c" + this.$route.path, "color:red");
   },
   filters: {
     getWeek(value) {
@@ -169,6 +169,17 @@ export default {
       if(getWeek(value)=='周六'||getWeek(value)=='周日'){
         return 'c-icon-red';
       }
+    },
+    color(value) {
+      let value1 = parseFloat(value)
+      if(value1<0){
+        return 'c-icon-red'
+      }else if(value1==0){
+        return 'c-999'
+      }
+    },
+    color1(value) {
+      return parseFloat(value)==0?'c-999':'c-000'
     }
   }
 };

@@ -1,7 +1,7 @@
 <template>
   <div class="mui-layout mui-layout-top">
     <rs-header :title="TITLE" color="primary">
-      <a slot="left" @click="$router.push('/jiesuanribao')" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
+      <a slot="left" @click="$router.goBack()" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
     </rs-header>
     <div class="rs-nex-prev">
       <span
@@ -247,24 +247,21 @@ export default {
     this.$store.dispatch(`${Constants.STORE_NAME}/loadDTS`, {
       BILLID: this.$route.query.BILLID
     });
-    console.log("%c" + this.$route.path, "color:red");
   },
   filters: {
     getWeek(value) {
-      return value ? value + " " + getWeek(value) : "";
+      return value ? getWeek(value) : "";
     },
-
     isWeek(value) {
       if(getWeek(value)=='周六'||getWeek(value)=='周日'){
         return 'c-icon-red';
       }
     },
-        toFixed(value, cm) {
+    toFixed(value, cm) {
       if(value=="0"||value!=""){
-          return parseFloat(value || 0).toFixed(cm);
-      return value ? getWeek(value) : "";
+        return parseFloat(value || 0).toFixed(cm);
+      }
     }
-        }
   }
 };
 </script>
