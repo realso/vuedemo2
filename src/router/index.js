@@ -1,29 +1,22 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Store from "../store"
-import LoginRouter from "@/pages/login/router"
-import MainRouter from "@/pages/main/router"
-import T404 from "@/pages/T404/router"
-import JieSuanRouter from "@/pages/jiesuan/router"
-import JieSuanRouter1 from "@/pages/jiesuan.1/router"
-import zhishiku from "@/pages/zhishiku/router"
-import BVSale from "@/pages/bvsale/router"
-import JieSuanRiBao from "@/pages/jiesuanribao/router"
-import JieSuanDoTai from "@/pages/jiesuandongtai/router"
-import dongtai from "@/pages/dongtai/router"
+
 
 Vue.use(Router);
 let routes = [];
-routes = routes.concat(LoginRouter);
-routes.push(MainRouter);
-routes.push(T404);
-routes.push(JieSuanRouter);
-routes.push(JieSuanRouter1);
-routes.push(zhishiku);
-routes.push(JieSuanRiBao);
-routes.push(JieSuanDoTai);
-routes.push(dongtai);
-routes = routes.concat(BVSale);
+
+//通过webpack加载router
+let requireAll = requireContext => requireContext.keys().map(requireContext)
+let req = require.context('../pages', true, /router.js$/);
+let ret = requireAll(req);
+ret.forEach((item) => {
+    if (item.default instanceof Array) {
+        routes = routes.concat(item.default);
+    } else {
+        routes.push(item.default)
+    }
+})
 const router = new Router({
     routes: routes
 });
