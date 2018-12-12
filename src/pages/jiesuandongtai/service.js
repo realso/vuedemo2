@@ -7,7 +7,7 @@ const _getMAIN = function(SNODEID,BILLDATE) {
     return {
         modalName: "VBV_STLTRENDS_M",
         where: `[SNODEID] ='${SNODEID}' AND [BILLDATE] =TO_DATE('${BILLDATE}','YYYY-MM-DD') AND NVL(ISDEL,0)=0`,
-        orderBy: "",
+        orderBy: "BILLTYPEID DESC,DEADLINE",
         pageSize: 1,
         pageIndex: 1
     }

@@ -91,7 +91,9 @@ const mutations = {
         MAIN.setValue("STLFMID", STLFMITEM.getValue("STLFMID"));
         MAIN.setValue("STLFMCODE", STLFMITEM.getValue("STLFMCODE"));
         if (this.getters[Constants.STORE_NAME + "/ISTIME"]) {
-            MAIN.setValue("DEADLINE", getTime(new Date()));
+            MAIN.setValue("DEADLINE", getTime(new Date()).replace(":","："));
+            MAIN.setValue("FHOUR", getTime(new Date()).split(':')[0]);
+            MAIN.setValue("FMINUTE", getTime(new Date()).split(':')[1]);
         }
     },
     [Constants.M_SETDTS01]: function (state) {
@@ -286,13 +288,14 @@ const mutations = {
         dt.setValue("SNODEID.SNODENAME", item["SNODENAME"]);
         dt.setValue("SNODEID.ISREADSTL", item["ISREADSTL"]);
     },
-    [Constants.M_SETTIME]: function (date) {
+    [Constants.M_SETTIME]: function (date,{value}) {
         const MAIN = storeHelper.getTable("MAIN");
-        let DEADLINE = MAIN.getValue("DEADLINE");
+        let DEADLINE = value;
         if (DEADLINE) {
             MAIN.setValue("FHOUR", DEADLINE.split(':')[0]);
             MAIN.setValue("FMINUTE", DEADLINE.split(':')[1]);
         }
+        MAIN.setValue("DEADLINE", DEADLINE.replace(":","："));
     },
     [Constants.M_SETSETDTS]: function (state) {
         let DTS = storeHelper.getTable("DTS");

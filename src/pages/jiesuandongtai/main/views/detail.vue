@@ -27,13 +27,6 @@
     </div>
     <div class="mui-content bk-fff">
       <rs-list class="rr-line-24" size="15" noborder>
-        <rs-list-item noborder>
-          <div class="rs-flex-row">
-            <span class="rr-justify rr-width-4em">日 期</span>
-            <span>：</span>
-            <div class="rs-flex-item">{{BILLDATE}} <span :class="BILLDATE|isWeek">{{BILLDATE|getWeek}}</span></div>
-          </div>
-        </rs-list-item>
         <rs-list-item>
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">经 营 门 店</span>
@@ -42,11 +35,19 @@
               class="rs-flex-item"
             >{{this["SNODECODE"]}} {{this["SNODENAME"]}}</div>
           </div>
+        </rs-list-item>        
+        <rs-list-item noborder>
+          <div class="rs-flex-row">
+            <span class="rr-justify rr-width-4em">日 期</span>
+            <span>：</span>
+            <div class="rs-flex-item">{{BILLDATE}} <span :class="BILLDATE|isWeek">{{BILLDATE|getWeek}}</span></div>
+          </div>
         </rs-list-item>
+
       </rs-list>
       <div class="mui-content-padded">
-        <div class="rs-flex-row rr-table-div">
-          <div class="rr-width-5em">
+        <div class="rr-table-div">
+          <div class="rr-width-5em rr-left">
             <div class="rr-table-divH">项目</div>
             <div class="rr-table-divd">实际收入</div>
             <div class="rr-table-divd">线下</div>
@@ -74,42 +75,44 @@
             <div class="rr-table-divd"><span class="rr-justify rr-width-4em">店 长</span></div>
             <div class="rr-table-divd"><span class="rr-justify rr-width-4em">单 据 号</span></div> 
             <div class="rr-table-divd"><span class="rr-justify rr-width-4em">填 报 人</span></div>
-            <div class="rr-table-divd rr-table-div2h"><span class="rr-justify rr-width-4em">填 报 时 间</span></div>
+            <div class="rr-table-divd" :class="MAIN.length>=2?'rr-table-div2h':''"><span class="rr-justify rr-width-4em">填 报 时 间</span></div>
             <div class="rr-table-divd"><span class="rr-justify rr-width-4em">审 核 人</span></div>
-            <div class="rr-table-divd rr-table-div2h"><span class="rr-justify rr-width-4em">审 核 时 间</span></div>
+            <div class="rr-table-divd" :class="MAIN.length>=2?'rr-table-div2h':''"><span class="rr-justify rr-width-4em">审 核 时 间</span></div>
           </div>
-          <div class="rs-flex-item" :style="{'borderRight':(index==MAIN.length-1?'1px solid #eee': '')}" v-for="(item,index) in MAIN" :key="index">
-            <div class="rr-table-divH">{{item.DEADLINE}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.FACTAMT}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.ONLINEAMT}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.ONLINERATE}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.OFFLINEAMT}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.OFFLINERATE}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.DIFFAMT}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.DIFFRATE}}</div>
-            <div style="height: 4px; background: #eee;"></div>
-            <div class="rr-table-divd rr-text-right">{{item.TSCNT}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.XJKZ}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.WX}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.ZFB}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.LXT}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.TSTJ}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.ELMCNT}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.EZXZF}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.ESXF}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.ECDBT}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.MTCNT}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.MZXZF}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.MSXF}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.MCDBT}}</div>
-            <div style="height: 4px; background: #eee;"></div>
-            <div class="rr-table-divd">{{item.MANAGER}}</div>
-            <div class="rr-table-divd">{{item.BILLCODE}}</div>
-            <div class="rr-table-divd">{{item.MAKER}}</div>
-            <div class="rr-table-divd rr-table-div2h">{{item.MAKEDATE}}</div>
-            <div class="rr-table-divd">{{item.VERIFIER}}</div>
-            <div class="rr-table-divd rr-table-div2h">{{item.VERIFYDATE}}</div>
-          </div>
+          <div class="rr-table-body rs-flex-row">
+            <div class="rs-flex-item" :style="{'borderRight':(index==MAIN.length-1?'1px solid #eee': '')}" v-for="(item,index) in MAIN" :key="index">
+              <div class="rr-table-divH">{{item.DEADLINE}}</div>
+              <div class="rr-table-divd rr-text-right">{{item.FACTAMT|toFixed(2)}}</div>
+              <div class="rr-table-divd rr-text-right">{{item.ONLINEAMT|toFixed(2)}}</div>
+              <div class="rr-table-divd rr-text-right">{{item.ONLINERATE|toFixed(1)}}<i v-if="item.ONLINERATE">%</i></div>
+              <div class="rr-table-divd rr-text-right">{{item.OFFLINEAMT|toFixed(2)}}</div>
+              <div class="rr-table-divd rr-text-right">{{item.OFFLINERATE|toFixed(1)}}<i v-if="item.OFFLINERATE">%</i></div>
+              <div class="rr-table-divd rr-text-right">{{item.DIFFAMT|toFixed(2)}}</div>
+              <div class="rr-table-divd rr-text-right">{{item.DIFFRATE|toFixed(1)}}<i v-if="item.DIFFRATE">‰</i></div>
+              <div style="height: 4px; background: #eee;"></div>
+              <div class="rr-table-divd rr-text-right">{{item.TSCNT|toFixed(2)}}</div>
+              <div class="rr-table-divd rr-text-right">{{item.XJKZ|toFixed(2)}}</div>
+              <div class="rr-table-divd rr-text-right">{{item.WX|toFixed(2)}}</div>
+              <div class="rr-table-divd rr-text-right">{{item.ZFB|toFixed(2)}}</div>
+              <div class="rr-table-divd rr-text-right">{{item.LXT|toFixed(2)}}</div>
+              <div class="rr-table-divd rr-text-right">{{item.TSTJ|toFixed(2)}}</div>
+              <div class="rr-table-divd rr-text-right">{{item.ELMCNT|toFixed(2)}}</div>
+              <div class="rr-table-divd rr-text-right">{{item.EZXZF|toFixed(2)}}</div>
+              <div class="rr-table-divd rr-text-right">{{item.ESXF|toFixed(2)}}</div>
+              <div class="rr-table-divd rr-text-right">{{item.ECDBT|toFixed(2)}}</div>
+              <div class="rr-table-divd rr-text-right">{{item.MTCNT|toFixed(2)}}</div>
+              <div class="rr-table-divd rr-text-right">{{item.MZXZF|toFixed(2)}}</div>
+              <div class="rr-table-divd rr-text-right">{{item.MSXF|toFixed(2)}}</div>
+              <div class="rr-table-divd rr-text-right">{{item.MCDBT|toFixed(2)}}</div>
+              <div style="height: 4px; background: #eee;"></div>
+              <div class="rr-table-divd">{{item.MANAGER}}</div>
+              <div class="rr-table-divd">{{item.BILLCODE}}</div>
+              <div class="rr-table-divd">{{item.MAKER}}</div>
+              <div class="rr-table-divd" :class="MAIN.length>=2?'rr-table-div2h':''">{{item.MAKEDATE}}</div>
+              <div class="rr-table-divd">{{item.VERIFIER}}</div>
+              <div class="rr-table-divd" :class="MAIN.length>=2?'rr-table-div2h':''">{{item.VERIFYDATE}}</div>
+            </div>
+          </div>  
         </div>
       </div>
     </div>
@@ -221,5 +224,6 @@ export default {
 .rr-table-div .rr-table-divd{padding:5px 3px; min-height:32px;border-bottom: 1px solid #eee; border-left:1px solid #eee}
 .rr-table-div2h{height: 53px;}
 .rr-table-divd .rr-justify{line-height: 21px; height:21px;}
-
+.rr-table-body{margin-left: 5em; overflow-x: auto; width:auto;}
+.rr-table-body .rs-flex-item{ min-width: 8em;}
 </style>
