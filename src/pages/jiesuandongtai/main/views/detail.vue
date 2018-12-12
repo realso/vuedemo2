@@ -71,12 +71,12 @@
             <div class="rr-table-divd">手续费</div>
             <div class="rr-table-divd">承担补贴</div>
             <div style="height: 4px; background: #eee;"></div>
-            <div class="rr-table-divd">店长</div>
-            <div class="rr-table-divd">单据号</div> 
-            <div class="rr-table-divd">填报人</div>
-            <div class="rr-table-divd rr-table-div2h">填报时间</div>
-            <div class="rr-table-divd">审核人</div>
-            <div class="rr-table-divd rr-table-div2h">审核时间</div>
+            <div class="rr-table-divd"><span class="rr-justify rr-width-4em">店 长</span></div>
+            <div class="rr-table-divd"><span class="rr-justify rr-width-4em">单 据 号</span></div> 
+            <div class="rr-table-divd"><span class="rr-justify rr-width-4em">填 报 人</span></div>
+            <div class="rr-table-divd rr-table-div2h"><span class="rr-justify rr-width-4em">填 报 时 间</span></div>
+            <div class="rr-table-divd"><span class="rr-justify rr-width-4em">审 核 人</span></div>
+            <div class="rr-table-divd rr-table-div2h"><span class="rr-justify rr-width-4em">审 核 时 间</span></div>
           </div>
           <div class="rs-flex-item" :style="{'borderRight':(index==MAIN.length-1?'1px solid #eee': '')}" v-for="(item,index) in MAIN" :key="index">
             <div class="rr-table-divH">{{item.DEADLINE}}</div>
@@ -218,30 +218,6 @@ export default {
 .rr-table-divH{background: rgb(204,232,255);text-align: center; padding:5px 3px;border: 1px solid rgb(204,217,255); border-right: none}
 .rr-table-div .rr-table-divd{padding:5px 3px; min-height:32px;border-bottom: 1px solid #eee; border-left:1px solid #eee}
 .rr-table-div2h{height: 53px;}
-@component-namespace rr {
-  @component table {
-    font-size: 14px;
-    width: 100%;
-    @descendent w4em {
-      width: 5em;
-    }
-    td{
-      padding: 3px;
-      word-break:break-word;
-    }
-    @descendent header {
-      background: rgb(204,232,255);
-      text-align: center;
-      td{
-        border: 1px solid rgb(204,217,255);
-      }  
-    }
-    @descendent body {
-      background: #fff;
-      td{
-        border: 1px solid #eee;
-      }  
-    }
-  }
-}      
+.rr-table-divd .rr-justify{line-height: 21px; height:21px;}
+
 </style>

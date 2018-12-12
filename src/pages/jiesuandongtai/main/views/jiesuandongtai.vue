@@ -169,6 +169,17 @@ export default {
       if(getWeek(value)=='周六'||getWeek(value)=='周日'){
         return 'c-icon-red';
       }
+    },
+    color(value) {
+      let value1 = parseFloat(value)
+      if(value1<0){
+        return 'c-icon-red'
+      }else if(value1==0){
+        return 'c-999'
+      }
+    },
+    color1(value) {
+      return parseFloat(value)==0?'c-999':'c-000'
     }
   }
 };

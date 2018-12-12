@@ -182,7 +182,7 @@ export default {
       }
     },
     color1(value) {
-      return parseFloat(value)==0?'c-999':''
+      return parseFloat(value)==0?'c-999':'c-000'
     }
   }
 };
