@@ -1,5 +1,5 @@
 <template>
-  <div class="mui-layout mui-layout-top">
+  <rs-view class="mui-layout mui-layout-top">
     <rs-header
       :title="TITLE"
       color="primary"
@@ -93,7 +93,7 @@
         @click="down"
       >下一物料 <span class="rr-font rr-iconright f15"></span></div>
     </div>
-  </div>
+  </rs-view>
 </template>
 <script>
 import { mapGetters, mapDateTable, Constants } from "../store";

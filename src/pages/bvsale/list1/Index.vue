@@ -1,20 +1,6 @@
-<template>
-  <rs-views></rs-views>
-</template>
 <script>
+import Page from '@/components/page.vue';
 export default {
-  data() {
-    return {
-      transitionName: "slide-right"
-    };
-  },
-  activated() {
-  },
-  deactivated(){
-  }
-};
+    extends: Page
+}; 
 </script>
-<style>
-</style>
-
-

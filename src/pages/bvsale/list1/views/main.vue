@@ -154,7 +154,11 @@ export default {
     }
   },
   created(){
+    console.log("创见了：订货状况")
     this.$callAsync({method:this.doQuery,params:[],timeOut:600})
+  },
+  destroyed(){
+    console.log("销毁了完蛋了：订货状况main")
   },
   watch:{
     SDATE(){

@@ -1,5 +1,5 @@
 <template>
-  <div style="height:100%;width:100%">
+  <div style="height:100%;width:100%" >
     <transition :name="transitionName">
       <keep-alive>
         <router-view></router-view>
@@ -14,6 +14,8 @@ export default {
     return {
       transitionName: "slide-left"
     };
+  },
+  activated(){
   },
   watch: {
     $route(to, from) {
@@ -41,6 +43,9 @@ export default {
         this.transitionName = "slide-right";
         to.meta.time = new Date().getTime();
         from.meta.time = 0;
+        setTimeout(()=>{
+          from.matched[0].instances.default.destroy=true;
+        },600);
       } else {
         to.meta.time = new Date().getTime();
         this.transitionName = "slide-left";

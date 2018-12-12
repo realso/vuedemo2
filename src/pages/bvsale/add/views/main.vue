@@ -1,5 +1,5 @@
 <template>
-  <div class="mui-layout mui-layout-top">
+  <rs-view class="mui-layout mui-layout-top">
     <rs-header :title="TITLE" color="primary">
       <a slot="left" @click="$router.goBack()" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
       <div slot="right">
@@ -74,14 +74,14 @@
        </rs-list>
     </div>
     <div class="f14 bk-fff rs-padding-5">订货金额：{{AMT|toFixed(2)}}(元)</div>
-  </div>
+  </rs-view>
 </template>
 <script>
 import {mapState,mapGetters,mapDateTable,Constants} from "../store"
 export default {
   name: "bvsale",
   props:{
-    TITLE:''
+    TITLE:{default:'订货单'}
   },
   data() {
     return {
@@ -117,6 +117,9 @@ export default {
   },
   activated: function() {
       console.log("%c"+this.$route.path,"color:red");
+  },
+  created: function() {
+      console.log("%c创建了一次","color:red");
   },
   async beforeRouteLeave (to, from, next) {
       if(to.matched[0] === from.matched[0]||!this.ISMODIFY||this.$router.isForce){
