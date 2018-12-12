@@ -80,28 +80,28 @@
           </div>
           <div class="rs-flex-item" :style="{'borderRight':(index==MAIN.length-1?'1px solid #eee': '')}" v-for="(item,index) in MAIN" :key="index">
             <div class="rr-table-divH">{{item.DEADLINE}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.FACTAMT}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.ONLINEAMT}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.ONLINERATE}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.OFFLINEAMT}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.OFFLINERATE}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.DIFFAMT}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.DIFFRATE}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.FACTAMT|toFixed(2)}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.ONLINEAMT|toFixed(2)}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.ONLINERATE|toFixed(1)}}<i v-if="item.ONLINERATE">%</i></div>
+            <div class="rr-table-divd rr-text-right">{{item.OFFLINEAMT|toFixed(2)}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.OFFLINERATE|toFixed(1)}}<i v-if="item.OFFLINERATE">%</i></div>
+            <div class="rr-table-divd rr-text-right">{{item.DIFFAMT|toFixed(2)}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.DIFFRATE|toFixed(1)}}<i v-if="item.DIFFRATE">‰</i></div>
             <div style="height: 4px; background: #eee;"></div>
-            <div class="rr-table-divd rr-text-right">{{item.TSCNT}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.XJKZ}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.WX}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.ZFB}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.LXT}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.TSTJ}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.ELMCNT}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.EZXZF}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.ESXF}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.ECDBT}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.MTCNT}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.MZXZF}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.MSXF}}</div>
-            <div class="rr-table-divd rr-text-right">{{item.MCDBT}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.TSCNT|toFixed(2)}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.XJKZ|toFixed(2)}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.WX|toFixed(2)}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.ZFB|toFixed(2)}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.LXT|toFixed(2)}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.TSTJ|toFixed(2)}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.ELMCNT|toFixed(2)}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.EZXZF|toFixed(2)}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.ESXF|toFixed(2)}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.ECDBT|toFixed(2)}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.MTCNT|toFixed(2)}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.MZXZF|toFixed(2)}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.MSXF|toFixed(2)}}</div>
+            <div class="rr-table-divd rr-text-right">{{item.MCDBT|toFixed(2)}}</div>
             <div style="height: 4px; background: #eee;"></div>
             <div class="rr-table-divd">{{item.MANAGER}}</div>
             <div class="rr-table-divd">{{item.BILLCODE}}</div>

@@ -65,7 +65,7 @@
         </rs-list-item>
         <rs-list-item v-if="MAKER!=''">
           <div class="rs-flex-row">
-            <span class="rr-justify rr-width-4em">制 单</span>
+            <span class="rr-justify rr-width-4em">填 报</span>
             <span>：</span>
             <div class="rs-flex-item">{{MAKER}} {{MAKEDATE}}</div>
           </div>
