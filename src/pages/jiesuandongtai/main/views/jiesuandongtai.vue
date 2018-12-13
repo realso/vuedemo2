@@ -77,14 +77,14 @@
               :class="FACTAMTALL | color(FACTAMTALL)">
               {{FACTAMTALL|toFixed(2)}}
               </td>
-              <td class="rr-text-right" :class="ONLINERATEALL | color">{{ONLINEAMTALL|toFixed(2)}}
-                <div v-if="ONLINERATEALL" :class="ONLINERATEALL | color1">{{ONLINERATEALL|toFixed(1)}}%</div>
+              <td class="rr-text-right">{{ONLINEAMTALL|toFixed(2)}}
+                <div v-if="ONLINERATEALL">{{ONLINERATEALL|toFixed(1)}}%</div>
               </td>
-              <td class="rr-text-right" :class="OFFLINERATEALL | color">{{OFFLINEAMTALL|toFixed(2)}}
-                <div v-if="OFFLINERATEALL" :class="OFFLINERATEALL | color1">{{OFFLINERATEALL|toFixed(1)}}%</div>
+              <td class="rr-text-right">{{OFFLINEAMTALL|toFixed(2)}}
+                <div v-if="OFFLINERATEALL">{{OFFLINERATEALL|toFixed(1)}}%</div>
               </td>
-              <td class="rr-text-right" :class="parseFloat(DIFFRATEALL)==0?'c-999':'c-icon-red'">{{DIFFAMTALL|toFixed(2)}}
-                <div v-if="DIFFRATEALL" :class="DIFFRATEALL | color1">{{DIFFRATEALL|toFixed(1)}}‰</div>
+              <td class="rr-text-right">{{DIFFAMTALL|toFixed(2)}}
+                <div v-if="DIFFRATEALL">{{DIFFRATEALL|toFixed(1)}}‰</div>
               </td>
             </tr>
           </tbody>
