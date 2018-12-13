@@ -3,6 +3,7 @@
 </template>
 <script>
 export default {
+  name: "rs-page",
   data() {
     return {destroy:true}
   },
