@@ -65,7 +65,7 @@
             <span class="rr-justify rr-width-4em">线 下</span>
             <span>：</span>
             <div class="rs-flex-item rr-text-center">
-              <span class="rr-right rr-width-5em rr-text-right">{{ONLINERATE|toFixed(1)}}%</span>
+              <span class="rr-right rr-width-5em rr-text-right" :class="ONLINERATE==''?'rr-opacity0':''">{{ONLINERATE|toFixed(1)}}%</span>
               {{ONLINEAMT|toFixed(2)}}
             </div>
           </div>
@@ -75,7 +75,7 @@
             <span class="rr-justify rr-width-4em">线 上</span>
             <span>：</span>
             <div class="rs-flex-item rr-text-center">
-              <span class="rr-right rr-width-5em rr-text-right">{{OFFLINERATE|toFixed(1)}}%</span>
+              <span class="rr-right rr-width-5em rr-text-right" :class="OFFLINERATE==''?'rr-opacity0':''">{{OFFLINERATE|toFixed(1)}}%</span>
               {{OFFLINEAMT|toFixed(2)}}
             </div>
           </div>
@@ -85,7 +85,7 @@
             <span class="rr-justify rr-width-4em">差 异</span>
             <span>：</span>
             <div class="rs-flex-item rr-text-center">
-              <span class="rr-right rr-width-5em rr-text-right">{{DIFFRATE}}‰</span>
+              <span class="rr-right rr-width-5em rr-text-right" :class="DIFFRATE==''?'rr-opacity0':''">{{DIFFRATE}}‰</span>
               {{DIFFAMT}}
             </div>
           </div>
@@ -276,12 +276,6 @@ export default {
 .rr-list-input {
   text-align: right;
 }
-/* .rs-listItem {
-  padding: 7px 15px;
-} */
-/* .rs-list {
-  padding-top: 5px;
-} */
 .rr-list-textarea {
   padding: 5px 15px;
   background: #fff;

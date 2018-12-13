@@ -201,9 +201,6 @@ export default {
       BILLDATE: this.$route.query.BILLDATE,
     });
   },
-  deactivated() {
-    this.$destroy();
-  },
   filters: {
     getWeek(value) {
       return value ? getWeek(value) : "";

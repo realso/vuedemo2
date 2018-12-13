@@ -102,6 +102,7 @@
 .rr-footer .rs-flex-item:after{position: absolute; content: ""; width: 1px; top: 0; bottom: 0; right: 0; background: #fff;}
 .rr-footer .rs-flex-item:last-child::after{ width: 0;}
 .rr-opacity0{opacity: 0;}
+.rs-listItem .rs-flex-item{white-space: normal;}
 
 
 
