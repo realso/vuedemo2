@@ -67,7 +67,7 @@
               {{item.OFFLINEAMT|toFixed(2)}}
                 <div v-if="item.OFFLINERATE" :class="item.OFFLINERATE | color1">{{item.OFFLINERATE|toFixed(1)}}%</div>
               </td>
-              <td class="rr-text-right" :class="parseFloat(DIFFAMT)==0?'c-999':'c-icon-red'">{{item.DIFFAMT|toFixed(2)}}
+              <td class="rr-text-right" :class="parseFloat(item.DIFFAMT)==0?'c-999':'c-icon-red'">{{item.DIFFAMT|toFixed(2)}}
                 <div v-if="item.DIFFRATE" :class="item.DIFFRATE | color1">{{item.DIFFRATE|toFixed(1)}}‰</div>
               </td>
             </tr>
