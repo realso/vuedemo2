@@ -40,7 +40,7 @@
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">日 期</span>
             <span>：</span>
-            <div class="rs-flex-item">{{BILLDATE}} <span :class="BILLDATE|isWeek">{{BILLDATE|getWeek}}</span></div>
+            <div class="rs-flex-item">{{BILLDATE|getWeek}}</div>
           </div>
         </rs-list-item>        
         <rs-list-item v-if="MANAGER!=''">
@@ -65,7 +65,7 @@
             <span class="rr-justify rr-width-4em">线 下</span>
             <span>：</span>
             <div class="rs-flex-item rr-text-center">
-              <span class="rr-right rr-width-5em rr-text-right">{{ONLINERATE|toFixed(1)}}%</span>
+              <span class="rr-right rr-width-5em rr-text-right" :class="ONLINERATE==''?'rr-opacity0':''">{{ONLINERATE|toFixed(1)}}%</span>
               {{ONLINEAMT|toFixed(2)}}
             </div>
           </div>
@@ -75,7 +75,7 @@
             <span class="rr-justify rr-width-4em">线 上</span>
             <span>：</span>
             <div class="rs-flex-item rr-text-center">
-              <span class="rr-right rr-width-5em rr-text-right">{{OFFLINERATE|toFixed(1)}}%</span>
+              <span class="rr-right rr-width-5em rr-text-right" :class="OFFLINERATE==''?'rr-opacity0':''">{{OFFLINERATE|toFixed(1)}}%</span>
               {{OFFLINEAMT|toFixed(2)}}
             </div>
           </div>
@@ -85,7 +85,7 @@
             <span class="rr-justify rr-width-4em">差 异</span>
             <span>：</span>
             <div class="rs-flex-item rr-text-center">
-              <span class="rr-right rr-width-5em rr-text-right">{{DIFFRATE}}‰</span>
+              <span class="rr-right rr-width-5em rr-text-right" :class="DIFFRATE==''?'rr-opacity0':''">{{DIFFRATE}}‰</span>
               {{DIFFAMT}}
             </div>
           </div>
@@ -247,21 +247,6 @@ export default {
     this.$store.dispatch(`${Constants.STORE_NAME}/loadDTS`, {
       BILLID: this.$route.query.BILLID
     });
-  },
-  filters: {
-    getWeek(value) {
-      return value ? getWeek(value) : "";
-    },
-    isWeek(value) {
-      if(getWeek(value)=='周六'||getWeek(value)=='周日'){
-        return 'c-icon-red';
-      }
-    },
-    toFixed(value, cm) {
-      if(value=="0"||value!=""){
-        return parseFloat(value || 0).toFixed(cm);
-      }
-    }
   }
 };
 </script>
@@ -276,12 +261,6 @@ export default {
 .rr-list-input {
   text-align: right;
 }
-/* .rs-listItem {
-  padding: 7px 15px;
-} */
-/* .rs-list {
-  padding-top: 5px;
-} */
 .rr-list-textarea {
   padding: 5px 15px;
   background: #fff;

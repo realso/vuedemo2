@@ -36,10 +36,10 @@
               <td>经营门店</td>
               <td class="rr-table-w4em">实际收入</td>
               <td class="rr-table-w4em">线下
-                <br>占比%
+                <br>线下%
               </td>
               <td class="rr-table-w4em">线上
-                <br>占比%
+                <br>线上%
               </td>
               <td class="rr-table-w4em">差异
                 <br>差异‰
@@ -67,7 +67,7 @@
               {{item.OFFLINEAMT|toFixed(2)}}
                 <div v-if="item.OFFLINERATE" :class="item.OFFLINERATE | color1">{{item.OFFLINERATE|toFixed(1)}}%</div>
               </td>
-              <td class="rr-text-right" :class="parseFloat(DIFFRATEALL)==0?'c-999':'c-icon-red'">{{item.DIFFAMT|toFixed(2)}}
+              <td class="rr-text-right" :class="parseFloat(DIFFAMT)==0?'c-999':'c-icon-red'">{{item.DIFFAMT|toFixed(2)}}
                 <div v-if="item.DIFFRATE" :class="item.DIFFRATE | color1">{{item.DIFFRATE|toFixed(1)}}‰</div>
               </td>
             </tr>
@@ -197,6 +197,7 @@ export default {
   @component table {
     font-size: 14px;
     width: 100%;
+    margin-top: -10px;
     @descendent w4em {
       width: 4.5em;
     }

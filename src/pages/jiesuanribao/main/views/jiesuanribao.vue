@@ -34,10 +34,10 @@
               <td>经营门店</td>
               <td class="rr-table-w4em">实际收入</td>
               <td class="rr-table-w4em">线下
-                <br>占比%
+                <br>线下%
               </td>
               <td class="rr-table-w4em">线上
-                <br>占比%
+                <br>线上%
               </td>
               <td class="rr-table-w4em">差异
                 <br>差异‰
@@ -58,15 +58,15 @@
               <td class="rr-text-right" 
               :class="item.ONLINEAMT | color">
                 {{item.ONLINEAMT|toFixed(2)}}
-                <div v-if="item.ONLINERATE" :class="item.ONLINERATE | color1">{{item.ONLINERATE|toFixed(1)}}%</div>
+                <div v-if="item.ONLINERATE!=''" :class="item.ONLINERATE | color1">{{item.ONLINERATE|toFixed(1)}}%</div>
               </td>
               <td class="rr-text-right"
               :class="item.OFFLINEAMT | color">
               {{item.OFFLINEAMT|toFixed(2)}}
-                <div v-if="item.OFFLINERATE" :class="item.OFFLINERATE | color1">{{item.OFFLINERATE|toFixed(1)}}%</div>
+                <div v-if="item.OFFLINERATE!=''" :class="item.OFFLINERATE | color1">{{item.OFFLINERATE|toFixed(1)}}%</div>
               </td>
-              <td class="rr-text-right" :class="parseFloat(DIFFRATEALL)==0?'c-999':'c-icon-red'">{{item.DIFFAMT|toFixed(2)}}
-                <div v-if="item.DIFFRATE" :class="item.DIFFRATE | color1">{{item.DIFFRATE|toFixed(1)}}‰</div>
+              <td class="rr-text-right" :class="parseFloat(DIFFAMT)==0?'c-999':'c-icon-red'">{{item.DIFFAMT|toFixed(2)}}
+                <div v-if="item.DIFFRATE!=''" :class="item.DIFFRATE | color1">{{item.DIFFRATE|toFixed(1)}}‰</div>
               </td>
             </tr>
             <tr class="rr-table-heji">
@@ -76,13 +76,13 @@
               {{FACTAMTALL|toFixed(2)}}
               </td>
               <td class="rr-text-right">{{ONLINEAMTALL|toFixed(2)}}
-                <div v-if="ONLINERATEALL">{{ONLINERATEALL|toFixed(1)}}%</div>
+                <div v-if="ONLINERATEALL!=''">{{ONLINERATEALL|toFixed(1)}}%</div>
               </td>
               <td class="rr-text-right">{{OFFLINEAMTALL|toFixed(2)}}
-                <div v-if="OFFLINERATEALL">{{OFFLINERATEALL|toFixed(1)}}%</div>
+                <div v-if="OFFLINERATEALL!=''">{{OFFLINERATEALL|toFixed(1)}}%</div>
               </td>
               <td class="rr-text-right">{{DIFFAMTALL|toFixed(2)}}
-                <div v-if="DIFFRATEALL">{{DIFFRATEALL|toFixed(1)}}‰</div>
+                <div v-if="DIFFRATEALL!=''">{{DIFFRATEALL|toFixed(1)}}‰</div>
               </td>
             </tr>
           </tbody>
@@ -200,6 +200,7 @@ export default {
   @component table {
     font-size: 14px;
     width: 100%;
+    margin-top: -10px;
     @descendent w4em {
       width: 4.5em;
     }

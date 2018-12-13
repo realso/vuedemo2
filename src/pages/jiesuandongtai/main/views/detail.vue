@@ -38,10 +38,14 @@
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">日 期</span>
             <span>：</span>
+<<<<<<< HEAD
             <div class="rs-flex-item">
               {{BILLDATE}}
               <span :class="BILLDATE|isWeek">{{BILLDATE|getWeek}}</span>
             </div>
+=======
+            <div class="rs-flex-item">{{BILLDATE|getWeek}}</div>
+>>>>>>> a21d29cf9e336362df96944fc62e777e3cf6df3f
           </div>
         </rs-list-item>
       </rs-list>
@@ -229,16 +233,19 @@ export default {
       BILLDATE: this.$route.query.BILLDATE
     });
   },
-  deactivated() {
-    this.$destroy();
-  },
   filters: {
+<<<<<<< HEAD
     getWeek(value) {
       return value ? getWeek(value) : "";
     },
     isWeek(value) {
       if (getWeek(value) == "周六" || getWeek(value) == "周日") {
         return "c-icon-red";
+=======
+    getHour(value){
+      if(value){
+        return value.split('：')[0]
+>>>>>>> a21d29cf9e336362df96944fc62e777e3cf6df3f
       }
     },
     getTimeFormat(value) {
