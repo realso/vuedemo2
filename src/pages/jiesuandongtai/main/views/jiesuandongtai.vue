@@ -28,9 +28,8 @@
         type="date"
         v-model.lazy="BILLDATE"
       ></rs-datetime>
-    <div class="mui-content bk-fff">
-      <div class="mui-content-padded">
-        <table class="rr-table">
+      <div class="bk-fff rs-padding-lr">
+      <table class="rr-table">
           <thead class="rr-table-header">
             <tr>
               <td>经营门店</td>
@@ -46,51 +45,67 @@
               </td>
             </tr>
           </thead>
-          <tbody class="rr-table-body">
-            <tr v-for="(item,index) in QRY" :key="index" @click="linkDetail(item.BILLID,item.SNODEID,item.BILLDATE,index)">
-              <td>
-                {{item.SNODECODE}}
-                <br>
-                {{item.SNODENAME}}
-              </td>
-              <td class="rr-text-right" 
-              :class="item.FACTAMT | color">
-              {{item.FACTAMT|toFixed(2)}}
-              </td>
-              <td class="rr-text-right" 
-              :class="item.ONLINEAMT | color">
-                {{item.ONLINEAMT|toFixed(2)}}
-                <div v-if="item.ONLINERATE" :class="item.ONLINERATE | color1">{{item.ONLINERATE|toFixed(1)}}%</div>
-              </td>
-              <td class="rr-text-right"
-              :class="item.OFFLINEAMT | color">
-              {{item.OFFLINEAMT|toFixed(2)}}
-                <div v-if="item.OFFLINERATE" :class="item.OFFLINERATE | color1">{{item.OFFLINERATE|toFixed(1)}}%</div>
-              </td>
-              <td class="rr-text-right" :class="parseFloat(item.DIFFAMT)==0?'c-999':'c-icon-red'">{{item.DIFFAMT|toFixed(2)}}
-                <div v-if="item.DIFFRATE" :class="item.DIFFRATE | color1">{{item.DIFFRATE|toFixed(1)}}‰</div>
-              </td>
-            </tr>
-            <tr class="rr-table-heji">
-              <td class="rr-text-right rr-weight">合计:</td>
-              <td class="rr-text-right" 
-              :class="FACTAMTALL | color(FACTAMTALL)">
-              {{FACTAMTALL|toFixed(2)}}
-              </td>
-              <td class="rr-text-right">{{ONLINEAMTALL|toFixed(2)}}
-                <div v-if="ONLINERATEALL">{{ONLINERATEALL|toFixed(1)}}%</div>
-              </td>
-              <td class="rr-text-right">{{OFFLINEAMTALL|toFixed(2)}}
-                <div v-if="OFFLINERATEALL">{{OFFLINERATEALL|toFixed(1)}}%</div>
-              </td>
-              <td class="rr-text-right">{{DIFFAMTALL|toFixed(2)}}
-                <div v-if="DIFFRATEALL">{{DIFFRATEALL|toFixed(1)}}‰</div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      </table>
     </div>
+    <div class="mui-content">
+      <rs-loadmore :bottom-method="doQueryNext" :top-status.sync="topStatus" :bottom-all-loaded="allLoaded" :top-method="doQuery" :auto-fill=false  ref="loadmore">
+        <div class="rs-padding-lr bk-fff">
+          <table class="rr-table">
+            <tbody class="rr-table-body">
+              <tr v-for="(item,index) in QRY" :key="index" @click="linkDetail(item.BILLID,item.SNODEID,item.BILLDATE,index)">
+                <td>
+                  {{item.SNODECODE}}
+                  <br>
+                  {{item.SNODENAME}}
+                </td>
+                <td class="rr-text-right rr-table-w4em" 
+                :class="item.FACTAMT | color">
+                {{item.FACTAMT|toFixed(2)}}
+                </td>
+                <td class="rr-text-right rr-table-w4em" 
+                :class="item.ONLINEAMT | color">
+                  {{item.ONLINEAMT|toFixed(2)}}
+                  <div v-if="item.ONLINERATE" :class="item.ONLINERATE | color1">{{item.ONLINERATE|toFixed(1)}}%</div>
+                </td>
+                <td class="rr-text-right rr-table-w4em"
+                :class="item.OFFLINEAMT | color">
+                {{item.OFFLINEAMT|toFixed(2)}}
+                  <div v-if="item.OFFLINERATE" :class="item.OFFLINERATE | color1">{{item.OFFLINERATE|toFixed(1)}}%</div>
+                </td>
+                <td class="rr-text-right rr-table-w4em" :class="parseFloat(item.DIFFAMT)==0?'c-999':'c-icon-red'">{{item.DIFFAMT|toFixed(2)}}
+                  <div v-if="item.DIFFRATE" :class="item.DIFFRATE | color1">{{item.DIFFRATE|toFixed(1)}}‰</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div v-if="allLoaded" class="rs-list-nodata">
+          <span>没有数据啦</span>
+        </div>
+      </rs-loadmore>
+    </div>
+    <div class="rs-padding-lr">
+      <table class="rr-table">
+        <tbody class="rr-table-body">
+          <tr class="rr-table-heji">
+            <td class="rr-text-right rr-weight">合计:</td>
+            <td class="rr-text-right rr-table-w4em" 
+            :class="FACTAMTALL | color(FACTAMTALL)">
+            {{FACTAMTALL|toFixed(2)}}
+            </td>
+            <td class="rr-text-right rr-table-w4em">{{ONLINEAMTALL|toFixed(2)}}
+              <div v-if="ONLINERATEALL">{{ONLINERATEALL|toFixed(1)}}%</div>
+            </td>
+            <td class="rr-text-right rr-table-w4em">{{OFFLINEAMTALL|toFixed(2)}}
+              <div v-if="OFFLINERATEALL">{{OFFLINERATEALL|toFixed(1)}}%</div>
+            </td>
+            <td class="rr-text-right rr-table-w4em">{{DIFFAMTALL|toFixed(2)}}
+              <div v-if="DIFFRATEALL">{{DIFFRATEALL|toFixed(1)}}‰</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>    
   </div>
 </template>
 <script>
@@ -103,7 +118,9 @@ export default {
   name: "jiesuandongtai",
   data() {
     return {
-      ISINPUTSHOW: false
+      ISINPUTSHOW: false,
+      topStatus: "",
+      allLoaded: false
     };
   },
   computed: {
@@ -142,12 +159,27 @@ export default {
       this.$refs[picker].open();
     },
     doQuery: function(){
-      this.$store.dispatch(`${Constants.STORE_NAME}/openReport`);
+      this.topStatus = "loading";
+      this.allLoaded = false;
+      this.$store.dispatch(`${Constants.STORE_NAME}/openReport`).then(()=>{
+         this.topStatus = "";
+         this.$refs.loadmore.onTopLoaded();
+      });
     },
     clearMD: function(){
       this.SNODEID=''
       this['SNODEID.SNODECODE']=''
       this['SNODEID.SNODENAME']=''
+    },
+    doQueryNext: async function() {
+      this.topStatus = "loading";
+      this.$store.dispatch(`${Constants.STORE_NAME}/openReport`).then(()=>{
+         this.topStatus = "";
+         this.$refs.loadmore.onBottomLoaded();
+         if(this.QRY.length === 0){
+          this.allLoaded = true;
+         }
+      });
     }
   },
   watch: {
@@ -197,7 +229,6 @@ export default {
   @component table {
     font-size: 14px;
     width: 100%;
-    margin-top: -10px;
     @descendent w4em {
       width: 4.5em;
     }
@@ -223,8 +254,6 @@ export default {
       td {
         padding: 3px;
         vertical-align: top;
-        border-top: 1px solid #aaa;
-        border-bottom: 1px solid #aaa;
       }
     }
   }
