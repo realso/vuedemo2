@@ -225,6 +225,8 @@ export default {
       SNODEID: this.$route.query.SNODEID,
       BILLDATE: this.$route.query.BILLDATE
     });
+    this.length = parseInt(this.$route.query.length);
+    this.index = parseInt(this.$route.query.index);
   },
   filters: {
     getTimeFormat(value) {

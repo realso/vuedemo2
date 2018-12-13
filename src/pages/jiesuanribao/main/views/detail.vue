@@ -247,6 +247,8 @@ export default {
     this.$store.dispatch(`${Constants.STORE_NAME}/loadDTS`, {
       BILLID: this.$route.query.BILLID
     });
+    this.length = parseInt(this.$route.query.length);
+    this.index = parseInt(this.$route.query.index);
   }
 };
 </script>
