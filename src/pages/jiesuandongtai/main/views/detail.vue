@@ -118,7 +118,7 @@
               <div class="rr-table-divd rr-text-right">{{item.WX|toFixed(2)}}</div>
               <div class="rr-table-divd rr-text-right">{{item.ZFB|toFixed(2)}}</div>
               <div class="rr-table-divd rr-text-right">{{item.LXT|toFixed(2)}}</div>
-              <div class="rr-table-divd rr-text-right">{{item.TSTJ|toFixed(2)}}</div>
+              <div class="rr-table-divd rr-text-right">{{item.TSTK|toFixed(2)}}</div>
               <div class="rr-table-divd rr-text-right">{{item.ELMCNT|toFixed(2)}}</div>
               <div class="rr-table-divd rr-text-right">{{item.EZXZF|toFixed(2)}}</div>
               <div class="rr-table-divd rr-text-right">{{item.ESXF|toFixed(2)}}</div>

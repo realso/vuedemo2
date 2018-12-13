@@ -6,7 +6,6 @@ import {Constants} from "./store";
 export default {
   data() { return{}},
   activated: function() {
-    this.$store.commit(`${Constants.STORE_NAME}/setParams`, this.$route.query);
     if ("ADD" == this.$route.query.ACTION) {
       
     }
