@@ -212,6 +212,16 @@ export default {
       if(getWeek(value)=='周六'||getWeek(value)=='周日'){
         return 'c-icon-red';
       }
+    },
+    getHour(value){
+      if(value){
+        return value.split('：')[0]
+      }
+    },
+    getMinute(value){
+      if(value){
+        return value.split('：')[1]
+      }
     }
   }
 };
