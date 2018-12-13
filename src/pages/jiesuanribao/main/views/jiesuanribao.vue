@@ -58,15 +58,15 @@
               <td class="rr-text-right" 
               :class="item.ONLINEAMT | color">
                 {{item.ONLINEAMT|toFixed(2)}}
-                <div v-if="item.ONLINERATE" :class="item.ONLINERATE | color1">{{item.ONLINERATE|toFixed(1)}}%</div>
+                <div v-if="item.ONLINERATE!=''" :class="item.ONLINERATE | color1">{{item.ONLINERATE|toFixed(1)}}%</div>
               </td>
               <td class="rr-text-right"
               :class="item.OFFLINEAMT | color">
               {{item.OFFLINEAMT|toFixed(2)}}
-                <div v-if="item.OFFLINERATE" :class="item.OFFLINERATE | color1">{{item.OFFLINERATE|toFixed(1)}}%</div>
+                <div v-if="item.OFFLINERATE!=''" :class="item.OFFLINERATE | color1">{{item.OFFLINERATE|toFixed(1)}}%</div>
               </td>
               <td class="rr-text-right" :class="parseFloat(DIFFAMT)==0?'c-999':'c-icon-red'">{{item.DIFFAMT|toFixed(2)}}
-                <div v-if="item.DIFFRATE" :class="item.DIFFRATE | color1">{{item.DIFFRATE|toFixed(1)}}‰</div>
+                <div v-if="item.DIFFRATE!=''" :class="item.DIFFRATE | color1">{{item.DIFFRATE|toFixed(1)}}‰</div>
               </td>
             </tr>
             <tr class="rr-table-heji">
@@ -76,13 +76,13 @@
               {{FACTAMTALL|toFixed(2)}}
               </td>
               <td class="rr-text-right">{{ONLINEAMTALL|toFixed(2)}}
-                <div v-if="ONLINERATEALL">{{ONLINERATEALL|toFixed(1)}}%</div>
+                <div v-if="ONLINERATEALL!=''">{{ONLINERATEALL|toFixed(1)}}%</div>
               </td>
               <td class="rr-text-right">{{OFFLINEAMTALL|toFixed(2)}}
-                <div v-if="OFFLINERATEALL">{{OFFLINERATEALL|toFixed(1)}}%</div>
+                <div v-if="OFFLINERATEALL!=''">{{OFFLINERATEALL|toFixed(1)}}%</div>
               </td>
               <td class="rr-text-right">{{DIFFAMTALL|toFixed(2)}}
-                <div v-if="DIFFRATEALL">{{DIFFRATEALL|toFixed(1)}}‰</div>
+                <div v-if="DIFFRATEALL!=''">{{DIFFRATEALL|toFixed(1)}}‰</div>
               </td>
             </tr>
           </tbody>
