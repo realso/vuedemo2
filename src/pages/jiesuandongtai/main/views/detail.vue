@@ -40,7 +40,7 @@
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">日 期</span>
             <span>：</span>
-            <div class="rs-flex-item">{{BILLDATE}} <span :class="BILLDATE|isWeek">{{BILLDATE|getWeek}}</span></div>
+            <div class="rs-flex-item">{{BILLDATE|getWeek}}</div>
           </div>
         </rs-list-item>
 
@@ -202,14 +202,6 @@ export default {
     });
   },
   filters: {
-    getWeek(value) {
-      return value ? getWeek(value) : "";
-    },
-    isWeek(value) {
-      if(getWeek(value)=='周六'||getWeek(value)=='周日'){
-        return 'c-icon-red';
-      }
-    },
     getHour(value){
       if(value){
         return value.split('：')[0]

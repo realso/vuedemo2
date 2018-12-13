@@ -40,7 +40,7 @@
           <div class="rs-flex-row">
             <span class="rr-justify rr-width-4em">日 期</span>
             <span>：</span>
-            <div class="rs-flex-item">{{BILLDATE}} <span :class="BILLDATE|isWeek">{{BILLDATE|getWeek}}</span></div>
+            <div class="rs-flex-item">{{BILLDATE|getWeek}}</div>
           </div>
         </rs-list-item>        
         <rs-list-item v-if="MANAGER!=''">
@@ -247,21 +247,6 @@ export default {
     this.$store.dispatch(`${Constants.STORE_NAME}/loadDTS`, {
       BILLID: this.$route.query.BILLID
     });
-  },
-  filters: {
-    getWeek(value) {
-      return value ? getWeek(value) : "";
-    },
-    isWeek(value) {
-      if(getWeek(value)=='周六'||getWeek(value)=='周日'){
-        return 'c-icon-red';
-      }
-    },
-    toFixed(value, cm) {
-      if(value=="0"||value!=""){
-        return parseFloat(value || 0).toFixed(cm);
-      }
-    }
   }
 };
 </script>
