@@ -47,9 +47,9 @@
           </thead>
       </table>
     </div>
-    <div class="mui-content">
+    <div class="mui-content bk-fff">
       <rs-loadmore :bottom-method="doQueryNext" :top-status.sync="topStatus" :bottom-all-loaded="allLoaded" :top-method="doQuery" :auto-fill=false  ref="loadmore">
-        <div class="rs-padding-lr bk-fff">
+        <div class="rs-padding-lr">
           <table class="rr-table">
             <tbody class="rr-table-body">
               <tr v-for="(item,index) in QRY" :key="index" @click="linkDetail(item.BILLID,item.SNODEID,item.BILLDATE,index)">
@@ -225,6 +225,7 @@ export default {
   height: 24px;
 }
 .rr-list-search{padding: 0 10px; position: absolute; right: 10px; bottom: 6px}
+.rs-list-nodata span{ background: #fff}
 @component-namespace rr {
   @component table {
     font-size: 14px;
