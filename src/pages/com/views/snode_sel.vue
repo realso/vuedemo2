@@ -18,7 +18,7 @@
         class="mui-input-clear"
         v-model="searchInput"
         style="padding: 0 0 0 15px;"
-        placeholder="输入编码、网点名称"
+        placeholder="编码、名称"
       >
     </div>
     <div class="mui-content">
