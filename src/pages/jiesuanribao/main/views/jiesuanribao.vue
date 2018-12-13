@@ -34,10 +34,10 @@
               <td>经营门店</td>
               <td class="rr-table-w4em">实际收入</td>
               <td class="rr-table-w4em">线下
-                <br>占比%
+                <br>线下%
               </td>
               <td class="rr-table-w4em">线上
-                <br>占比%
+                <br>线上%
               </td>
               <td class="rr-table-w4em">差异
                 <br>差异‰
