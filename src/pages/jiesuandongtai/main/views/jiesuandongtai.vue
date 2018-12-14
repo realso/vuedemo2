@@ -119,6 +119,7 @@ export default {
   data() {
     return {
       ISINPUTSHOW: false,
+      pageIndex: 1,
       topStatus: "",
       allLoaded: false
     };
@@ -161,7 +162,7 @@ export default {
     doQuery: function(){
       this.topStatus = "loading";
       this.allLoaded = false;
-      this.$store.dispatch(`${Constants.STORE_NAME}/openReport`).then(()=>{
+      this.$store.dispatch(`${Constants.STORE_NAME}/openReport`,{BILLID:""}).then(()=>{
          this.topStatus = "";
          this.$refs.loadmore.onTopLoaded();
       });
@@ -172,8 +173,10 @@ export default {
       this['SNODEID.SNODENAME']=''
     },
     doQueryNext: async function() {
+      debugger;
       this.topStatus = "loading";
-      this.$store.dispatch(`${Constants.STORE_NAME}/openReport`).then(()=>{
+      this.pageIndex ++;
+      this.$store.dispatch(`${Constants.STORE_NAME}/openReport`,{pageIndex:this.pageIndex}).then(()=>{
          this.topStatus = "";
          this.$refs.loadmore.onBottomLoaded();
          if(this.QRY.length === 0){
@@ -184,10 +187,10 @@ export default {
   },
   watch: {
     "BILLDATE":function(){
-       this.$store.dispatch(`${Constants.STORE_NAME}/openReport`);
+       this.doQuery();
     },
     "SNODEID":function(){
-       this.$store.dispatch(`${Constants.STORE_NAME}/openReport`);
+       this.doQuery();
     }
   },
   activated: function() {

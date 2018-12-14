@@ -60,7 +60,7 @@ const actions = {
         let ret = await service.doLoadMAIN({ SNODEID:SNODEID, BILLDATE:BILLDATE});
         commit(Constants.M_INITDATA, { path: "MAIN", data: (ret.data || {}).items });
     },
-    openReport: async function({commit}) {
+    openReport: async function({commit},{pageIndex}) {
         let QRYADV = storeHelper.getTable("QRYADV");
         let para = {};
         para["BILLID"] = "";
@@ -68,6 +68,7 @@ const actions = {
         para["SNODEID"] = QRYADV.getValue("SNODEID");;
         para.sqlId = "51487";
         para.pageSize = "10";
+        para.pageIndex = pageIndex||1;
         para.keyFields = "BILLID";
         let ret = await service.doQuery(para);
         commit(Constants.M_INITDATA, { path: "QRY", data: (ret.data || {}).items });

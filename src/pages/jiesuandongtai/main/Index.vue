@@ -13,7 +13,7 @@ export default {
       this.$store.commit("jiesuandongtai/addDefault");
       this.$callAction({
         action: `${Constants.STORE_NAME}/openReport`,
-        param: this.$route.query.DID,
+        param: {pageIndex:1},
         isErrorBack: true,
         timeOut: 600
       });
