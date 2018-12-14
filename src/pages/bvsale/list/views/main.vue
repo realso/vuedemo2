@@ -52,11 +52,11 @@
       >
     </rs-datetime> 
     <div class="mui-content">
-      <div v-if="list.length<=0" class="rs-list-nodata">
-        <span>无对应数据！</span>
-      </div>
       <rs-loadmore :bottom-method="doQueryNext"  :top-status.sync="topStatus" :bottom-all-loaded="allLoaded" :top-method="doQuery" :auto-fill=false  ref="loadmore">
-        <rs-list class="rr-line-24 rr-list-rili" size="14" noborder>
+        <rs-list class="rr-line-24 rr-list-rili" size="14" noborder style="height:100%">
+          <div v-if="list.length<=0" class="rs-list-nodata">
+           <span>无对应数据！</span>
+          </div>
           <rs-list-item v-for="item in list" :key="item.BILLID" @click.native="linkBVSale('VIEW',item)">
             <div class="rs-flex-row">
               <div class="rr-media-rili">
@@ -188,5 +188,6 @@ export default {
 .rr-list-rili-b{ line-height: 1; position: absolute; bottom: 0;left: 0;}
 .rr-input-w100{width: 100%; display: block; font-size: 15px; height: 24px; line-height: 24px; padding:10px 0; border: none; margin-bottom: 0}
 .rr-list-search{padding: 0 10px; position: absolute; right: 10px; margin-top: -4px;}
+.rs-list-nodata span{background: #fff}
 </style>
 
