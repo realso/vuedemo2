@@ -73,10 +73,10 @@
               </div> 
             </div> 
           </rs-list-item>
+          <div v-if="allLoaded&&list.length>0" class="rs-list-nodata">
+            <span>没有数据啦</span>
+          </div>
         </rs-list>  
-        <div v-if="allLoaded" class="rs-list-nodata">
-          <span>没有数据啦</span>
-        </div>
       </rs-loadmore>
     </div>
     <div v-if="list.length>0" class="f14 bk-fff rs-padding-5">金额合计：{{AMT|toFixed(2)}}(元)</div>

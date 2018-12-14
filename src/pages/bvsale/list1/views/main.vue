@@ -77,15 +77,13 @@
                   <span v-if="item.AMT>0">{{item.AMT|toFixed(2)}}(元)</span>
                 </div>
                 </div>
-                
               </div> 
             </div> 
           </rs-list-item>
-        </rs-list>  
-        
-        <div v-if="allLoaded" class="rs-list-nodata">
-          <span>没有数据啦</span>
-        </div>
+          <div v-if="allLoaded&&list.length>0" class="rs-list-nodata">
+            <span>没有数据啦</span>
+          </div>
+        </rs-list>   
       </rs-loadmore>
     </div>
   </div>
