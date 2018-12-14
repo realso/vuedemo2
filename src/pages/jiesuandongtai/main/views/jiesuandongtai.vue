@@ -49,7 +49,7 @@
     </div>
     <div class="mui-content bk-fff">
       <rs-loadmore :bottom-method="doQueryNext" :top-status.sync="topStatus" :bottom-all-loaded="allLoaded" :top-method="doQuery" :auto-fill=false  ref="loadmore">
-        <div class="rs-padding-lr">
+        <div class="rs-padding-lr" style="height:100%">
           <table class="rr-table">
             <tbody class="rr-table-body">
               <tr v-for="(item,index) in QRY" :key="index" @click="linkDetail(item.BILLID,item.SNODEID,item.BILLDATE,index)">
@@ -78,9 +78,12 @@
               </tr>
             </tbody>
           </table>
-        </div>
-        <div v-if="allLoaded" class="rs-list-nodata">
-          <span>没有数据啦</span>
+          <div v-if="QRY.length<=0" class="rs-list-nodata">
+            <span>无对应数据！</span>
+          </div>
+          <div v-if="allLoaded&&(QRY.length>0)" class="rs-list-nodata">
+            <span>没有数据啦</span>
+          </div>
         </div>
       </rs-loadmore>
     </div>
@@ -160,7 +163,6 @@ export default {
     },
     doQuery: function(){
       this.topStatus = "loading";
-      this.allLoaded = false;
       this.$store.dispatch(`${Constants.STORE_NAME}/openReport`).then(()=>{
          this.topStatus = "";
          this.$refs.loadmore.onTopLoaded();
@@ -174,12 +176,12 @@ export default {
     doQueryNext: async function() {
       this.topStatus = "loading";
       this.$store.dispatch(`${Constants.STORE_NAME}/openReport`).then(()=>{
-         this.topStatus = "";
-         this.$refs.loadmore.onBottomLoaded();
-         if(this.QRY.length === 0){
-          this.allLoaded = true;
-         }
-      });
+        this.topStatus = "";
+        this.$refs.loadmore.onBottomLoaded();
+        if(this){//需要改掉，判断没有更多数据this.allLoaded = true
+        this.allLoaded = true;
+        }
+      })
     }
   },
   watch: {
